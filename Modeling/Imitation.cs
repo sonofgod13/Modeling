@@ -6,6 +6,7 @@ using ModelingDataTypes;
 using GeneratorSubsystem;
 using Storage;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace Modeling
 {
@@ -18,12 +19,14 @@ namespace Modeling
         private DateTime startTime;
         private int modelingDays;
         private bool stopFlag;
+        private static AutoResetEvent pauseDone;
         private int currentModellingDay;
 
         public CImitation()
         {
             this.backOffice = new BackOfficeInterface();
             storage = new Storage.CStorage();   //содается временное хранилище результатов моделирования
+            pauseDone = new AutoResetEvent(false);
 
             generator = new Generator(
                 Generator.makeGenerator(CParams.m_generatorDemandsTime.m_iGeneratorType, CParams.m_generatorDemandsTime.m_fA, CParams.m_generatorDemandsTime.m_fB),
@@ -266,10 +269,11 @@ namespace Modeling
 
         public bool Stop()  // остановка и пауза моделирования
         {
-            if (currentModellingDay == 19) return false;
+            if (currentModellingDay == (CParams.m_iModelingDayToWork-1)) return false;
             else
             {
                 this.stopFlag = true;
+                pauseDone.WaitOne();
                 return true;
             }
         }
@@ -281,12 +285,16 @@ namespace Modeling
             return !stopFlag;
         }
 
-        public void Iteration(Label label)
+        private void Iteration(Label label)
         {
             for (int i = this.currentModellingDay; i < this.modelingDays; i++)
             {
                 this.currentModellingDay = i;
-                if (this.stopFlag == true) break;
+                if (this.stopFlag == true)
+                {
+                    pauseDone.Set();
+                    break;
+                }
     
                 DateTime workdayStartTime = startTime.AddDays(i);
                 modelTime = workdayStartTime;

@@ -165,26 +165,38 @@ namespace Modeling
             {
                 if (pauseModelFlag == false)
                 {
-                    if (imitator.Stop())
+                    setEnableButton(this.button_start, false);
+                    setEnableButton(this.button_stop, false);
+                    button_start.Text = "Продолжить";
+                    pauseModelFlag = true;
+                    Thread t = new Thread(delegate() 
                     {
-                        button_start.Text = "Продолжить";
-                        pauseModelFlag = true;
-                        double demandAverageDelay = this.imitator.getDemandAverageDelay();
-                        if (demandAverageDelay == -1) setLabelText(this.demandAverageDelayLabel, "нет выполненных заказов");
-                        else setLabelText(this.demandAverageDelayLabel, Math.Round(demandAverageDelay, 3).ToString() + " дней");
-                        setLabelText(this.activityFactorLabel, Math.Round(imitator.getActivityFactor(), 5).ToString());
-                        setLabelText(this.retargetTimePercentLabel, Math.Round(imitator.getRetargetTimePercent(), 5).ToString());
-                        setLabelText(this.refuseNumLabel, imitator.getRefusesNum().ToString());
-                        setLabelText(this.acceptedNumLabel, imitator.getAcceptedDemandsNum().ToString());
-                        setLabelText(this.finishedNumLabel, imitator.getFinishedDemandsNum().ToString());
-                        //setLabelText(this.canceledNumLabel, imitator.getCanceledDemandsNum().ToString());
-                        setEnableButton(this.materials_button, true);
-                        setEnableButton(this.idle_button, true);
-                        setEnableButton(this.averageDelay_button, true);
-                        setEnableButton(this.finish_button, true);
-                        //setEnableButton(this.cancel_button, true);
-                        setEnableButton(this.front_office_button, true);
-                    }
+                        bool pauseDone = false;
+                        pauseDone = imitator.Stop();
+                        setEnableButton(this.button_start, true);
+                        setEnableButton(this.button_stop, true);
+                        if (pauseDone == true)
+                        {                            
+                            double demandAverageDelay = this.imitator.getDemandAverageDelay();
+                            if (demandAverageDelay == -1) setLabelText(this.demandAverageDelayLabel, "нет выполненных заказов");
+                            else setLabelText(this.demandAverageDelayLabel, Math.Round(demandAverageDelay, 3).ToString() + " дней");
+                            setLabelText(this.activityFactorLabel, Math.Round(imitator.getActivityFactor(), 5).ToString());
+                            setLabelText(this.retargetTimePercentLabel, Math.Round(imitator.getRetargetTimePercent(), 5).ToString());
+                            setLabelText(this.refuseNumLabel, imitator.getRefusesNum().ToString());
+                            setLabelText(this.acceptedNumLabel, imitator.getAcceptedDemandsNum().ToString());
+                            setLabelText(this.finishedNumLabel, imitator.getFinishedDemandsNum().ToString());
+                            //setLabelText(this.canceledNumLabel, imitator.getCanceledDemandsNum().ToString());
+                            setEnableButton(this.materials_button, true);
+                            setEnableButton(this.idle_button, true);
+                            setEnableButton(this.averageDelay_button, true);
+                            setEnableButton(this.finish_button, true);
+                            //setEnableButton(this.cancel_button, true);
+                            setEnableButton(this.front_office_button, true);
+                        }
+                    });
+                    t.IsBackground = true;
+                    t.Priority = ThreadPriority.Normal;
+                    t.Start();
                 }
                 else
                 {
