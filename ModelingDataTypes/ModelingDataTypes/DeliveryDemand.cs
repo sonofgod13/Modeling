@@ -17,7 +17,7 @@ namespace ModelingDataTypes
         //public Dictionary<int, int> m_materialsDemand;
         public CMaterialCluster m_materialsDemand;
         //Материалы. Пара: идентификатор материала - его количество
-
+        public bool isDone;        //  заявка отправлена
 
         public CDeliveryDemand(int id, DateTime dtFillDelivery, CMaterialCluster materialsDemand)
         {
@@ -26,7 +26,7 @@ namespace ModelingDataTypes
             this.m_iID = id;
             this.m_dtRealDelivery = null;
             this.m_dtFillDelivery = dtFillDelivery;
-
+            this.isDone = false;
             //***this.m_materialsDemand = new Dictionary<int, int>(materialsDemand);
             m_materialsDemand = new CMaterialCluster(materialsDemand);
         }
@@ -34,7 +34,7 @@ namespace ModelingDataTypes
         public CDeliveryDemand(CDeliveryDemand copy)
         {
             this.m_iID = copy.m_iID;
-
+            this.isDone = copy.isDone;
             this.m_dtRealDelivery = copy.m_dtRealDelivery;
             this.m_dtFillDelivery = copy.m_dtFillDelivery;
             //this.m_materialsDemand = new Dictionary<int, int>(copy.m_materialsDemand);

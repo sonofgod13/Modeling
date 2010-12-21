@@ -249,25 +249,36 @@ namespace Modeling
         {
             modelFlag = false;
             pauseModelFlag = false;
-            imitator.Stop();
-            button_start.Text = "Старт";
-            button_stop.Enabled = false;
-            
-            double demandAverageDelay = this.imitator.getDemandAverageDelay();
-            if (demandAverageDelay == -1) setLabelText(this.demandAverageDelayLabel, "нет выполненных заказов");
-            else setLabelText(this.demandAverageDelayLabel, Math.Round(demandAverageDelay, 3).ToString() + " дней");
-            setLabelText(this.activityFactorLabel, Math.Round(imitator.getActivityFactor(), 5).ToString());
-            setLabelText(this.retargetTimePercentLabel, Math.Round(imitator.getRetargetTimePercent(), 5).ToString());
-            setLabelText(this.refuseNumLabel, imitator.getRefusesNum().ToString());
-            setLabelText(this.acceptedNumLabel, imitator.getAcceptedDemandsNum().ToString());
-            setLabelText(this.finishedNumLabel, imitator.getFinishedDemandsNum().ToString());
-            //setLabelText(this.canceledNumLabel, imitator.getCanceledDemandsNum().ToString());
-            materials_button.Enabled = true;
-            idle_button.Enabled = true;
-            averageDelay_button.Enabled = true;
-            finish_button.Enabled = true;
-            //cancel_button.Enabled = true;
-            front_office_button.Enabled = true;
+            setEnableButton(this.button_start, false);
+            setEnableButton(this.button_stop, false);
+            Thread t = new Thread(delegate() 
+                    {
+                        bool stopDone = false;
+                        stopDone = imitator.Stop();
+                        setEnableButton(this.button_start, true);
+                        if (stopDone == true)
+                        {
+                            double demandAverageDelay = this.imitator.getDemandAverageDelay();
+                            if (demandAverageDelay == -1) setLabelText(this.demandAverageDelayLabel, "нет выполненных заказов");
+                            else setLabelText(this.demandAverageDelayLabel, Math.Round(demandAverageDelay, 3).ToString() + " дней");
+                            setLabelText(this.activityFactorLabel, Math.Round(imitator.getActivityFactor(), 5).ToString());
+                            setLabelText(this.retargetTimePercentLabel, Math.Round(imitator.getRetargetTimePercent(), 5).ToString());
+                            setLabelText(this.refuseNumLabel, imitator.getRefusesNum().ToString());
+                            setLabelText(this.acceptedNumLabel, imitator.getAcceptedDemandsNum().ToString());
+                            setLabelText(this.finishedNumLabel, imitator.getFinishedDemandsNum().ToString());
+                            //setLabelText(this.canceledNumLabel, imitator.getCanceledDemandsNum().ToString());
+                            setEnableButton(materials_button,true);
+                            setEnableButton(idle_button, true);
+                            setEnableButton(averageDelay_button, true);
+                            setEnableButton(finish_button,true);
+                            //cancel_button.Enabled = true;
+                            setEnableButton(front_office_button, true);
+                        }
+                    });
+                    t.IsBackground = true;
+                    t.Priority = ThreadPriority.Normal;
+                    t.Start();
+                    button_start.Text = "Старт";
         }
 
 

@@ -358,22 +358,17 @@ namespace Storage
             return true;
         }
 
-        public int GetNextDeliveryDemandTime(DateTime date, ref bool prevDeliveryDemandTimeEqualsZero)  
+        public int GetNextDeliveryDemandTime(DateTime date)  
             //получить время ближайшей поставки материалов
         {
             int timeSpan=-1;
             foreach (CDeliveryDemand d in this.m_DeliveryDemands.Values)
             {
-                int curTimeSpan=(int)(d.m_dtRealDelivery.Value-date).TotalMinutes;
-                if ((curTimeSpan == 0) && (prevDeliveryDemandTimeEqualsZero == false))
+                if (d.isDone == false)
                 {
-                    prevDeliveryDemandTimeEqualsZero = true;
-                    return curTimeSpan;
-                }
-                else
-                {
+                    int curTimeSpan = (int)(d.m_dtRealDelivery.Value - date).TotalMinutes;
                     DateTime checkDate = date.AddMinutes(curTimeSpan);
-                    if ((curTimeSpan > 0) && (date.Year == checkDate.Year) && (date.Month == checkDate.Month) && (date.Day == checkDate.Day))
+                    if ((curTimeSpan >= 0) && (date.Year == checkDate.Year) && (date.Month == checkDate.Month) && (date.Day == checkDate.Day))
                     {
                         if (timeSpan == -1) timeSpan = curTimeSpan;
                         else
@@ -383,7 +378,6 @@ namespace Storage
                     }
                 }
             }
-            prevDeliveryDemandTimeEqualsZero = false;
             return timeSpan;
         }
 
@@ -393,7 +387,7 @@ namespace Storage
             List<CDeliveryDemand> list = new List<CDeliveryDemand>();
             foreach(CDeliveryDemand d in this.m_DeliveryDemands.Values)
             {
-                if (d.m_dtRealDelivery == date) list.Add(d);
+                if ((d.m_dtRealDelivery == date)&&(d.isDone==false)) list.Add(d);
             }
         
             return list.ToArray();

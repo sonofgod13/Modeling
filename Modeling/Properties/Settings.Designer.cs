@@ -26,7 +26,7 @@ namespace Modeling.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://corporatesys/simulation")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://corporateis/simulation")]
         public string Modeling_BackOfficeSim_SimulationService {
             get {
                 return ((string)(this["Modeling_BackOfficeSim_SimulationService"]));
@@ -36,7 +36,7 @@ namespace Modeling.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://corporatesys/frontOffice")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://corporateis/frontOffice")]
         public string Modeling_BackOfficeFront_FrontOfficeService {
             get {
                 return ((string)(this["Modeling_BackOfficeFront_FrontOfficeService"]));

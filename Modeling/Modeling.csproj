@@ -189,10 +189,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>Modeling_MamlayBackOfficeSim_SimulationService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://corporatesys/frontOffice%3fwsdl">
+    <WebReferenceUrl Include="http://corporateis/frontOffice%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\BackOfficeFront\</RelPath>
-      <UpdateFromURL>http://corporatesys/frontOffice%3fwsdl</UpdateFromURL>
+      <UpdateFromURL>http://corporateis/frontOffice%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -200,10 +200,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>Modeling_BackOfficeFront_FrontOfficeService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://corporatesys/simulation%3fwsdl">
+    <WebReferenceUrl Include="http://corporateis/simulation%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\BackOfficeSim\</RelPath>
-      <UpdateFromURL>http://corporatesys/simulation%3fwsdl</UpdateFromURL>
+      <UpdateFromURL>http://corporateis/simulation%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

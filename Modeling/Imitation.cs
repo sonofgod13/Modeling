@@ -269,12 +269,16 @@ namespace Modeling
 
         public bool Stop()  // остановка и пауза моделирования
         {
-            if (currentModellingDay == (CParams.m_iModelingDayToWork-1)) return false;
+            if (stopFlag == true) return true;
             else
             {
-                this.stopFlag = true;
-                pauseDone.WaitOne();
-                return true;
+                if (currentModellingDay == (CParams.m_iModelingDayToWork - 1)) return false;
+                else
+                {
+                    this.stopFlag = true;
+                    pauseDone.WaitOne();
+                    return true;
+                }
             }
         }
 
@@ -373,7 +377,6 @@ namespace Modeling
                 if (nextPlanElemEndTime != -1) todayWorkTime += nextPlanElemEndTime;
 
                 bool endOfDayFlag = false;
-                bool prevDeliveryDemandTimeEqualsZero = false;
 
                 int k = 0;
                 while (endOfDayFlag == false)
@@ -382,7 +385,7 @@ namespace Modeling
 
                     int newDemandNextTime = -1;
                     int modifyDemandNextTime = -1;
-                    int nextDeliveryDemandTime = this.storage.GetNextDeliveryDemandTime(modelTime, ref prevDeliveryDemandTimeEqualsZero);
+                    int nextDeliveryDemandTime = this.storage.GetNextDeliveryDemandTime(modelTime);
 
                     if (newDemandInd < newDemands.Length)
                     {
@@ -519,6 +522,7 @@ namespace Modeling
                                     }
                                     */
                                     backOffice.reportDeliveryDemand(d);
+                                    d.isDone = true;
                                 }                                
                             }
                         }

@@ -387,7 +387,7 @@ namespace Modeling
                 XmlNode[] result = new XmlNode[0];
                 try
                 {
-                    result = simulation.getPlan(dateStr) as XmlNode[];
+                    result = simulation.getDayPlan(dateStr) as XmlNode[];
                 }
                 catch (Exception e)
                 {
@@ -438,9 +438,9 @@ namespace Modeling
                             }
                             else
                             {
-                                double ticks = plan[i].count;
+                                int ticks = plan[i].count;
                                 if (ticks!=-99.0)
-                                idleTime = idleTime + (int)Math.Round((ticks / 100.0) * 24.0 * 60.0);    // Простой = (n/100)*24*60 - минуты
+                                idleTime = idleTime + ticks / 60;    // Простой = (n/100)*24*60 - минуты
                             }
                         }
                         storage.SaveIdleStatistic((double)idleTime / CParams.WORKDAY_MINUTES_NUMBER);

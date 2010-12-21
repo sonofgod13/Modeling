@@ -85,7 +85,7 @@ namespace ModelingDataTypes
             m_products = new Dictionary<int, CGeneratedProduct>();
 
             CGeneratedProduct product1 = new CGeneratedProduct();
-            product1.m_iTime = 29;
+            product1.m_iTime = 26;
             product1.m_iIndex = 1;
             product1.m_iGeneratorType = 1;
             product1.m_fA = 5.0;
@@ -135,7 +135,7 @@ namespace ModelingDataTypes
 
 
             CGeneratedProduct product3 = new CGeneratedProduct();
-            product3.m_iTime = 43;
+            product3.m_iTime = 49;
             product3.m_iIndex = 3;
             product3.m_iGeneratorType = 1;
             product3.m_fA = 5.0;
@@ -199,7 +199,7 @@ namespace ModelingDataTypes
                );
 
 
-            retargetTimes = new int[3] { 72, 43, 101 }; // время на перенастройку оборудования
+            retargetTimes = new int[3] { 68, 39, 95 }; // время на перенастройку оборудования
 
 
             m_generatorDemandsTime = new CGeneratedElement()    //генератор поступления заявок

@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="Modeling_BackOfficeSim_SimulationService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://corporatesys/simulation</Value>
+      <Value Profile="(Default)">http://corporateis/simulation</Value>
     </Setting>
     <Setting Name="Modeling_BackOfficeFront_FrontOfficeService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://corporatesys/frontOffice</Value>
+      <Value Profile="(Default)">http://corporateis/frontOffice</Value>
     </Setting>
     <Setting Name="Modeling_FrontOffice_FrontOfficeImitationHelper" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://frontoffice.mamlay.ru/FrontOfficeImitationHelper.asmx</Value>
