@@ -1,0 +1,207 @@
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.exe
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.pdb
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Generator.dll
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ModelingDataTypes.dll
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Storage.dll
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Generator.pdb
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ModelingDataTypes.pdb
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Storage.pdb
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\ResolveAssemblyReference.cache
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Form1.resources
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.csproj.GenerateResource.Cache
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.exe
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.pdb
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.exe
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.pdb
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Generator.dll
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ModelingDataTypes.dll
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Storage.dll
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Generator.pdb
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ModelingDataTypes.pdb
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Storage.pdb
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\ResolveAssemblyReference.cache
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Form1.resources
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Properties.Resources.resources
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.csproj.GenerateResource.Cache
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.exe
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.pdb
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.generator_params.resources
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ZedGraph.dll
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ZedGraph.xml
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\de\ZedGraph.resources.dll
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\es\ZedGraph.resources.dll
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\fr\ZedGraph.resources.dll
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\hu\ZedGraph.resources.dll
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\it\ZedGraph.resources.dll
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ja\ZedGraph.resources.dll
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\pt\ZedGraph.resources.dll
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ru\ZedGraph.resources.dll
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\sk\ZedGraph.resources.dll
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\sv\ZedGraph.resources.dll
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\tr\ZedGraph.resources.dll
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\zh-cn\ZedGraph.resources.dll
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\zh-tw\ZedGraph.resources.dll
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Graph.resources
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.exe
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.pdb
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.exe
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.pdb
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Generator.dll
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ModelingDataTypes.dll
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Storage.dll
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ZedGraph.dll
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Generator.pdb
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ZedGraph.xml
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ModelingDataTypes.pdb
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Storage.pdb
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\de\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\es\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\fr\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\hu\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\it\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ja\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\pt\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ru\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\sk\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\sv\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\tr\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\zh-cn\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\zh-tw\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\ResolveAssemblyReference.cache
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Form1.resources
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.generator_params.resources
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Graph.resources
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\user\Desktop\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.csproj.GenerateResource.Cache
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.exe
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.pdb
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.exe
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.pdb
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Generator.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ModelingDataTypes.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Storage.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ZedGraph.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Generator.pdb
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ZedGraph.xml
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ModelingDataTypes.pdb
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Storage.pdb
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\de\ZedGraph.resources.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\es\ZedGraph.resources.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\fr\ZedGraph.resources.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\hu\ZedGraph.resources.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\it\ZedGraph.resources.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ja\ZedGraph.resources.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\pt\ZedGraph.resources.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ru\ZedGraph.resources.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\sk\ZedGraph.resources.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\sv\ZedGraph.resources.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\tr\ZedGraph.resources.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\zh-cn\ZedGraph.resources.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\zh-tw\ZedGraph.resources.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\ResolveAssemblyReference.cache
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Form1.resources
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.generator_params.resources
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Graph.resources
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.csproj.GenerateResource.Cache
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.exe
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.pdb
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.exe
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.pdb
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Generator.dll
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ModelingDataTypes.dll
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Storage.dll
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ZedGraph.dll
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Generator.pdb
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ZedGraph.xml
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ModelingDataTypes.pdb
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Storage.pdb
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\de\ZedGraph.resources.dll
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\es\ZedGraph.resources.dll
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\fr\ZedGraph.resources.dll
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\hu\ZedGraph.resources.dll
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\it\ZedGraph.resources.dll
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ja\ZedGraph.resources.dll
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\pt\ZedGraph.resources.dll
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ru\ZedGraph.resources.dll
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\sk\ZedGraph.resources.dll
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\sv\ZedGraph.resources.dll
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\tr\ZedGraph.resources.dll
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\zh-cn\ZedGraph.resources.dll
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\zh-tw\ZedGraph.resources.dll
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\ResolveAssemblyReference.cache
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Form1.resources
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.generator_params.resources
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Graph.resources
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Properties.Resources.resources
+C:\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.csproj.GenerateResource.Cache
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.exe
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.pdb
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.exe
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.pdb
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Generator.dll
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ModelingDataTypes.dll
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Storage.dll
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ZedGraph.dll
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Generator.pdb
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ZedGraph.xml
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ModelingDataTypes.pdb
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Storage.pdb
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\de\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\es\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\fr\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\hu\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\it\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ja\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\pt\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ru\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\sk\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\sv\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\tr\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\zh-cn\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\zh-tw\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\ResolveAssemblyReference.cache
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Form1.resources
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.generator_params.resources
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Graph.resources
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\user\Desktop\Modeling\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.csproj.GenerateResource.Cache
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.exe.config
+C:\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.exe.config
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.exe.config
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.exe
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.pdb
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.exe
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.pdb
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Generator.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ModelingDataTypes.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Storage.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ZedGraph.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Generator.pdb
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ZedGraph.xml
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ModelingDataTypes.pdb
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\Storage.pdb
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\de\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\es\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\fr\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\hu\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\it\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ja\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\pt\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\ru\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\sk\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\sv\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\tr\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\zh-cn\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\zh-tw\ZedGraph.resources.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\ResolveAssemblyReference.cache
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Form1.resources
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.generator_params.resources
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Graph.resources
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.csproj.GenerateResource.Cache
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.XmlSerializers.dll
+C:\Users\user\Desktop\Modeling1\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.XmlSerializers.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.XmlSerializers.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\WindowsFormsApplication1\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.XmlSerializers.dll

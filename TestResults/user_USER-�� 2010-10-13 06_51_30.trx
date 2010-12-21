@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="54ff71a2-06e1-4319-bce1-9f760c4c6d67" name="user@USER-ПК 2010-10-13 06:51:30" runUser="user-ПК\user" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2006">
+  <TestRunConfiguration name="Local Test Run" id="d5c7a5de-00af-474c-9413-b12747f2aab9">
+    <Description>This is a default test run configuration for a local test run.</Description>
+    <Deployment runDeploymentRoot="C:\Users\user\Documents\Visual Studio 2008\Projects\Generator\TestResults\user_USER-ПК 2010-10-13 06_51_30">
+      <DeploymentItem filename="C:\Users\user\Documents\Visual Studio 2008\Projects\Generator\Generator\bin\Debug\Generator.dll" />
+    </Deployment>
+    <TestTypeSpecific />
+  </TestRunConfiguration>
+  <ResultSummary outcome="Error">
+    <Counters total="2" executed="1" error="0" failed="0" timeout="0" aborted="1" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="1" disconnected="0" warning="0" passed="0" completed="0" inProgress="0" pending="0" />
+    <RunInfos>
+      <RunInfo computerName="USER-ПК" outcome="Error" timestamp="2010-10-13T06:56:40.7060000+04:00">
+        <Text>Test host process exited unexpectedly.</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+  <Times creation="2010-10-13T06:51:30.5312000+04:00" queuing="2010-10-13T06:51:32.3096000+04:00" start="2010-10-13T06:51:32.6060000+04:00" finish="2010-10-13T06:56:40.7060000+04:00" />
+  <TestDefinitions>
+    <UnitTest name="GeneratorConstructorTest" storage="c:\users\user\documents\visual studio 2008\projects\generator\testgenerator\bin\debug\testgenerator.dll" id="4267f4c2-2bd3-b4cc-9089-cb730280dc04">
+      <Css projectStructure="" iteration="" />
+      <Owners>
+        <Owner name="" />
+      </Owners>
+      <Execution id="5da2c723-0fb6-4c58-bd6c-4da776684f7a" />
+      <TestMethod codeBase="C:\Users\user\Documents\Visual Studio 2008\Projects\Generator\TestGenerator\bin\Debug\TestGenerator.dll" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestGenerator.GeneratorTest, TestGenerator" name="GeneratorConstructorTest" />
+    </UnitTest>
+    <UnitTest name="generateRequestsTest" storage="c:\users\user\documents\visual studio 2008\projects\generator\testgenerator\bin\debug\testgenerator.dll" id="e1d90ec3-fbc4-b4ae-a50f-ce05581c034b">
+      <Css projectStructure="" iteration="" />
+      <Owners>
+        <Owner name="" />
+      </Owners>
+      <Execution id="4f294bb7-2e66-49d6-8484-d1ecd8410aa0" />
+      <TestMethod codeBase="C:\Users\user\Documents\Visual Studio 2008\Projects\Generator\TestGenerator\bin\Debug\TestGenerator.dll" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestGenerator.GeneratorTest, TestGenerator" name="generateRequestsTest" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="e1d90ec3-fbc4-b4ae-a50f-ce05581c034b" executionId="1fd7b2e8-0baf-4160-a2ff-1416d969abe3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4267f4c2-2bd3-b4cc-9089-cb730280dc04" executionId="125e0f8c-83eb-4ec7-a61f-aea2f47ff386" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="1fd7b2e8-0baf-4160-a2ff-1416d969abe3" testId="e1d90ec3-fbc4-b4ae-a50f-ce05581c034b" testName="generateRequestsTest" computerName="USER-ПК" duration="00:05:08.0376000" startTime="2010-10-13T06:51:32.6684000+04:00" endTime="2010-10-13T06:56:40.7060000+04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Aborted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d">
+    </UnitTestResult>
+    <UnitTestResult executionId="125e0f8c-83eb-4ec7-a61f-aea2f47ff386" testId="4267f4c2-2bd3-b4cc-9089-cb730280dc04" testName="GeneratorConstructorTest" computerName="USER-ПК" duration="00:00:00" startTime="0001-01-01T03:00:00.0000000+03:00" endTime="0001-01-01T03:00:00.0000000+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d">
+    </UnitTestResult>
+  </Results>
+</TestRun>

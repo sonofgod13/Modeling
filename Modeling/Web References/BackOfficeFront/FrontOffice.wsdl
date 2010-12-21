@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tns="http://corporatesys/frontOffice" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap-enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/" name="FrontOffice" targetNamespace="http://corporatesys/frontOffice" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://corporatesys/frontOffice" />
+  </wsdl:types>
+  <wsdl:message name="newOrderIn">
+    <wsdl:part name="date" type="xsd:string" />
+    <wsdl:part name="customer" type="xsd:string" />
+    <wsdl:part name="product1count" type="xsd:int" />
+    <wsdl:part name="product2count" type="xsd:int" />
+    <wsdl:part name="product3count" type="xsd:int" />
+  </wsdl:message>
+  <wsdl:message name="newOrderOut">
+    <wsdl:part name="return" type="xsd:anyType" />
+  </wsdl:message>
+  <wsdl:message name="confirmOrderIn">
+    <wsdl:part name="date" type="xsd:string" />
+    <wsdl:part name="orderId" type="xsd:int" />
+    <wsdl:part name="orderType" type="xsd:int" />
+  </wsdl:message>
+  <wsdl:message name="confirmOrderOut">
+    <wsdl:part name="return" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:message name="changeOrderIn">
+    <wsdl:part name="date" type="xsd:string" />
+    <wsdl:part name="orderId" type="xsd:int" />
+    <wsdl:part name="products" type="xsd:anyType" />
+  </wsdl:message>
+  <wsdl:message name="changeOrderOut">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="confirmChangeIn">
+    <wsdl:part name="date" type="xsd:string" />
+    <wsdl:part name="orderId" type="xsd:int" />
+    <wsdl:part name="products" type="xsd:anyType" />
+  </wsdl:message>
+  <wsdl:message name="confirmChangeOut">
+    <wsdl:part name="return" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:message name="cancelOrderIn">
+    <wsdl:part name="date" type="xsd:string" />
+    <wsdl:part name="orderId" type="xsd:int" />
+  </wsdl:message>
+  <wsdl:message name="cancelOrderOut">
+    <wsdl:part name="return" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:message name="testIn">
+    <wsdl:part name="id" type="xsd:int" />
+  </wsdl:message>
+  <wsdl:message name="testOut">
+    <wsdl:part name="return" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:portType name="FrontOfficePort">
+    <wsdl:operation name="newOrder">
+      <documentation>New Order</documentation>
+      <wsdl:input message="tns:newOrderIn" />
+      <wsdl:output message="tns:newOrderOut" />
+    </wsdl:operation>
+    <wsdl:operation name="confirmOrder">
+      <documentation>
+      </documentation>
+      <wsdl:input message="tns:confirmOrderIn" />
+      <wsdl:output message="tns:confirmOrderOut" />
+    </wsdl:operation>
+    <wsdl:operation name="changeOrder">
+      <documentation>
+      </documentation>
+      <wsdl:input message="tns:changeOrderIn" />
+      <wsdl:output message="tns:changeOrderOut" />
+    </wsdl:operation>
+    <wsdl:operation name="confirmChange">
+      <documentation>
+      </documentation>
+      <wsdl:input message="tns:confirmChangeIn" />
+      <wsdl:output message="tns:confirmChangeOut" />
+    </wsdl:operation>
+    <wsdl:operation name="cancelOrder">
+      <documentation>β쥭ࠧઠ</documentation>
+      <wsdl:input message="tns:cancelOrderIn" />
+      <wsdl:output message="tns:cancelOrderOut" />
+    </wsdl:operation>
+    <wsdl:operation name="test">
+      <documentation>Session test</documentation>
+      <wsdl:input message="tns:testIn" />
+      <wsdl:output message="tns:testOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="FrontOfficeBinding" type="tns:FrontOfficePort">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="newOrder">
+      <soap:operation soapAction="http://corporatesys/frontOffice#newOrder" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="http://corporatesys/frontOffice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="http://corporatesys/frontOffice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="confirmOrder">
+      <soap:operation soapAction="http://corporatesys/frontOffice#confirmOrder" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="http://corporatesys/frontOffice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="http://corporatesys/frontOffice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="changeOrder">
+      <soap:operation soapAction="http://corporatesys/frontOffice#changeOrder" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="http://corporatesys/frontOffice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="http://corporatesys/frontOffice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="confirmChange">
+      <soap:operation soapAction="http://corporatesys/frontOffice#confirmChange" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="http://corporatesys/frontOffice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="http://corporatesys/frontOffice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelOrder">
+      <soap:operation soapAction="http://corporatesys/frontOffice#cancelOrder" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="http://corporatesys/frontOffice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="http://corporatesys/frontOffice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="test">
+      <soap:operation soapAction="http://corporatesys/frontOffice#test" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="http://corporatesys/frontOffice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="http://corporatesys/frontOffice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="FrontOfficeService">
+    <wsdl:port name="FrontOfficePort" binding="tns:FrontOfficeBinding">
+      <soap:address location="http://corporatesys/frontOffice" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

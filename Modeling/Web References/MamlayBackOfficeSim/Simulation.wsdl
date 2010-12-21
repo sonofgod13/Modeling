@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:tns="http://backoffice.mamlay.ru/simulation" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap-enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/" name="Simulation" targetNamespace="http://backoffice.mamlay.ru/simulation" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://backoffice.mamlay.ru/simulation" />
+  </wsdl:types>
+  <wsdl:message name="niceStartIn">
+    <wsdl:part name="date" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="niceStartOut">
+    <wsdl:part name="return" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:message name="getShoppingListIn">
+    <wsdl:part name="date" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getShoppingListOut">
+    <wsdl:part name="return" type="xsd:anyType" />
+  </wsdl:message>
+  <wsdl:message name="receivingMaterialsIn">
+    <wsdl:part name="date" type="xsd:string" />
+    <wsdl:part name="deliveryId" type="xsd:int" />
+    <wsdl:part name="materials" type="xsd:anyType" />
+  </wsdl:message>
+  <wsdl:message name="receivingMaterialsOut">
+    <wsdl:part name="return" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:message name="getPlanIn">
+    <wsdl:part name="date" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getPlanOut">
+    <wsdl:part name="return" type="xsd:anyType" />
+  </wsdl:message>
+  <wsdl:message name="getOrderStatusIn">
+    <wsdl:part name="date" type="xsd:string" />
+    <wsdl:part name="orderId" type="xsd:int" />
+  </wsdl:message>
+  <wsdl:message name="getOrderStatusOut">
+    <wsdl:part name="return" type="xsd:anyType" />
+  </wsdl:message>
+  <wsdl:message name="test1In">
+    <wsdl:part name="id" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="test1Out">
+    <wsdl:part name="return" type="xsd:int" />
+  </wsdl:message>
+  <wsdl:portType name="SimulationPort">
+    <wsdl:operation name="niceStart">
+      <documentation>Enter description here ...</documentation>
+      <wsdl:input message="tns:niceStartIn" />
+      <wsdl:output message="tns:niceStartOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getShoppingList">
+      <documentation>
+      </documentation>
+      <wsdl:input message="tns:getShoppingListIn" />
+      <wsdl:output message="tns:getShoppingListOut" />
+    </wsdl:operation>
+    <wsdl:operation name="receivingMaterials">
+      <documentation>ϰ襬 젲尨૮</documentation>
+      <wsdl:input message="tns:receivingMaterialsIn" />
+      <wsdl:output message="tns:receivingMaterialsOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getPlan">
+      <documentation>Ϯ볷孨堯렭࠭ࠤ孼</documentation>
+      <wsdl:input message="tns:getPlanIn" />
+      <wsdl:output message="tns:getPlanOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getOrderStatus">
+      <documentation>Ϯ볷孨報迠砪ৠ</documentation>
+      <wsdl:input message="tns:getOrderStatusIn" />
+      <wsdl:output message="tns:getOrderStatusOut" />
+    </wsdl:operation>
+    <wsdl:operation name="test1">
+      <documentation>Session test</documentation>
+      <wsdl:input message="tns:test1In" />
+      <wsdl:output message="tns:test1Out" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SimulationBinding" type="tns:SimulationPort">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="niceStart">
+      <soap:operation soapAction="http://backoffice.mamlay.ru/simulation#niceStart" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="http://backoffice.mamlay.ru/simulation" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="http://backoffice.mamlay.ru/simulation" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getShoppingList">
+      <soap:operation soapAction="http://backoffice.mamlay.ru/simulation#getShoppingList" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="http://backoffice.mamlay.ru/simulation" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="http://backoffice.mamlay.ru/simulation" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="receivingMaterials">
+      <soap:operation soapAction="http://backoffice.mamlay.ru/simulation#receivingMaterials" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="http://backoffice.mamlay.ru/simulation" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="http://backoffice.mamlay.ru/simulation" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPlan">
+      <soap:operation soapAction="http://backoffice.mamlay.ru/simulation#getPlan" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="http://backoffice.mamlay.ru/simulation" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="http://backoffice.mamlay.ru/simulation" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getOrderStatus">
+      <soap:operation soapAction="http://backoffice.mamlay.ru/simulation#getOrderStatus" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="http://backoffice.mamlay.ru/simulation" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="http://backoffice.mamlay.ru/simulation" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="test1">
+      <soap:operation soapAction="http://backoffice.mamlay.ru/simulation#test1" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="http://backoffice.mamlay.ru/simulation" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="http://backoffice.mamlay.ru/simulation" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SimulationService">
+    <wsdl:port name="SimulationPort" binding="tns:SimulationBinding">
+      <soap:address location="http://backoffice.mamlay.ru/simulation" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApplication1", "WindowsFormsApplication1\WindowsFormsApplication1.csproj", "{9FC6EE52-BFB9-4828-90F4-B6ED2A45F5E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratorSubsystem", "..\Generator\GeneratorSubsystem.csproj", "{515A28BD-34E7-44BB-88A4-07C6C08609DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9FC6EE52-BFB9-4828-90F4-B6ED2A45F5E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FC6EE52-BFB9-4828-90F4-B6ED2A45F5E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FC6EE52-BFB9-4828-90F4-B6ED2A45F5E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FC6EE52-BFB9-4828-90F4-B6ED2A45F5E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{515A28BD-34E7-44BB-88A4-07C6C08609DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{515A28BD-34E7-44BB-88A4-07C6C08609DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{515A28BD-34E7-44BB-88A4-07C6C08609DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{515A28BD-34E7-44BB-88A4-07C6C08609DE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

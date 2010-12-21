@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Modeling.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Modeling_BackOfficeSim_SimulationService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://corporatesys/simulation</Value>
+    </Setting>
+    <Setting Name="Modeling_BackOfficeFront_FrontOfficeService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://corporatesys/frontOffice</Value>
+    </Setting>
+    <Setting Name="Modeling_FrontOffice_FrontOfficeImitationHelper" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://frontoffice.mamlay.ru/FrontOfficeImitationHelper.asmx</Value>
+    </Setting>
+    <Setting Name="Modeling_MamlayBackOfficeFront_FrontOfficeService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://backoffice.mamlay.ru/frontoffice</Value>
+    </Setting>
+    <Setting Name="Modeling_MamlayBackOfficeSim_SimulationService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://backoffice.mamlay.ru/simulation</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

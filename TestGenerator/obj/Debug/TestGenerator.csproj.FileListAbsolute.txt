@@ -1,0 +1,14 @@
+C:\Users\user\Documents\Visual Studio 2008\Projects\Generator\TestGenerator\bin\Debug\TestGenerator.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Generator\TestGenerator\bin\Debug\TestGenerator.pdb
+C:\Users\user\Documents\Visual Studio 2008\Projects\Generator\TestGenerator\bin\Debug\Generator.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Generator\TestGenerator\bin\Debug\Generator.pdb
+C:\Users\user\Documents\Visual Studio 2008\Projects\Generator\TestGenerator\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\user\Documents\Visual Studio 2008\Projects\Generator\TestGenerator\obj\Debug\TestGenerator.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Generator\TestGenerator\obj\Debug\TestGenerator.pdb
+D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\TestGenerator\bin\Debug\TestGenerator.dll
+D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\TestGenerator\bin\Debug\TestGenerator.pdb
+D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\TestGenerator\bin\Debug\Generator.dll
+D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\TestGenerator\bin\Debug\Generator.pdb
+D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\TestGenerator\obj\Debug\ResolveAssemblyReference.cache
+D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\TestGenerator\obj\Debug\TestGenerator.dll
+D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\TestGenerator\obj\Debug\TestGenerator.pdb

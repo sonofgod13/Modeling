@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="SetDate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="date" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetDateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="SetDateResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ClearOrders">
+        <s:complexType />
+      </s:element>
+      <s:element name="ClearOrdersResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAllOrdersAtDate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="date" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllOrdersAtDateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllOrdersAtDateResult" type="tns:ArrayOfOrder" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfOrder">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Order" type="tns:Order" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Order">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="OrderID" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="doneDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="isExpress" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProductCount" type="tns:ArrayOfInt" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfInt">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="int" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetChangedAtDate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="date" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetChangedAtDateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetChangedAtDateResult" type="tns:ArrayOfOrder" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetNewAtDate">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="date" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetNewAtDateResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetNewAtDateResult" type="tns:ArrayOfOrder" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="SetDateSoapIn">
+    <wsdl:part name="parameters" element="tns:SetDate" />
+  </wsdl:message>
+  <wsdl:message name="SetDateSoapOut">
+    <wsdl:part name="parameters" element="tns:SetDateResponse" />
+  </wsdl:message>
+  <wsdl:message name="ClearOrdersSoapIn">
+    <wsdl:part name="parameters" element="tns:ClearOrders" />
+  </wsdl:message>
+  <wsdl:message name="ClearOrdersSoapOut">
+    <wsdl:part name="parameters" element="tns:ClearOrdersResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllOrdersAtDateSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllOrdersAtDate" />
+  </wsdl:message>
+  <wsdl:message name="GetAllOrdersAtDateSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllOrdersAtDateResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetChangedAtDateSoapIn">
+    <wsdl:part name="parameters" element="tns:GetChangedAtDate" />
+  </wsdl:message>
+  <wsdl:message name="GetChangedAtDateSoapOut">
+    <wsdl:part name="parameters" element="tns:GetChangedAtDateResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetNewAtDateSoapIn">
+    <wsdl:part name="parameters" element="tns:GetNewAtDate" />
+  </wsdl:message>
+  <wsdl:message name="GetNewAtDateSoapOut">
+    <wsdl:part name="parameters" element="tns:GetNewAtDateResponse" />
+  </wsdl:message>
+  <wsdl:portType name="FrontOfficeImitationHelperSoap">
+    <wsdl:operation name="SetDate">
+      <wsdl:input message="tns:SetDateSoapIn" />
+      <wsdl:output message="tns:SetDateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ClearOrders">
+      <wsdl:input message="tns:ClearOrdersSoapIn" />
+      <wsdl:output message="tns:ClearOrdersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllOrdersAtDate">
+      <wsdl:input message="tns:GetAllOrdersAtDateSoapIn" />
+      <wsdl:output message="tns:GetAllOrdersAtDateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetChangedAtDate">
+      <wsdl:input message="tns:GetChangedAtDateSoapIn" />
+      <wsdl:output message="tns:GetChangedAtDateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetNewAtDate">
+      <wsdl:input message="tns:GetNewAtDateSoapIn" />
+      <wsdl:output message="tns:GetNewAtDateSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="FrontOfficeImitationHelperSoap" type="tns:FrontOfficeImitationHelperSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SetDate">
+      <soap:operation soapAction="http://tempuri.org/SetDate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClearOrders">
+      <soap:operation soapAction="http://tempuri.org/ClearOrders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllOrdersAtDate">
+      <soap:operation soapAction="http://tempuri.org/GetAllOrdersAtDate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChangedAtDate">
+      <soap:operation soapAction="http://tempuri.org/GetChangedAtDate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNewAtDate">
+      <soap:operation soapAction="http://tempuri.org/GetNewAtDate" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="FrontOfficeImitationHelperSoap12" type="tns:FrontOfficeImitationHelperSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SetDate">
+      <soap12:operation soapAction="http://tempuri.org/SetDate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClearOrders">
+      <soap12:operation soapAction="http://tempuri.org/ClearOrders" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllOrdersAtDate">
+      <soap12:operation soapAction="http://tempuri.org/GetAllOrdersAtDate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChangedAtDate">
+      <soap12:operation soapAction="http://tempuri.org/GetChangedAtDate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNewAtDate">
+      <soap12:operation soapAction="http://tempuri.org/GetNewAtDate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="FrontOfficeImitationHelper">
+    <wsdl:port name="FrontOfficeImitationHelperSoap" binding="tns:FrontOfficeImitationHelperSoap">
+      <soap:address location="http://frontoffice.mamlay.ru/FrontOfficeImitationHelper.asmx" />
+    </wsdl:port>
+    <wsdl:port name="FrontOfficeImitationHelperSoap12" binding="tns:FrontOfficeImitationHelperSoap12">
+      <soap12:address location="http://frontoffice.mamlay.ru/FrontOfficeImitationHelper.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

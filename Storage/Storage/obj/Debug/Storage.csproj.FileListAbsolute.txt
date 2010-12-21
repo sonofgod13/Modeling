@@ -1,0 +1,12 @@
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\Storage\Storage\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\Storage\Storage\bin\Debug\Storage.dll
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\Storage\Storage\bin\Debug\Storage.pdb
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\Storage\Storage\bin\Debug\ModelingDataTypes.dll
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\Storage\Storage\bin\Debug\ModelingDataTypes.pdb
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\Storage\Storage\obj\Debug\Storage.dll
+C:\Users\Duecn235ad\Documents\Visual Studio 2008\Projects\Storage\Storage\obj\Debug\Storage.pdb
+C:\Modeling\Storage\Storage\bin\Debug\Storage.dll
+C:\Modeling\Storage\Storage\bin\Debug\Storage.pdb
+C:\Modeling\Storage\Storage\obj\Debug\ResolveAssemblyReference.cache
+C:\Modeling\Storage\Storage\obj\Debug\Storage.dll
+C:\Modeling\Storage\Storage\obj\Debug\Storage.pdb

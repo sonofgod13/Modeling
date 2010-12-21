@@ -1,0 +1,7 @@
+D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\TestGenerator\bin\Release\TestGenerator.dll
+D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\TestGenerator\bin\Release\TestGenerator.pdb
+D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\TestGenerator\bin\Release\Generator.dll
+D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\TestGenerator\bin\Release\Generator.pdb
+D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\TestGenerator\obj\Release\ResolveAssemblyReference.cache
+D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\TestGenerator\obj\Release\TestGenerator.dll
+D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\TestGenerator\obj\Release\TestGenerator.pdb

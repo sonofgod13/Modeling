@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="7101d849-2ec8-4e40-aa19-d370be7b630c" name="Duecn235ad@DUECN235DFSD 2010-10-15 22:43:45" runUser="DUECN235DFSD\Duecn235ad" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2006">
+  <TestRunConfiguration name="Local Test Run" id="d5c7a5de-00af-474c-9413-b12747f2aab9">
+    <Description>This is a default test run configuration for a local test run.</Description>
+    <Deployment runDeploymentRoot="D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\TestResults\Duecn235ad_DUECN235DFSD 2010-10-15 22_43_45">
+      <DeploymentItem filename="D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\Generator\bin\Debug\Generator.dll" />
+    </Deployment>
+    <TestTypeSpecific />
+  </TestRunConfiguration>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" error="0" failed="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <Times creation="2010-10-15T22:43:45.2026176+04:00" queuing="2010-10-15T22:43:51.6298289+04:00" start="2010-10-15T22:43:51.9730295+04:00" finish="2010-10-15T22:44:00.7714450+04:00" />
+  <TestDefinitions>
+    <UnitTest name="GeneratorConstructorTest" storage="d:\учеба\9 семестр\корпоративные ис\generator\generator\testgenerator\bin\debug\testgenerator.dll" id="4267f4c2-2bd3-b4cc-9089-cb730280dc04">
+      <Css projectStructure="" iteration="" />
+      <Owners>
+        <Owner name="" />
+      </Owners>
+      <Execution id="71a55a5b-f1cd-415f-895e-5199986fa548" />
+      <TestMethod codeBase="D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\TestGenerator\bin\Debug\TestGenerator.dll" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestGenerator.GeneratorTest, TestGenerator" name="GeneratorConstructorTest" />
+    </UnitTest>
+    <UnitTest name="generateRequestsTest" storage="d:\учеба\9 семестр\корпоративные ис\generator\generator\testgenerator\bin\debug\testgenerator.dll" id="e1d90ec3-fbc4-b4ae-a50f-ce05581c034b">
+      <Css projectStructure="" iteration="" />
+      <Owners>
+        <Owner name="" />
+      </Owners>
+      <Execution id="91dda2f3-f16d-4af3-a5d7-11b32ebe6b94" />
+      <TestMethod codeBase="D:\УЧЕБА\9 семестр\корпоративные ИС\Generator\Generator\TestGenerator\bin\Debug\TestGenerator.dll" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestGenerator.GeneratorTest, TestGenerator" name="generateRequestsTest" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="e1d90ec3-fbc4-b4ae-a50f-ce05581c034b" executionId="91dda2f3-f16d-4af3-a5d7-11b32ebe6b94" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4267f4c2-2bd3-b4cc-9089-cb730280dc04" executionId="71a55a5b-f1cd-415f-895e-5199986fa548" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="91dda2f3-f16d-4af3-a5d7-11b32ebe6b94" testId="e1d90ec3-fbc4-b4ae-a50f-ce05581c034b" testName="generateRequestsTest" computerName="DUECN235DFSD" duration="00:00:07.9918217" startTime="2010-10-15T22:43:52.0978297+04:00" endTime="2010-10-15T22:44:00.6622448+04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d">
+      <Output>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="71a55a5b-f1cd-415f-895e-5199986fa548" testId="4267f4c2-2bd3-b4cc-9089-cb730280dc04" testName="GeneratorConstructorTest" computerName="DUECN235DFSD" duration="00:00:00.0008310" startTime="2010-10-15T22:44:00.6778448+04:00" endTime="2010-10-15T22:44:00.6778448+04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d">
+      <Output>
+      </Output>
+    </UnitTestResult>
+  </Results>
+</TestRun>
