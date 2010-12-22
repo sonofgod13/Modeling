@@ -5,40 +5,59 @@ using System.Text;
 
 namespace ModelingDataTypes
 {
-    public class CDeliveryDemand            // заявка на поставку материалов
+    /// <summary>
+    /// заявка на поставку материалов
+    /// </summary>
+    public class CDeliveryDemand
     {
-        //public static int idNext;           //счетчик создания заявок
+        ///// <summary>
+        ///// счетчик создания заявок
+        ///// </summary>
+        //public static int idNext;
 
-        public int m_iID;                   // идентификатор заявки
-        public DateTime? m_dtRealDelivery;
-        //Реальное время поступления поставки материалов
-        public DateTime m_dtFillDelivery;
-        //Ожидаемое время поступления поставки материалов
-        //public Dictionary<int, int> m_materialsDemand;
-        public CMaterialCluster m_materialsDemand;
-        //Материалы. Пара: идентификатор материала - его количество
-        public bool isDone;        //  заявка отправлена
+        /// <summary>
+        /// идентификатор заявки
+        /// </summary>
+        public int ID;
 
-        public CDeliveryDemand(int id, DateTime dtFillDelivery, CMaterialCluster materialsDemand)
+        /// <summary>
+        /// Реальное время поступления поставки материалов
+        /// </summary>
+        public DateTime? RealDeliveryDate;
+
+        /// <summary>
+        /// Ожидаемое время поступления поставки материалов
+        /// </summary>
+        public DateTime FillDeliveryDate;
+
+        /// <summary>
+        /// Материалы. Пара: идентификатор материала - его количество
+        /// </summary>
+        public CMaterialCluster MaterialsDemand;
+
+        /// <summary>
+        /// Заявка отправлена
+        /// </summary>
+        public bool IsDone;
+
+        public CDeliveryDemand(int id, DateTime fillDeliveryDate, CMaterialCluster materialsDemand)
         {
-            // idNext++;
+            this.ID = id;
+            this.RealDeliveryDate = null;
+            this.FillDeliveryDate = fillDeliveryDate;
+            this.IsDone = false;
 
-            this.m_iID = id;
-            this.m_dtRealDelivery = null;
-            this.m_dtFillDelivery = dtFillDelivery;
-            this.isDone = false;
-            //***this.m_materialsDemand = new Dictionary<int, int>(materialsDemand);
-            m_materialsDemand = new CMaterialCluster(materialsDemand);
+            MaterialsDemand = new CMaterialCluster(materialsDemand);
         }
 
         public CDeliveryDemand(CDeliveryDemand copy)
         {
-            this.m_iID = copy.m_iID;
-            this.isDone = copy.isDone;
-            this.m_dtRealDelivery = copy.m_dtRealDelivery;
-            this.m_dtFillDelivery = copy.m_dtFillDelivery;
-            //this.m_materialsDemand = new Dictionary<int, int>(copy.m_materialsDemand);
-            this.m_materialsDemand = new CMaterialCluster(copy.m_materialsDemand); 
+            this.ID = copy.ID;
+            this.IsDone = copy.IsDone;
+            this.RealDeliveryDate = copy.RealDeliveryDate;
+            this.FillDeliveryDate = copy.FillDeliveryDate;
+
+            this.MaterialsDemand = new CMaterialCluster(copy.MaterialsDemand); 
         }
     }
 }

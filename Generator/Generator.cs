@@ -8,12 +8,13 @@ namespace GeneratorSubsystem
 {
     public class Generator
     {
+        private double urgencyProb;
+        private double refuseProb;
+
         private IGen requestTimeGen;
         private IGen firstArticleGen;
         private IGen secondArticleGen;
         private IGen thirdArticleGen;
-        private double urgencyProb;
-        private double refuseProb;
         private IGen demandModifyTimeGen;
         private IGen articlesModifyGen;
         private IGen firstArticleModifyGen;
@@ -21,8 +22,9 @@ namespace GeneratorSubsystem
         private IGen thirdArticleModifyGen;
         private IGen urgToStandModifyGen;
         private IGen standToUrgModifyGen;
-        private UniformGen uGen;
+        private IGen uGen;
         private IGen deliveryDelayGen;
+
         private IGen[] deliveryElementsModifyGens;
 
 
@@ -224,8 +226,10 @@ namespace GeneratorSubsystem
             {
                 int i = rand.Next(demands.Length);
                 var modifiedDemand = new CDemand(demands[i]);
-                if (modifiedDemand.m_iUrgency == 2) throw new Exception("Заявка от которой отказались не может быть изменена!");
-                TimeSpan dt = currentDate.Subtract(demands[i].m_dtGeting);
+                if (modifiedDemand.Urgency == 2)
+                    throw new Exception("Заявка от которой отказались не может быть изменена!");
+
+                TimeSpan dt = currentDate.Subtract(demands[i].GettingDate);
 
                 var demand = demands[i];
 
@@ -240,33 +244,33 @@ namespace GeneratorSubsystem
                         {
                             int modifiedArticleNum = 0;
 
-                            demand.m_products.GetProduct(productIndex, out modifiedArticleNum);
+                            demand.Products.GetProduct(productIndex, out modifiedArticleNum);
 
                             modifiedArticleNum += (int)Math.Round(getNext(probabilitiesByProduct[productIndex]));
 
                             if (modifiedArticleNum < 0) 
                                 modifiedArticleNum = 0;
 
-                            if (!demand.m_products.CompareProduct(productIndex, modifiedArticleNum))
+                            if (!demand.Products.CompareProduct(productIndex, modifiedArticleNum))
                                 changeFlag = true;
 
                             productClaster.AddProduct(productIndex, modifiedArticleNum);
                         }
 
-                        if (changeFlag && productClaster.CompareNomenclatureIsMore(demand.m_products))
+                        if (changeFlag && productClaster.CompareNomenclatureIsMore(demand.Products))
                         {
-                            modifiedDemand.m_products.CleanProductsCluster();
-                            modifiedDemand.m_products.AddProductCluster(productClaster);
+                            modifiedDemand.Products.CleanProductsCluster();
+                            modifiedDemand.Products.AddProductCluster(productClaster);
                             modifyFlag = true;
                         }
                     }
                 }
 
-                if (demand.m_iUrgency == 1)
+                if (demand.Urgency == 1)
                 {
                     if (this.urgToStandModifyGen.GetProbability(dt.TotalMinutes) >= getNext(urgProbabilities))
                     {
-                        modifiedDemand.m_iUrgency = 0;
+                        modifiedDemand.Urgency = 0;
                         //modifyFlag = true;  срочность изменяется но если не изменились продукты изменение не произошло
                     }
                 }
@@ -274,7 +278,7 @@ namespace GeneratorSubsystem
                 {
                     if (this.standToUrgModifyGen.GetProbability(dt.TotalMinutes) >= getNext(urgProbabilities))
                     {
-                        modifiedDemand.m_iUrgency = 1;
+                        modifiedDemand.Urgency = 1;
                         //modifyFlag = true; срочность изменяется но если не изменились продукты изменение не произошло
                     }
                 }
@@ -298,26 +302,26 @@ namespace GeneratorSubsystem
             {
                 CDeliveryDemand modifiedDelivery = new CDeliveryDemand(deliveries[i]);
 
-                if (deliveryDelaySeq[i] > 0) modifiedDelivery.m_dtRealDelivery = modifiedDelivery.m_dtFillDelivery.AddMinutes((int)Math.Round(deliveryDelaySeq[i]));
+                if (deliveryDelaySeq[i] > 0) modifiedDelivery.RealDeliveryDate = modifiedDelivery.FillDeliveryDate.AddMinutes((int)Math.Round(deliveryDelaySeq[i]));
 
                 for (int j = 0; j < CParams.MATERIALS_NUMBER; j++)
                 {
                     //***if (deliveries[i].m_materialsDemand[j + 1] != 0)
-                    if (deliveries[i].m_materialsDemand.IsMaterial(j + 1, 1))
+                    if (deliveries[i].MaterialsDemand.IsMaterial(j + 1, 1))
                     //проверка есть ли в данной заявке на поставку хотя бы 1 материал номера (j + 1)
                     {
                         int mod = (int)Math.Round(deliveryElementsModifySeq[j][i]);
                         if (mod > 0)
                         {
                             //***modifiedDelivery.m_materialsDemand[j + 1] = deliveries[i].m_materialsDemand[j + 1] - mod;
-                            modifiedDelivery.m_materialsDemand.CleanMaterial(j + 1);
+                            modifiedDelivery.MaterialsDemand.CleanMaterial(j + 1);
 
                             int iTemp = 0;
-                            deliveries[i].m_materialsDemand.GetMaterial(j + 1, out iTemp);
+                            deliveries[i].MaterialsDemand.GetMaterial(j + 1, out iTemp);
                             iTemp -= mod;
                             if (iTemp > 0)
                             {
-                                modifiedDelivery.m_materialsDemand.AddMaterial(j + 1, iTemp);
+                                modifiedDelivery.MaterialsDemand.AddMaterial(j + 1, iTemp);
                             }
                         }
                         /***

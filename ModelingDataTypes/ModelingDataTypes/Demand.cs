@@ -5,46 +5,68 @@ using System.Text;
 
 namespace ModelingDataTypes
 {
-    public class CDemand                        //заявка
+    /// <summary>
+    /// заявка
+    /// </summary>
+    public class CDemand
     {
         //  public static int idNext;               //счетчик создания заявок
 
-        public int m_iID;                       // идентификатор заявки (уникальный)
-        public DateTime m_dtGeting;             // время подачи заявки
-        public DateTime? m_dtShouldBeDone;      // заявленное время окончания делания заявки
-        public DateTime? m_dtFinishing;         // РЕАЛЬНОЕ время окончания делания заявки (может быть NULL) 
-        public int m_iUrgency;                 //срочность (1) или отказ (2)
-        //****public Dictionary<int, int> m_products;
-        //Продукты. Пара: идентификатор продукта - его количество
-        public CProductCluster m_products;   //кластер продуктов
+        /// <summary>
+        /// идентификатор заявки (уникальный)
+        /// </summary>
+        public int ID;
+
+        /// <summary>
+        /// время подачи заявки
+        /// </summary>
+        public DateTime GettingDate;
+
+        /// <summary>
+        /// заявленное время окончания делания заявки
+        /// </summary>
+        public DateTime? ShouldBeDoneDate;
+
+        /// <summary>
+        /// РЕАЛЬНОЕ время окончания делания заявки (может быть NULL) 
+        /// </summary>
+        public DateTime? FinishingDate;
+
+        /// <summary>
+        /// срочность (1) или отказ (2)
+        /// </summary>
+        public int Urgency;
+
+        /// <summary>
+        /// кластер продуктов
+        /// </summary>
+        public CProductCluster Products;
 
         public CDemand()
         {
-            m_products = new CProductCluster();
+            Products = new CProductCluster();
         }
 
-        public CDemand(int id, DateTime dtGeting, int iUrgency, CProductCluster productCluster/*Dictionary<int, int> products*/)
+        public CDemand(int id, DateTime geting, int urgency, CProductCluster productCluster)
         {
-            // idNext++;
+            this.ID = id;
 
-            this.m_iID = id;
-            this.m_dtGeting = dtGeting;
-            this.m_dtFinishing = null;
-            this.m_dtShouldBeDone = null;
-            this.m_iUrgency = iUrgency;
-            //****this.m_products = new Dictionary<int, int>(products);
-            this.m_products = new CProductCluster(productCluster);
+            this.GettingDate = geting;
+            this.FinishingDate = null;
+            this.ShouldBeDoneDate = null;
+            this.Urgency = urgency;
+            this.Products = new CProductCluster(productCluster);
         }
 
         public CDemand(CDemand copy)
         {
-            this.m_iID = copy.m_iID;
-            this.m_dtGeting = copy.m_dtGeting;
-            this.m_dtFinishing = copy.m_dtFinishing;
-            this.m_dtShouldBeDone = copy.m_dtShouldBeDone;
-            this.m_iUrgency = copy.m_iUrgency;
-            //****this.m_products = new Dictionary<int, int>(copy.m_products);
-            this.m_products = new CProductCluster(copy.m_products);
+            this.ID = copy.ID;
+
+            this.GettingDate = copy.GettingDate;
+            this.FinishingDate = copy.FinishingDate;
+            this.ShouldBeDoneDate = copy.ShouldBeDoneDate;
+            this.Urgency = copy.Urgency;
+            this.Products = new CProductCluster(copy.Products);
         }
     }
 }

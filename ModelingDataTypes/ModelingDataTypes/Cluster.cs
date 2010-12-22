@@ -7,7 +7,7 @@ namespace ModelingDataTypes
 {
     public class CEntityCluster
     {
-        protected Dictionary<int, int> m_entities;
+        protected Dictionary<int, int> Entities;
         //Продукты. Пара: идентификатор материала - его количество
 
         protected int GLOBAL_LIMITATION;
@@ -17,10 +17,10 @@ namespace ModelingDataTypes
         {
             GLOBAL_LIMITATION = iLimitation;
 
-            m_entities = new Dictionary<int, int>();
+            this.Entities = new Dictionary<int, int>();
             for (int iEntityNumber = 1; iEntityNumber < GLOBAL_LIMITATION + 1; iEntityNumber++)
             {
-                m_entities.Add(iEntityNumber, 0);
+                this.Entities.Add(iEntityNumber, 0);
             }
         }
 
@@ -31,7 +31,7 @@ namespace ModelingDataTypes
         {
             GLOBAL_LIMITATION = iLimitation;
 
-            m_entities = new Dictionary<int, int>(copy.m_entities);
+            this.Entities = new Dictionary<int, int>(copy.Entities);
         }
 
 
@@ -40,7 +40,7 @@ namespace ModelingDataTypes
         {
             for (int iEntityNumber = 1; iEntityNumber < GLOBAL_LIMITATION + 1; iEntityNumber++)
             {
-                m_entities[iEntityNumber] += entityCluster.m_entities[iEntityNumber];
+                this.Entities[iEntityNumber] += entityCluster.Entities[iEntityNumber];
             }
         }
 
@@ -50,7 +50,7 @@ namespace ModelingDataTypes
         {
             for (int iEntityNumber = 1; iEntityNumber < GLOBAL_LIMITATION + 1; iEntityNumber++)
             {
-                if (m_entities[iEntityNumber] < entityCluster.m_entities[iEntityNumber])
+                if (Entities[iEntityNumber] < entityCluster.Entities[iEntityNumber])
                 {
                     return false;
                 }
@@ -68,7 +68,7 @@ namespace ModelingDataTypes
             }
             for (int iEntityNumber = 1; iEntityNumber < GLOBAL_LIMITATION + 1; iEntityNumber++)
             {
-                m_entities[iEntityNumber] -= entityCluster.m_entities[iEntityNumber];
+                this.Entities[iEntityNumber] -= entityCluster.Entities[iEntityNumber];
             }
             return true;
         }
@@ -78,23 +78,19 @@ namespace ModelingDataTypes
         {
             for (int iEntityNumber = 1; iEntityNumber < GLOBAL_LIMITATION + 1; iEntityNumber++)
             {
-                m_entities[iEntityNumber] = 0;
+                this.Entities[iEntityNumber] = 0;
             }
         }
 
         public bool AddEntity(int iEntityNumber, int iAmount)
         //добавляет заданное количество к выбранному материалу
         {
-            if (iEntityNumber < 1 || iEntityNumber > GLOBAL_LIMITATION)
-            {
-                return ModelError.Error();
-            }
-            if (iAmount < 0)
+            if (iEntityNumber < 1 || iEntityNumber > GLOBAL_LIMITATION || iAmount < 0)
             {
                 return ModelError.Error();
             }
 
-            m_entities[iEntityNumber] += iAmount;
+            this.Entities[iEntityNumber] += iAmount;
             return true;
         }
 
@@ -110,11 +106,7 @@ namespace ModelingDataTypes
                 return ModelError.Error();
             }
 
-            if (m_entities[iEntityNumber] < iAmount)
-            {
-                return false;
-            }
-            return true;
+            return Entities[iEntityNumber] >= iAmount;
         }
 
         public bool TakeAwayEntity(int iEntityNumber, int iAmount)
@@ -129,12 +121,13 @@ namespace ModelingDataTypes
                 return ModelError.Error();
             }
 
-            if (!IsEntity(iEntityNumber, iAmount))
+            if (!this.IsEntity(iEntityNumber, iAmount))
             {
                 return false;
             }
 
-            m_entities[iEntityNumber] -= iAmount;
+            this.Entities[iEntityNumber] -= iAmount;
+
             return true;
         }
 
@@ -146,7 +139,7 @@ namespace ModelingDataTypes
                 return ModelError.Error();
             }
 
-            m_entities[iEntityNumber] = 0;
+            this.Entities[iEntityNumber] = 0;
             return true;
         }
 
@@ -160,7 +153,7 @@ namespace ModelingDataTypes
                 return ModelError.Error();
             }
 
-            iEntityValue = m_entities[iEntityNumber];
+            iEntityValue = this.Entities[iEntityNumber];
 
             return true;
         }
@@ -173,7 +166,7 @@ namespace ModelingDataTypes
                 return ModelError.Error();
             }
 
-            return m_entities[iEntityNumber] == iAmount;
+            return this.Entities[iEntityNumber] == iAmount;
         }
 
         public bool CompareNomenclatureIsMore(CEntityCluster materialCluster)
@@ -181,14 +174,16 @@ namespace ModelingDataTypes
             bool isMoreFlag = false;
             for (int iEntityNumber = 1; iEntityNumber < GLOBAL_LIMITATION + 1; iEntityNumber++)
             {
-                if (m_entities[iEntityNumber] >= materialCluster.m_entities[iEntityNumber])
+                if (this.Entities[iEntityNumber] >= materialCluster.Entities[iEntityNumber])
                 {
-                    if ((m_entities[iEntityNumber] > materialCluster.m_entities[iEntityNumber])) isMoreFlag = true;
+                    if ((this.Entities[iEntityNumber] > materialCluster.Entities[iEntityNumber])) 
+                        isMoreFlag = true;
                 }
-                else return false;
+                else 
+                    return false;
             }
-            if (isMoreFlag == true) return true;
-            else return false;
+
+            return isMoreFlag;
         }
     }
 }

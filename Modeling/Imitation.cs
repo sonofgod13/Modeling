@@ -105,7 +105,7 @@ namespace Modeling
                 CDemand demand = new CDemand(order.OrderID, this.modelTime, urg, productCluster);
                 //<---
 
-                demand.m_dtShouldBeDone = order.doneDate;
+                demand.ShouldBeDoneDate = order.doneDate;
                 bool addResult = this.storage.AddAcceptedDemand(demand);
                 if (addResult==false) return false;
             }
@@ -124,7 +124,7 @@ namespace Modeling
                     productCluster.AddProduct(iProductNumber, order.ProductCount[iProductNumber - 1]);
                 }
                 CDemand demand = new CDemand(order.OrderID, new DateTime(), urg, productCluster);               
-                demand.m_dtShouldBeDone = order.doneDate;
+                demand.ShouldBeDoneDate = order.doneDate;
                 bool changeResult = this.storage.ModifyDemand(demand);
                 if (changeResult == false) return false;
             }
@@ -389,7 +389,7 @@ namespace Modeling
 
                     if (newDemandInd < newDemands.Length)
                     {
-                        newDemandNextTime = (int)(newDemands[newDemandInd].m_dtGeting - modelTime).TotalMinutes;
+                        newDemandNextTime = (int)(newDemands[newDemandInd].GettingDate - modelTime).TotalMinutes;
                     }
                     if (modifyDemandInd < modifyDemandsTime.Length)
                     {
@@ -428,7 +428,7 @@ namespace Modeling
                             {
                                 CDemand modifiedDemand = this.generator.modifyDemand(notFinishedDemands.ToArray(), modelTime);
                                 CDemand demand;
-                                this.storage.GetAcceptedDemand(modifiedDemand.m_iID, out demand);
+                                this.storage.GetAcceptedDemand(modifiedDemand.ID, out demand);
                                 bool approved = backOffice.approveModifyDemand(modelTime, ref modifiedDemand, demand);
                                 if (approved == true) this.storage.ModifyDemand(modifiedDemand);
                                 this.storage.AddModifyStatistic(approved);
@@ -505,7 +505,7 @@ namespace Modeling
                             {
                                 foreach (CDeliveryDemand d in deliveryDemands)
                                 {
-                                    this.storage.Materials.AddMaterialCluster(d.m_materialsDemand);
+                                    this.storage.Materials.AddMaterialCluster(d.MaterialsDemand);
                                     /*
                                     for (int j = 1; j <= CParams.MATERIALS_NUMBER; j++)
                                     {
@@ -522,7 +522,7 @@ namespace Modeling
                                     }
                                     */
                                     backOffice.reportDeliveryDemand(d);
-                                    d.isDone = true;
+                                    d.IsDone = true;
                                 }                                
                             }
                         }

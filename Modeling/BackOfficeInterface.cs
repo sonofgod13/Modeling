@@ -167,7 +167,7 @@ namespace Modeling
             if (!CParams.m_bUseFakeServices)
             {
                 //         Реальный код            
-                string date = demand.m_dtGeting.ToString("yyyy-MM-dd HH:mm:ss");
+                string date = demand.GettingDate.ToString("yyyy-MM-dd HH:mm:ss");
                 DateTime executionDate = new DateTime();
 
                 XmlNode[] result = new XmlNode[0];
@@ -177,9 +177,9 @@ namespace Modeling
                     int iProduct2 = 0;
                     int iProduct3 = 0;
 
-                    demand.m_products.GetProduct(1, out iProduct1);
-                    demand.m_products.GetProduct(2, out iProduct2);
-                    demand.m_products.GetProduct(3, out iProduct3);
+                    demand.Products.GetProduct(1, out iProduct1);
+                    demand.Products.GetProduct(2, out iProduct2);
+                    demand.Products.GetProduct(3, out iProduct3);
 
                     //result = frontOffice.newOrder(date, "modeling", demand.m_products[1], demand.m_products[2], demand.m_products[3]) as XmlNode[];
                     result = frontOffice.newOrder(date, "modeling", iProduct1, iProduct2, iProduct3) as XmlNode[];
@@ -190,11 +190,11 @@ namespace Modeling
                 }
                 if (result != null)
                 {
-                    demand.m_iID = GetNodeValueByKey<int>(result, "OrderId");
+                    demand.ID = GetNodeValueByKey<int>(result, "OrderId");
                     executionDate = DateTime.Parse(GetNodeValueByKey<string>(result, "ExecutionTime"));
                 }
 
-                if (demand.m_iUrgency == 2)
+                if (demand.Urgency == 2)
                 {
                     //bool cancelResult = frontOffice.cancelOrder(date, demand.m_iID);
                     //if (cancelResult==false) throw new Exception("Не удалось отменить заявку");
@@ -202,8 +202,8 @@ namespace Modeling
                 }
                 else
                 {
-                    demand.m_dtShouldBeDone = executionDate.AddDays(7 * (demand.m_iUrgency + 1));
-                    bool confirmResult = frontOffice.confirmOrder(date, demand.m_iID, demand.m_iUrgency + 2);
+                    demand.ShouldBeDoneDate = executionDate.AddDays(7 * (demand.Urgency + 1));
+                    bool confirmResult = frontOffice.confirmOrder(date, demand.ID, demand.Urgency + 2);
                     if (confirmResult == false) throw new Exception("Не удалось подтвердить заявку");
                     return true;
                 }
@@ -211,12 +211,12 @@ namespace Modeling
             else
             {
                 //         Заглушка     
-                if ((demand.m_iID == 1) || (demand.m_iID == 2) || (demand.m_iID == 3) || (demand.m_iID == 4)) return true;
+                if ((demand.ID == 1) || (demand.ID == 2) || (demand.ID == 3) || (demand.ID == 4)) return true;
                             
                 ind++;
-                demand.m_iID = ind;
-                if (demand.m_iUrgency == 2) return false;
-                demand.m_dtShouldBeDone = DateTime.Now.AddDays(new Random().Next(18));
+                demand.ID = ind;
+                if (demand.Urgency == 2) return false;
+                demand.ShouldBeDoneDate = DateTime.Now.AddDays(new Random().Next(18));
 
                 UniformGen ug = new UniformGen(1, 0);
                 if (ug.GenerateN(1).ElementAt(0) < 0.8) return true;
@@ -241,38 +241,38 @@ namespace Modeling
                 int thirdProdDelta = 0;
                 int iTemp = 0;
 
-                modifiedDemand.m_products.GetProduct(1, out firstProdDelta);
-                demand.m_products.GetProduct(1, out iTemp);
+                modifiedDemand.Products.GetProduct(1, out firstProdDelta);
+                demand.Products.GetProduct(1, out iTemp);
                 firstProdDelta -= iTemp;
 
-                modifiedDemand.m_products.GetProduct(2, out secondProdDelta);
-                demand.m_products.GetProduct(2, out iTemp);
+                modifiedDemand.Products.GetProduct(2, out secondProdDelta);
+                demand.Products.GetProduct(2, out iTemp);
                 secondProdDelta -= iTemp;
 
-                modifiedDemand.m_products.GetProduct(3, out thirdProdDelta);
-                demand.m_products.GetProduct(3, out iTemp);
+                modifiedDemand.Products.GetProduct(3, out thirdProdDelta);
+                demand.Products.GetProduct(3, out iTemp);
                 thirdProdDelta -= iTemp;
                 //<---
 
                 //if (modifiedDemand.m_products[1] + modifiedDemand.m_products[2] + modifiedDemand.m_products[3] == 0)
                 if (
-                    modifiedDemand.m_products.CompareProduct(1, 0)
-                    && modifiedDemand.m_products.CompareProduct(2, 0)
-                    && modifiedDemand.m_products.CompareProduct(3, 0)
+                    modifiedDemand.Products.CompareProduct(1, 0)
+                    && modifiedDemand.Products.CompareProduct(2, 0)
+                    && modifiedDemand.Products.CompareProduct(3, 0)
                     )
                 {
-                    return frontOffice.cancelOrder(dateStr, modifiedDemand.m_iID);
+                    return frontOffice.cancelOrder(dateStr, modifiedDemand.ID);
                 }
                 else
                 {
                     if (firstProdDelta + secondProdDelta + thirdProdDelta == 0) ModelError.Error("Номенклатура изменяемой завки не изменена");
-                    string returnDateStr = frontOffice.changeOrder(dateStr, modifiedDemand.m_iID, new int[] { firstProdDelta, secondProdDelta, thirdProdDelta });
+                    string returnDateStr = frontOffice.changeOrder(dateStr, modifiedDemand.ID, new int[] { firstProdDelta, secondProdDelta, thirdProdDelta });
                     DateTime returnDate = DateTime.Parse(returnDateStr);
-                    bool confirmResult = frontOffice.confirmChange(dateStr, modifiedDemand.m_iID, new int[] { firstProdDelta, secondProdDelta, thirdProdDelta });
+                    bool confirmResult = frontOffice.confirmChange(dateStr, modifiedDemand.ID, new int[] { firstProdDelta, secondProdDelta, thirdProdDelta });
                     if (confirmResult == false) return false;
                     else
                     {
-                        modifiedDemand.m_dtShouldBeDone = returnDate;
+                        modifiedDemand.ShouldBeDoneDate = returnDate;
                         return true;
                     }
                 }
@@ -300,23 +300,23 @@ namespace Modeling
             if (!CParams.m_bUseFakeServices)
             {
                 //         Реальный код
-                string date = del.m_dtRealDelivery.Value.ToString("yyyy-MM-dd HH:mm:ss");
+                string date = del.RealDeliveryDate.Value.ToString("yyyy-MM-dd HH:mm:ss");
                 int[] materials = new int[12];
                 for (int i = 0; i < 12; i++)
                 {
                     int curMatCount = 0;
-                    del.m_materialsDemand.GetMaterial(i + 1, out curMatCount);
+                    del.MaterialsDemand.GetMaterial(i + 1, out curMatCount);
                     materials[i] = curMatCount;
                 }
 
-                bool receivingResult = simulation.receivingMaterials(date, del.m_iID, materials);
+                bool receivingResult = simulation.receivingMaterials(date, del.ID, materials);
                 if (receivingResult == false) throw new Exception("Не удалось отослать пришедшие материалы");
                 return true;
             }
             else
             {
                 //         Заглушка     
-                bool g = del.m_dtRealDelivery.HasValue; // заглушка
+                bool g = del.RealDeliveryDate.HasValue; // заглушка
                 return true;            
             }
         }

@@ -137,10 +137,10 @@ namespace Storage
         /// <returns></returns>
         public bool AddAcceptedDemand(CDemand demand)
         {
-            if (acceptedDemands.ContainsKey(demand.m_iID))
+            if (acceptedDemands.ContainsKey(demand.ID))
                 return ModelError.Error();
 
-            acceptedDemands.Add(demand.m_iID, demand);
+            acceptedDemands.Add(demand.ID, demand);
             return true;
         }
 
@@ -156,7 +156,7 @@ namespace Storage
                 ModelError.Error();
 
             var demand = new CDemand(acceptedDemands[id]);
-            var demandPlanElementReports = this.planReport.Values.Where(x => x.m_planElement.m_iDemandID == demand.m_iID);
+            var demandPlanElementReports = this.planReport.Values.Where(x => x.m_planElement.m_iDemandID == demand.ID);
 
             foreach (CPlanReportElement c in demandPlanElementReports)
             {
@@ -168,7 +168,7 @@ namespace Storage
             if (canceledDemands.ContainsKey(id))
                 return ModelError.Error();
 
-            canceledDemands.Add(demand.m_iID, demand);
+            canceledDemands.Add(demand.ID, demand);
             return true;
         }
 
@@ -179,10 +179,10 @@ namespace Storage
         /// <returns></returns>
         public bool AddDeclinedDemand(CDemand demand)
         {
-            if (declinedDemands.ContainsKey(demand.m_iID))
+            if (declinedDemands.ContainsKey(demand.ID))
                 return ModelError.Error();
 
-            declinedDemands.Add(demand.m_iID, demand);
+            declinedDemands.Add(demand.ID, demand);
             return true;
         }
 
@@ -195,7 +195,7 @@ namespace Storage
             // TODO Denis Bykov: в исходном варианте массив копировался, нужно проверить, нет ли необходимости в этом
             var demands = acceptedDemands.Values;
 
-            return demands.Where(d => !d.m_dtFinishing.HasValue);
+            return demands.Where(d => !d.FinishingDate.HasValue);
         }
 
         /// <summary>
@@ -242,13 +242,13 @@ namespace Storage
         /// <returns></returns>
         public bool ModifyDemand(CDemand modifiedDemand)
         {
-            if (!acceptedDemands.ContainsKey(modifiedDemand.m_iID))
+            if (!acceptedDemands.ContainsKey(modifiedDemand.ID))
                 return ModelError.Error();
 
-            var acceptedDemand = this.acceptedDemands[modifiedDemand.m_iID];
+            var acceptedDemand = this.acceptedDemands[modifiedDemand.ID];
 
             //acceptedDemand.m_iUrgency = modifiedDemand.m_iUrgency;      срочность нельзя изменить
-            acceptedDemand.m_dtShouldBeDone = modifiedDemand.m_dtShouldBeDone;
+            acceptedDemand.ShouldBeDoneDate = modifiedDemand.ShouldBeDoneDate;
 
             /* //add product cluster
             for (int iProductNumber = 1; iProductNumber < CParams.PRODUCTS_NUMBER + 1; iProductNumber++)
@@ -258,8 +258,8 @@ namespace Storage
              */
 
             //--->
-            acceptedDemand.m_products.CleanProductsCluster();
-            acceptedDemand.m_products.AddProductCluster(modifiedDemand.m_products);
+            acceptedDemand.Products.CleanProductsCluster();
+            acceptedDemand.Products.AddProductCluster(modifiedDemand.Products);
             //<---
 
             return true;
@@ -334,15 +334,15 @@ namespace Storage
             //--->
             int iProductValue = 0;
             bool bToTrue = true;
-            demand.m_products.GetProduct(1, out iProductValue);
+            demand.Products.GetProduct(1, out iProductValue);
             if (iProductValue > firstArticle)
                 bToTrue = false;
 
-            demand.m_products.GetProduct(2, out iProductValue);
+            demand.Products.GetProduct(2, out iProductValue);
             if (iProductValue > secondArticle)
                 bToTrue = false;
 
-            demand.m_products.GetProduct(3, out iProductValue);
+            demand.Products.GetProduct(3, out iProductValue);
             if (iProductValue > thirdArticle)
                 bToTrue = false;
 
@@ -360,7 +360,7 @@ namespace Storage
             if (!acceptedDemands.ContainsKey(demandInd))
                 return ModelError.Error();
 
-            this.acceptedDemands[demandInd].m_dtFinishing = date;
+            this.acceptedDemands[demandInd].FinishingDate = date;
             return true;
         }
 
@@ -453,10 +453,10 @@ namespace Storage
         /// <returns></returns>
         public bool AddDeliveryDemand(CDeliveryDemand deliveryDemand)
         {
-            if (DeliveryDemands.ContainsKey(deliveryDemand.m_iID))
+            if (DeliveryDemands.ContainsKey(deliveryDemand.ID))
                 return ModelError.Error();
 
-            this.DeliveryDemands.Add(deliveryDemand.m_iID, deliveryDemand);
+            this.DeliveryDemands.Add(deliveryDemand.ID, deliveryDemand);
 
             return true;
         }
@@ -471,10 +471,10 @@ namespace Storage
             int timeSpan = -1;
             foreach (var demand in this.DeliveryDemands.Values)
             {
-                if (demand.isDone)
+                if (demand.IsDone)
                     continue;
 
-                int curTimeSpan = (int)(demand.m_dtRealDelivery.Value - date).TotalMinutes;
+                int curTimeSpan = (int)(demand.RealDeliveryDate.Value - date).TotalMinutes;
 
                 DateTime checkDate = date.AddMinutes(curTimeSpan);
 
@@ -502,7 +502,7 @@ namespace Storage
         public CDeliveryDemand[] GetDeliveryDemand(DateTime date)
         {
             var list = this.DeliveryDemands.Values.Where(
-                d => (d.m_dtRealDelivery == date) && !d.isDone
+                d => (d.RealDeliveryDate == date) && !d.IsDone
             );
 
             return list.ToArray();
@@ -530,17 +530,17 @@ namespace Storage
             double demandsDelaySum = 0;
             foreach (var demand in this.acceptedDemands.Values)
             {
-                if ((demand.m_dtFinishing.HasValue == true) && (demand.m_dtShouldBeDone.HasValue == true))
+                if ((demand.FinishingDate.HasValue == true) && (demand.ShouldBeDoneDate.HasValue == true))
                 {
                     demandsNum++;
-                    if (demand.m_dtFinishing.Value > demand.m_dtShouldBeDone.Value)
+                    if (demand.FinishingDate.Value > demand.ShouldBeDoneDate.Value)
                     {
-                        double span = (demand.m_dtFinishing.Value - demand.m_dtShouldBeDone.Value).TotalDays;
+                        double span = (demand.FinishingDate.Value - demand.ShouldBeDoneDate.Value).TotalDays;
                         demandsDelaySum = demandsDelaySum + span;
                     }
                     else
                     {
-                        double span = (demand.m_dtShouldBeDone.Value - demand.m_dtFinishing.Value).TotalDays;
+                        double span = (demand.ShouldBeDoneDate.Value - demand.FinishingDate.Value).TotalDays;
                         demandsDelaySum = demandsDelaySum - span;
                     }
                 }
