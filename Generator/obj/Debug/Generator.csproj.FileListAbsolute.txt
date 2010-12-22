@@ -1,5 +1,0 @@
-C:\Users\user\Documents\Visual Studio 2008\Projects\Generator\Generator\bin\Debug\Generator.dll
-C:\Users\user\Documents\Visual Studio 2008\Projects\Generator\Generator\bin\Debug\Generator.pdb
-C:\Users\user\Documents\Visual Studio 2008\Projects\Generator\Generator\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\user\Documents\Visual Studio 2008\Projects\Generator\Generator\obj\Debug\Generator.dll
-C:\Users\user\Documents\Visual Studio 2008\Projects\Generator\Generator\obj\Debug\Generator.pdb

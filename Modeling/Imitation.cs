@@ -138,12 +138,12 @@ namespace Modeling
 
         public double getFinishedDemandsNum()   // Количество выполненных заказов
         {
-            return this.storage.FinishedDemandsNum();
+            return this.storage.FinishedDemandsNum;
         }
 
         public double getCanceledDemandsNum()   // Количество отменённых заказов
         {
-            return this.storage.CanceledDemandsNum();
+            return this.storage.CanceledDemandsNum;
         }
 
         public double getAcceptedDemandsNum()   // Количество полученных заказов
@@ -163,7 +163,7 @@ namespace Modeling
 
         public int getRefusesNum()    // Количество заявок от которых отказались
         {
-            return this.storage.RefuseNum();
+            return this.storage.RefuseNum;
         }
 
         public int[][] getMaterialsPerDayStatistic()      // Получить статистику изменения количества материалов на складе по дням
@@ -308,7 +308,7 @@ namespace Modeling
                 {
                     //***materialsNumToday[j]=this.storage.GetMaterialNumberFromID(j+1);
                     //возвращает со склада в materialsNumToday[j] количество материала с номером (j + 1)
-                    this.storage.m_materials.GetMaterial(j + 1, out materialsNumToday[j]);
+                    this.storage.Materials.GetMaterial(j + 1, out materialsNumToday[j]);
                 }
                 this.storage.AddMaterialsStatisticDay(materialsNumToday);
                 CDemand[] newDemands = this.generator.generateDemands(workdayStartTime);
@@ -345,7 +345,7 @@ namespace Modeling
                     {
                         int prodId = this.storage.GetFirstPlanElement().m_iProductID;
                         nextPlanElemEndTime = CParams.m_products[prodId].m_iTime;
-                        bool canDo = this.storage.m_materials.TakeAwayMaterialCluster(CParams.m_products[prodId].m_materials);
+                        bool canDo = this.storage.Materials.TakeAwayMaterialCluster(CParams.m_products[prodId].m_materials);
                         if (canDo == false) throw new Exception("Не достаточно материалов для производства товара");
                         /*                        
                         for (int j = 1; j <= CParams.MATERIALS_NUMBER; j++)
@@ -423,10 +423,10 @@ namespace Modeling
 
                         if (nextTimes.Min() == modifyDemandNextTime)
                         {
-                            CDemand[] notFinishedDemands = this.storage.GetNotFinishedDemands();
-                            if (notFinishedDemands.Length > 0)
+                            var notFinishedDemands = this.storage.GetNotFinishedDemands();
+                            if (notFinishedDemands.Count() > 0)
                             {
-                                CDemand modifiedDemand = this.generator.modifyDemand(notFinishedDemands, modelTime);
+                                CDemand modifiedDemand = this.generator.modifyDemand(notFinishedDemands.ToArray(), modelTime);
                                 CDemand demand;
                                 this.storage.GetAcceptedDemand(modifiedDemand.m_iID, out demand);
                                 bool approved = backOffice.approveModifyDemand(modelTime, ref modifiedDemand, demand);
@@ -456,7 +456,7 @@ namespace Modeling
                                 {
                                     int prodId = this.storage.GetFirstPlanElement().m_iProductID;
                                     nextPlanElemEndTime = CParams.m_products[prodId].m_iTime;
-                                    bool canDo = this.storage.m_materials.TakeAwayMaterialCluster(CParams.m_products[prodId].m_materials);
+                                    bool canDo = this.storage.Materials.TakeAwayMaterialCluster(CParams.m_products[prodId].m_materials);
                                     if (canDo == false) throw new Exception("Не достаточно материалов для производства товара");
                                     /*
                                     for (int j = 1; j <= CParams.MATERIALS_NUMBER; j++)
@@ -505,7 +505,7 @@ namespace Modeling
                             {
                                 foreach (CDeliveryDemand d in deliveryDemands)
                                 {
-                                    this.storage.m_materials.AddMaterialCluster(d.m_materialsDemand);
+                                    this.storage.Materials.AddMaterialCluster(d.m_materialsDemand);
                                     /*
                                     for (int j = 1; j <= CParams.MATERIALS_NUMBER; j++)
                                     {

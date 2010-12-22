@@ -8,82 +8,106 @@ namespace Storage
 {
     public class CStorage //временное хранилище результатов моделирования
     {
+        /// <summary>
+        /// Статистика утверждённых изменений в заявках первое - число принятых, второе - отклонённых.
+        /// Надо будет как нибудь это дело облагородить, может ввести парметры по каждой заявке
+        /// </summary>
         private int[] modifyStatistic;
-        // статистика утверждённых изменений в заявках первое - число принятых, второе - отклонённых 
-        // надо будет как нибудь это дело облагородить, может ввести парметры по каждой заявке
 
+        /// <summary>
+        /// Принятые Заявки. 
+        /// </summary>
+        private Dictionary<int, CDemand> acceptedDemands;
 
-        private Dictionary<int, CDemand> m_acceptedDemands; // Принятые Заявки. 
+        /// <summary>
+        /// Отклонённые Заявки
+        /// </summary>
+        private Dictionary<int, CDemand> declinedDemands;
 
-        private Dictionary<int, CDemand> m_declinedDemands; // Отклонённые Заявки
+        /// <summary>
+        /// Отменённые Заявки
+        /// </summary>
+        private Dictionary<int, CDemand> canceledDemands;
 
-        private Dictionary<int, CDemand> m_canceledDemands; // Отменённые Заявки
+        /// <summary>
+        /// Очередь из элементов плана на день
+        /// </summary>
+        private Queue<CPlanElement> plan;
 
+        /// <summary>
+        /// Склад. Кластер материалов.
+        /// </summary>
+        public CMaterialCluster Materials;
 
-        private Queue<CPlanElement> m_plan; //очередь из элементов плана на день
+        /// <summary>
+        /// Статистика производства. Пара: время окончания выполнения - элемент плана
+        /// </summary>
+        private Dictionary<DateTime, CPlanReportElement> planReport;
 
+        /// <summary>
+        /// Обработанные заявки на поставку материалов
+        /// </summary>
+        private Dictionary<int, CDeliveryDemand> DeliveryDemands;
 
-        public CMaterialCluster m_materials; //Склад. Кластер материалов.
+        /// <summary>
+        /// Cтатистика - количество материалов на каждый день моделирования 
+        /// </summary>
+        private Dictionary<int, List<int>> materialsPerDay;
 
-
-        private Dictionary<DateTime, CPlanReportElement> m_planReport;
-        //Статистика производства. Пара: время окончания выполнения - элемент плана
-
-        private Dictionary<int, CDeliveryDemand> m_DeliveryDemands;
-        // обработанные заявки на поставку материалов
-
-
-        private Dictionary<int, List<int>> materialsPerDay; 
-        // статистика - количество материалов на каждый день моделирования
-
+        /// <summary>
+        /// Cтатистика - доля времени простоя производства от рабочего времени на каждый день моделирования
+        /// </summary>
         private List<double> idleTimePerDay;
-        // статистика - доля времени простоя производства от рабочего времени на каждый день моделирования
 
+        /// <summary>
+        /// Cтатистика - среденее время задержки заказов на каждый день моделирования
+        /// </summary>
         private List<double> demandAverageDelayPerDay;
-        // статистика - среденее время задержки заказов на каждый день моделирования
 
+        /// <summary>
+        /// Cтатистика - доля выполненных заказов на каждый день моделирования
+        /// </summary>
         private List<double> finishedDemandsPerDay;
-        // статистика - доля выполненных заказов на каждый день моделирования
 
+        /// <summary>
+        /// Cтатистика - доля отменённых заказов на каждый день моделирования
+        /// </summary>
         private List<double> canceledDemandsPerDay;
-        // статистика - доля отменённых заказов на каждый день моделирования
 
 
-
-        public CStorage()   // конструктор - инициализация значений
+        /// <summary>
+        /// Конструктор - инициализация значений
+        /// </summary>
+        public CStorage()
         {
             modifyStatistic = new int[] { 0, 0 };
 
 
-            m_acceptedDemands = new Dictionary<int, CDemand>(); // Принятые Заявки.
+            acceptedDemands = new Dictionary<int, CDemand>(); // Принятые Заявки.
 
-            m_declinedDemands = new Dictionary<int, CDemand>(); // Отклонённые Заявки
+            declinedDemands = new Dictionary<int, CDemand>(); // Отклонённые Заявки
 
-            m_canceledDemands = new Dictionary<int, CDemand>(); // Оменённые Заявки
-
-
-            m_plan = new Queue<CPlanElement>(); //очередь из элементов плана на день
+            canceledDemands = new Dictionary<int, CDemand>(); // Оменённые Заявки
 
 
-            m_materials = new CMaterialCluster();
+            plan = new Queue<CPlanElement>(); //очередь из элементов плана на день
+
+
+            Materials = new CMaterialCluster();
             //Инициализация склада нулевыми значениями
 
-        
-            m_planReport = new Dictionary<DateTime, CPlanReportElement>();
+
+            planReport = new Dictionary<DateTime, CPlanReportElement>();
             //Статистика производства. Пара: время окончания выполнения - элемент плана
 
 
-            m_DeliveryDemands = new Dictionary<int,CDeliveryDemand>();
+            DeliveryDemands = new Dictionary<int, CDeliveryDemand>();
             // обработанные заявки на поставку материалов
 
 
-            materialsPerDay = new Dictionary<int, List<int>>
-            // количество материалов на каждый день моделирования
-            { 
-            {1,new List<int>()},{2,new List<int>()},{3,new List<int>()},{4,new List<int>()},
-            {5,new List<int>()},{6,new List<int>()},{7,new List<int>()},{8,new List<int>()},
-            {9,new List<int>()},{10,new List<int>()},{11,new List<int>()},{12,new List<int>()}
-            }; 
+            materialsPerDay = new Dictionary<int, List<int>>(); // количество материалов на каждый день моделирования
+            for (var dayId = 1; dayId <= 12; dayId++)
+                materialsPerDay.Add(dayId, new List<int>());
 
             idleTimePerDay = new List<double>();
             // доля времени простоя производства от рабочего времени на каждый день моделирования
@@ -100,94 +124,129 @@ namespace Storage
         }
 
 
-       
+
         /*
        private Queue<CDeliveryDemand> m_newDeliveryDemands = new Queue<CDeliveryDemand>(); 
        // заявки на поставку материалов, пришедшие от back office и ещё не обработанные
        */
 
-        public bool AddAcceptedDemand(CDemand demand) // добавить новую заявку в список принятых
+        /// <summary>
+        /// Добавление новой заявки в список принятых
+        /// </summary>
+        /// <param name="demand"></param>
+        /// <returns></returns>
+        public bool AddAcceptedDemand(CDemand demand)
         {
-            if (m_acceptedDemands.ContainsKey(demand.m_iID))
+            if (acceptedDemands.ContainsKey(demand.m_iID))
                 return ModelError.Error();
 
-            m_acceptedDemands.Add(demand.m_iID, demand);
+            acceptedDemands.Add(demand.m_iID, demand);
             return true;
         }
 
-        public bool AddCanceledDemand(int id) // добавить новую заявку в список отменённых
+        /// <summary>
+        /// Добавление новой заявки в список отменённых
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool AddCanceledDemand(int id)
         {
-            
-            if (m_acceptedDemands.ContainsKey(id))
-                 ModelError.Error();
 
-            CDemand demand = new CDemand(m_acceptedDemands[id]);
-            IEnumerable<CPlanReportElement> demandPlanElementReports = this.m_planReport.Values.Where(x => x.m_planElement.m_iDemandID == demand.m_iID);
+            if (acceptedDemands.ContainsKey(id))
+                ModelError.Error();
+
+            var demand = new CDemand(acceptedDemands[id]);
+            var demandPlanElementReports = this.planReport.Values.Where(x => x.m_planElement.m_iDemandID == demand.m_iID);
+
             foreach (CPlanReportElement c in demandPlanElementReports)
             {
                 c.m_planElement.m_iDemandID = -1;
             }
 
-            m_acceptedDemands.Remove(id);
-        
-            if (m_canceledDemands.ContainsKey(id))
+            acceptedDemands.Remove(id);
+
+            if (canceledDemands.ContainsKey(id))
                 return ModelError.Error();
 
-            m_canceledDemands.Add(demand.m_iID, demand);
+            canceledDemands.Add(demand.m_iID, demand);
             return true;
         }
 
-        public bool AddDeclinedDemand(CDemand demand) // добавить новую заявку в список отклонённых
+        /// <summary>
+        /// Добавление новой заявки в список отклонённых
+        /// </summary>
+        /// <param name="demand"></param>
+        /// <returns></returns>
+        public bool AddDeclinedDemand(CDemand demand)
         {
-            if (m_declinedDemands.ContainsKey(demand.m_iID))
+            if (declinedDemands.ContainsKey(demand.m_iID))
                 return ModelError.Error();
 
-            m_declinedDemands.Add(demand.m_iID, demand);
+            declinedDemands.Add(demand.m_iID, demand);
             return true;
         }
 
-
-        public CDemand[] GetNotFinishedDemands() // получить все не завершённые заявки
+        /// <summary>
+        /// посчитать кол-во принятых заявок
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<CDemand> GetNotFinishedDemands()
         {
-            List<CDemand> list = new List<CDemand>();
-            foreach (CDemand d in m_acceptedDemands.Values)
-            {
-                if (d.m_dtFinishing.HasValue==false) 
-                    list.Add(d);
-            }            
-            return list.ToArray();
+            // TODO Denis Bykov: в исходном варианте массив копировался, нужно проверить, нет ли необходимости в этом
+            var demands = acceptedDemands.Values;
+
+            return demands.Where(d => !d.m_dtFinishing.HasValue);
         }
 
-        public bool GetAcceptedDemand(int ind, out CDemand demand) // получить утверждённую заявку по id
+        /// <summary>
+        /// Получить утверждённую заявку по id
+        /// </summary>
+        /// <param name="ind"></param>
+        /// <param name="demand"></param>
+        /// <returns></returns>
+        public bool GetAcceptedDemand(int ind, out CDemand demand)
         {
             demand = new CDemand();
 
-            if (!m_acceptedDemands.ContainsKey(ind))
+            if (!acceptedDemands.ContainsKey(ind))
                 return ModelError.Error();
 
             //ВАЖНО! Возможно здесь надо принудительно вызвать деструктор для demand
-            demand = new CDemand(this.m_acceptedDemands[ind]);
+            // 
+            demand = new CDemand(this.acceptedDemands[ind]);
             return true;
         }
 
-
-        public int GetAcceptedDemandsNumber() // посчитать кол-во принятых заявок
+        /// <summary>
+        /// Посчитать кол-во принятых заявок
+        /// </summary>
+        /// <returns></returns>
+        public int GetAcceptedDemandsNumber()
         {
-            return m_acceptedDemands.Count;
+            return acceptedDemands.Count;
         }
 
-        public int GetDeclinedDemandsNumber() // посчитать кол-во отклонённых заявок
+        /// <summary>
+        /// посчитать кол-во отклонённых заявок
+        /// </summary>
+        /// <returns></returns>
+        public int GetDeclinedDemandsNumber()
         {
-            return m_declinedDemands.Count;
+            return declinedDemands.Count;
         }
 
-        public bool ModifyDemand(CDemand modifiedDemand) //изменить заявку в m_acceptedDemands
+        /// <summary>
+        /// изменить заявку в <see cref="acceptedDemands"/>
+        /// </summary>
+        /// <param name="modifiedDemand"></param>
+        /// <returns></returns>
+        public bool ModifyDemand(CDemand modifiedDemand)
         {
-            if ( !m_acceptedDemands.ContainsKey(modifiedDemand.m_iID) )
+            if (!acceptedDemands.ContainsKey(modifiedDemand.m_iID))
                 return ModelError.Error();
 
             //this.m_acceptedDemands[modifiedDemand.m_iID].m_iUrgency = modifiedDemand.m_iUrgency;      срочность нельзя изменить
-            this.m_acceptedDemands[modifiedDemand.m_iID].m_dtShouldBeDone = modifiedDemand.m_dtShouldBeDone;
+            this.acceptedDemands[modifiedDemand.m_iID].m_dtShouldBeDone = modifiedDemand.m_dtShouldBeDone;
 
             /* //add product cluster
             for (int iProductNumber = 1; iProductNumber < CParams.PRODUCTS_NUMBER + 1; iProductNumber++)
@@ -198,24 +257,34 @@ namespace Storage
              */
 
             //--->
-            this.m_acceptedDemands[modifiedDemand.m_iID].m_products.CleanProductsCluster();
-            this.m_acceptedDemands[modifiedDemand.m_iID].m_products.AddProductCluster(modifiedDemand.m_products);
+            this.acceptedDemands[modifiedDemand.m_iID].m_products.CleanProductsCluster();
+            this.acceptedDemands[modifiedDemand.m_iID].m_products.AddProductCluster(modifiedDemand.m_products);
             //<---
 
             return true;
         }
 
-        public bool TranDemand(int demandInd, int prodId, int count) // Переброска произведённых продуктов другому заказу
+        /// <summary>
+        /// Переброска произведённых продуктов другому заказу
+        /// </summary>
+        /// <param name="demandInd"></param>
+        /// <param name="prodId"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public bool TranDemand(int demandInd, int prodId, int count)
         {
             try
             {
-                IEnumerable<CPlanReportElement> demandPlanElementReports = this.m_planReport.Values.Where(
-                    x => (x.m_planElement.m_iDemandID == -1) && (x.m_planElement.m_iProductID == prodId)
-                    ).Take(count);
-                foreach (CPlanReportElement c in demandPlanElementReports)
+                var demandPlanElementReports = this.planReport.Values.Where(
+                    x => (x.m_planElement.m_iDemandID == -1) &&
+                         (x.m_planElement.m_iProductID == prodId)
+                ).Take(count);
+
+                foreach (var c in demandPlanElementReports)
                 {
                     c.m_planElement.m_iDemandID = demandInd;
                 }
+
                 return true;
             }
             catch
@@ -225,13 +294,18 @@ namespace Storage
             }
         }
 
-        public bool IsDemandDone(int demandInd) // Выполнена ли полностью заявка
+        /// <summary>
+        /// Выполнена ли полностью заявка
+        /// </summary>
+        /// <param name="demandInd"></param>
+        /// <returns></returns>
+        public bool IsDemandDone(int demandInd)
         {
-            CPlanReportElement[] demandPlanElementReports = this.m_planReport.Values.Where(x=>x.m_planElement.m_iDemandID==demandInd).ToArray();
-            int firstArticle=0;
-            int thirdArticle=0;
-            int secondArticle=0;
-            for (int i=0;i<demandPlanElementReports.Length;i++) 
+            CPlanReportElement[] demandPlanElementReports = this.planReport.Values.Where(x => x.m_planElement.m_iDemandID == demandInd).ToArray();
+            int firstArticle = 0;
+            int thirdArticle = 0;
+            int secondArticle = 0;
+            for (int i = 0; i < demandPlanElementReports.Length; i++)
             {
                 switch (demandPlanElementReports[i].m_planElement.m_iProductID)
                 {
@@ -254,13 +328,13 @@ namespace Storage
             if ((demand.m_products[1] <= firstArticle) && (demand.m_products[2] <= secondArticle) && (demand.m_products[3] <= thirdArticle))
                 // Здесь по идеии строгое равенство но на всякий случай в рамках заглушки
                 return true;
-            */ 
+            */
 
             //--->
             int iProductValue = 0;
             bool bToTrue = true;
             demand.m_products.GetProduct(1, out iProductValue);
-            if ( iProductValue > firstArticle )
+            if (iProductValue > firstArticle)
                 bToTrue = false;
 
             demand.m_products.GetProduct(2, out iProductValue);
@@ -275,18 +349,23 @@ namespace Storage
                 return true;
             //<---
 
-            else 
+            else
                 return false;
         }
 
+        /// <summary>
+        /// Присвоить заявке в <see cref="acceptedDemands"/> время завершения (по id)
+        /// </summary>
+        /// <param name="demandInd"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public bool FinishDemand(int demandInd, DateTime date)
-        // Присвоить заявке в m_acceptedDemands время завершения (по id)
         {
-            if ( !m_acceptedDemands.ContainsKey(demandInd) )
+            if (!acceptedDemands.ContainsKey(demandInd))
                 return ModelError.Error();
 
-            this.m_acceptedDemands[demandInd].m_dtFinishing = date;
-                return true;
+            this.acceptedDemands[demandInd].m_dtFinishing = date;
+            return true;
         }
 
         public bool AddModifyStatistic(bool modified)
@@ -296,36 +375,55 @@ namespace Storage
             return true;
         }
 
-
-
-        public bool AddDailyPlan(CPlanElement[] planElements) //добавить план на день
+        /// <summary>
+        /// добавить план на день
+        /// </summary>
+        /// <param name="planElements"></param>
+        /// <returns></returns>
+        public bool AddDailyPlan(CPlanElement[] planElements)
         {
             for (int i = 0; i < planElements.Length; i++)
             {
-                m_plan.Enqueue(planElements[i]);
+                plan.Enqueue(planElements[i]);
             }
             return true;
         }
 
-        public CPlanElement GetFirstPlanElementAndDelete() //вынуть первый элемент плана
+        /// <summary>
+        /// вынуть первый элемент плана
+        /// </summary>
+        /// <returns></returns>
+        public CPlanElement GetFirstPlanElementAndDelete()
         {
-            return m_plan.Dequeue();
+            return plan.Dequeue();
         }
 
-        public CPlanElement GetFirstPlanElement() //вернуть первый элемент плана
+        /// <summary>
+        /// вернуть первый элемент плана
+        /// </summary>
+        /// <returns></returns>
+        public CPlanElement GetFirstPlanElement()
         {
-            return m_plan.Peek();
+            return plan.Peek();
         }
 
-        public bool ClearAllPlan() //очистить план
+        /// <summary>
+        /// очистить план
+        /// </summary>
+        /// <returns></returns>
+        public bool ClearAllPlan()
         {
-            m_plan.Clear();
+            plan.Clear();
             return true;
         }
 
-        public int GetPlanElementsToGo() //вернуть количество оставшихся для выполнения элементов плана
+        /// <summary>
+        /// вернуть количество оставшихся для выполнения элементов плана
+        /// </summary>
+        /// <returns></returns>
+        public int GetPlanElementsToGo()
         {
-            return m_plan.Count;
+            return plan.Count;
         }
 
 
@@ -348,21 +446,29 @@ namespace Storage
         }
         */
 
-        public bool AddDeliveryDemand(CDeliveryDemand deliveryDemand) 
-            // добавить обработанную заявку на поставку материалов
+        /// <summary>
+        /// добавить обработанную заявку на поставку материалов
+        /// </summary>
+        /// <param name="deliveryDemand"></param>
+        /// <returns></returns>
+        public bool AddDeliveryDemand(CDeliveryDemand deliveryDemand)
         {
-            if (m_DeliveryDemands.ContainsKey(deliveryDemand.m_iID))
+            if (DeliveryDemands.ContainsKey(deliveryDemand.m_iID))
                 return ModelError.Error();
 
-            this.m_DeliveryDemands.Add(deliveryDemand.m_iID, deliveryDemand);
+            this.DeliveryDemands.Add(deliveryDemand.m_iID, deliveryDemand);
             return true;
         }
 
-        public int GetNextDeliveryDemandTime(DateTime date)  
-            //получить время ближайшей поставки материалов
+        /// <summary>
+        /// получить время ближайшей поставки материалов
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public int GetNextDeliveryDemandTime(DateTime date)
         {
-            int timeSpan=-1;
-            foreach (CDeliveryDemand d in this.m_DeliveryDemands.Values)
+            int timeSpan = -1;
+            foreach (CDeliveryDemand d in this.DeliveryDemands.Values)
             {
                 if (d.isDone == false)
                 {
@@ -381,34 +487,45 @@ namespace Storage
             return timeSpan;
         }
 
-        public CDeliveryDemand[] GetDeliveryDemand(DateTime date)  
-            //получить пришедшие в данное время поставки материалов 
+        /// <summary>
+        /// получить пришедшие в данное время поставки материалов 
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public CDeliveryDemand[] GetDeliveryDemand(DateTime date)
         {
             List<CDeliveryDemand> list = new List<CDeliveryDemand>();
-            foreach(CDeliveryDemand d in this.m_DeliveryDemands.Values)
+            foreach (CDeliveryDemand d in this.DeliveryDemands.Values)
             {
-                if ((d.m_dtRealDelivery == date)&&(d.isDone==false)) list.Add(d);
+                if ((d.m_dtRealDelivery == date) && (d.isDone == false)) list.Add(d);
             }
-        
+
             return list.ToArray();
         }
 
-
-        public bool AddPlanReportElement(CPlanReportElement planReportElement) 
-            //Добавить элемент выполнения плана
+        /// <summary>
+        /// Добавить элемент выполнения плана
+        /// </summary>
+        /// <param name="planReportElement"></param>
+        /// <returns></returns>
+        public bool AddPlanReportElement(CPlanReportElement planReportElement)
         {
-            m_planReport.Add(planReportElement.m_dtEndExecute, planReportElement);
+            planReport.Add(planReportElement.m_dtEndExecute, planReportElement);
             //!!! Здесь при добавлении еще нужно упорядочивать элементы
             return true;
         }
 
-        public double DemandAverageDelay()  // Среденее время задержки заказов в днях
+        /// <summary>
+        /// Среденее время задержки заказов в днях
+        /// </summary>
+        /// <returns></returns>
+        public double DemandAverageDelay()
         {
-            int demandsNum=0;
+            int demandsNum = 0;
             double demandsDelaySum = 0;
-            foreach (CDemand d in this.m_acceptedDemands.Values)
+            foreach (CDemand d in this.acceptedDemands.Values)
             {
-                if ((d.m_dtFinishing.HasValue == true)&&(d.m_dtShouldBeDone.HasValue == true))
+                if ((d.m_dtFinishing.HasValue == true) && (d.m_dtShouldBeDone.HasValue == true))
                 {
                     demandsNum++;
                     if (d.m_dtFinishing.Value > d.m_dtShouldBeDone.Value)
@@ -427,30 +544,42 @@ namespace Storage
             else return -1;
         }
 
-        public double FinishedDemandsShare()  // Доля выполненных заказов
+        /// <summary>
+        /// Доля выполненных заказов
+        /// </summary>
+        /// <returns></returns>
+        public double FinishedDemandsShare()
         {
-            double notFinishedDemands = this.GetNotFinishedDemands().Length;
-            double allAcceptedDemands = this.m_acceptedDemands.Count();
-            double allCanceledDemands = this.m_canceledDemands.Count();
+            double notFinishedDemands = this.GetNotFinishedDemands().Count();
+            double allAcceptedDemands = this.acceptedDemands.Count();
+            double allCanceledDemands = this.canceledDemands.Count();
             return ((allAcceptedDemands - notFinishedDemands) / (allAcceptedDemands + allCanceledDemands));
         }
 
-        public double CanceledDemandsShare()  // Доля отменённых заказов
+        /// <summary>
+        /// Доля отменённых заказов
+        /// </summary>
+        /// <returns></returns>
+        public double CanceledDemandsShare()
         {
-            double allAcceptedDemands = this.m_acceptedDemands.Count();
-            double allCanceledDemands = this.m_canceledDemands.Count();
+            double allAcceptedDemands = this.acceptedDemands.Count();
+            double allCanceledDemands = this.canceledDemands.Count();
             return (allCanceledDemands / (allAcceptedDemands + allCanceledDemands));
         }
 
-        public double SumWorkTime()  // Общееее время работы в минутах
+        /// <summary>
+        /// Общееее время работы в минутах
+        /// </summary>
+        /// <returns></returns>
+        public double SumWorkTime()
         {
-            double workTime=0;
-            foreach (CPlanReportElement p in this.m_planReport.Values)
+            double workTime = 0;
+            foreach (CPlanReportElement p in this.planReport.Values)
             {
                 //workTime = workTime + (p.m_dtEndExecute - p.m_dtStartExecute).TotalMinutes; 
                 //   из-за круглосуточной работы, а именно из-за костыля которым я это здесь реализовал, такой метод будет давать ошибки
                 if (p.m_planElement.m_iDemandID == 0)
-                {                    
+                {
                     workTime = workTime + CParams.retargetTimes[p.m_planElement.m_iProductID - 1];
                 }
                 else
@@ -461,10 +590,14 @@ namespace Storage
             return workTime;
         }
 
-        public double SumRetargetTime()  // Общееее время перенастройки в минутах
+        /// <summary>
+        /// Общее время перенастройки в минутах
+        /// </summary>
+        /// <returns></returns>
+        public double SumRetargetTime()
         {
             double retargetTime = 0;
-            foreach (CPlanReportElement p in this.m_planReport.Values)
+            foreach (CPlanReportElement p in this.planReport.Values)
             {
                 if (p.m_planElement.m_iDemandID == 0)
                 {
@@ -476,104 +609,153 @@ namespace Storage
             return retargetTime;
         }
 
-        public int RefuseNum()  // Количество заявок от которых отказались
+        /// <summary>
+        /// Количество заявок от которых отказались
+        /// </summary>
+        /// <returns></returns>
+        public int RefuseNum
         {
-            return m_declinedDemands.Count;
+            get { return declinedDemands.Count; }
         }
 
-        public int FinishedDemandsNum()  // Количество выполненных заявок
+        /// <summary>
+        /// Количество выполненных заявок
+        /// </summary>
+        /// <returns></returns>
+        public int FinishedDemandsNum
         {
-            return (this.m_acceptedDemands.Count() - this.GetNotFinishedDemands().Length); 
+            get { return this.acceptedDemands.Count() - this.GetNotFinishedDemands().Count(); }
         }
 
-        public int CanceledDemandsNum()  // Количество отменённых заявок
+        /// <summary>
+        /// Количество отменённых заявок
+        /// </summary>
+        /// <returns></returns>
+        public int CanceledDemandsNum
         {
-            return m_canceledDemands.Count(); 
+            get { return canceledDemands.Count(); }
         }
 
-        public bool AddMaterialsStatisticDay(int[] materials)  
-            // Добавить в статистику количество материалов в текущий день
+        /// <summary>
+        /// Добавить в статистику количество материалов в текущий день
+        /// </summary>
+        /// <param name="materials"></param>
+        /// <returns></returns>
+        public bool AddMaterialsStatisticDay(int[] materials)
         {
-            for (int i=0; i<12 ; i++)
+            for (int i = 0; i < 12; i++)
             {
-                this.materialsPerDay[i+1].Add(materials[i]);
+                this.materialsPerDay[i + 1].Add(materials[i]);
             }
             return true;
         }
 
-        public int[][] GetMaterialsPerDayStatistic()      
-            // Получить статистику изменения количества материалов на складе по дням
+        /// <summary>
+        /// Получить статистику изменения количества материалов на складе по дням
+        /// </summary>
+        /// <returns></returns>
+        public int[][] GetMaterialsPerDayStatistic()
         {
             int[][] materials = new int[12][];
-            for (int i=0; i<12 ; i++)
+            for (int i = 0; i < 12; i++)
             {
-                materials[i] = this.materialsPerDay[i+1].ToArray();
+                materials[i] = this.materialsPerDay[i + 1].ToArray();
             }
             return materials;
         }
 
+        /// <summary>
+        /// Получить статистику изменения доли простоя от времени производства по дням
+        /// </summary>
+        /// <returns></returns>
         public double[] GetIdlePerDayStatistic()
-        // Получить статистику изменения доли простоя от времени производства по дням
         {
             return this.idleTimePerDay.ToArray();
         }
 
+        /// <summary>
+        /// Сохранить время простоя на текущий день в статистику простоя
+        /// </summary>
+        /// <param name="idleTime"></param>
+        /// <returns></returns>
         public bool SaveIdleStatistic(double idleTime)
-            // Сохранить время простоя на текущий день в статистику простоя
         {
             this.idleTimePerDay.Add(idleTime);
             return true;
         }
 
+        /// <summary>
+        /// Получить статистику изменения среденего времени задержки заказов в днях по дням
+        /// </summary>
+        /// <returns></returns>
         public double[] GetDemandAverageDelayPerDayStatistic()
-        // Получить статистику изменения среденего времени задержки заказов в днях по дням
         {
             return this.demandAverageDelayPerDay.ToArray();
         }
 
+        /// <summary>
+        /// Сохранить среденее время задержки заказов на текущий день в статистику 
+        /// </summary>
+        /// <returns></returns>
         public bool SaveDemandAverageDelayStatistic()
-        // Сохранить среденее время задержки заказов на текущий день в статистику 
         {
             this.demandAverageDelayPerDay.Add(this.DemandAverageDelay());
             return true;
         }
 
+        /// <summary>
+        /// Сохранить долю выполненных заказов на текущий день в статистику 
+        /// </summary>
+        /// <returns></returns>
         public bool SaveFinishedDemandsPerDayStatistic()
-        // Сохранить долю выполненных заказов на текущий день в статистику 
         {
             this.finishedDemandsPerDay.Add(this.FinishedDemandsShare());
             return true;
         }
 
+        /// <summary>
+        /// Сохранить долю отменённых заказов на текущий день в статистику 
+        /// </summary>
+        /// <returns></returns>
         public bool SaveCanceledDemandsPerDayStatistic()
-        // Сохранить долю отменённых заказов на текущий день в статистику 
         {
             this.canceledDemandsPerDay.Add(this.CanceledDemandsShare());
             return true;
         }
 
-
+        /// <summary>
+        /// Получить статистику изменения доли выполненных заказов по дням
+        /// </summary>
+        /// <returns></returns>
         public double[] GetFinishedDemandsPerDayStatistic()
-        // Получить статистику изменения доли выполненных заказов по дням
         {
             return this.finishedDemandsPerDay.ToArray();
         }
-        
+
+        /// <summary>
+        /// Получить статистику изменения доли отменённых заказов по дням
+        /// </summary>
+        /// <returns></returns>
         public double[] GetCanceledDemandsPerDayStatistic()
-        // Получить статистику изменения доли отменённых заказов по дням
         {
             return this.canceledDemandsPerDay.ToArray();
         }
-      
+
         /*
+        /// <summary>
+        /// Вернуть первый элемент выполнения плана
+        /// </summary>
+        /// <returns></returns>
         public CPlanReportElement GetFirstPlanReportElement()
-        //Вернуть первый элемент выполнения плана
         {
             return m_planReport.First().Value;
         }
 
+        /// <summary>
+        /// Вернуть и удалить первый элемент выполнения плана
+        /// </summary>
+        /// <returns></returns>
         public CPlanReportElement GetFirstPlanReportElementAndDeleteIT()
-        //Вернуть и удалить первый элемент выполнения плана
         {
             CPlanReportElement res = m_planReport.First().Value;
             m_planReport.Remove(res.m_dtEndExecute);
