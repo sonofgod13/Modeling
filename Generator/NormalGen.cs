@@ -26,13 +26,13 @@ namespace GeneratorSubsystem
             return erf;
         }
 
-        public int[] generateForDay()
+        public int[] GenerateForDay()
         {
             List<int> sequence = new List<int>();
             int sum = 0;
             while (sum <= CParams.WORKDAY_MINUTES_NUMBER)
             {
-                int x = (int) Math.Round(((uGen.generateN(12)).Sum() - 6) * d + m);
+                int x = (int) Math.Round(((uGen.GenerateN(12)).Sum() - 6) * d + m);
                 sum = sum + x;
                 if (sum <= CParams.WORKDAY_MINUTES_NUMBER) sequence.Add(x);
 
@@ -42,20 +42,20 @@ namespace GeneratorSubsystem
 
         }
 
-        public double[] generateN(int n)
+        public double[] GenerateN(int n)
         {            
             List<double> sequence = new List<double>();
             
             for (int i = 0; i < n; i++)
             {
-                sequence.Add(((uGen.generateN(12)).Sum()-6)*d+m);
+                sequence.Add(((uGen.GenerateN(12)).Sum()-6)*d+m);
                 
             }
             
             return sequence.ToArray();
         }
 
-        public double getProbability(double x)
+        public double GetProbability(double x)
         {
             return (0.5-this.erf((x-m)/d));            
         }

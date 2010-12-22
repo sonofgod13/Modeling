@@ -17,7 +17,7 @@ namespace ModelingDataTypes
 
         public CGeneratedProduct()
         {
-            m_iGeneratorType = 1;   //CGeneratedElement
+            m_iGeneratorType = GeneratorType.Normal;   //CGeneratedElement
             m_fA = 2.0;             //CGeneratedElement
             m_fB = 1.0;             //CGeneratedElement
 
@@ -26,7 +26,7 @@ namespace ModelingDataTypes
             m_materials = new CMaterialCluster();
 
             m_modify = new CGeneratedElement();
-            m_modify.m_iGeneratorType = 1;
+            m_modify.m_iGeneratorType = GeneratorType.Normal;
             m_modify.m_fA = 2.0;
             m_modify.m_fB = 1.0;
         }

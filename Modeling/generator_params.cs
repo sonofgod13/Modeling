@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using ModelingDataTypes;
 
 namespace Modeling
 {
@@ -22,11 +23,11 @@ namespace Modeling
             Z_param2_textBox.Text = "0";
         }
 
-        public generator_params(int iGeneratorType, double fGeneratorParamFirst, double fGeneratorParamSecond)
+        public generator_params(GeneratorType iGeneratorType, double fGeneratorParamFirst, double fGeneratorParamSecond)
         {
             InitializeComponent();
 
-            Z_comboBox.SelectedIndex = iGeneratorType;
+            Z_comboBox.SelectedIndex = (int)iGeneratorType;
             //Z_param1_label.Text = "a";
             //Z_param2_label.Text = "b";
             Z_param1_textBox.Text = fGeneratorParamFirst.ToString();

@@ -7,9 +7,9 @@ namespace GeneratorSubsystem
 {
     public interface IGen
     {
-        int[] generateForDay();
-        double[] generateN(int n);
-        double getProbability(double x);
+        int[] GenerateForDay();
+        double[] GenerateN(int n);
+        double GetProbability(double x);
     }    
 
 }

@@ -26,24 +26,36 @@ namespace GeneratorSubsystem
         private IGen[] deliveryElementsModifyGens;
 
 
-        public static IGen makeGenerator(int iGeneratorType, double fA, double fB)  
-            //функция создания генератора заданого типа
-            //возвращает интефейс этого генератора
+        /// <summary>
+        /// Функция создания генератора заданого типа
+        /// возвращает интефейс этого генератора
+        /// </summary>
+        /// <param name="generatorType"></param>
+        /// <param name="fA"></param>
+        /// <param name="fB"></param>
+        /// <returns></returns>
+        public static IGen CreateGenerator(GeneratorType generatorType, double fA, double fB)  
         {
-            switch (iGeneratorType)
+            switch (generatorType)
             {
-                case 0:
+                case GeneratorType.Uniform:
                     return new UniformGen(fA, fB);
-                case 1:
+
+                case GeneratorType.Normal:
                     return new NormalGen(fA, fB);
-                case 2:
+
+                case GeneratorType.Rayleigh:
                     return new RayleighGen(fA);
-                case 3:
+
+                case GeneratorType.Gamma:
                     return new GammaGen(fA, fB);
-                case 4:
+
+                case GeneratorType.Exponential:
                     return new ExponentialGen(fA);
+
+                default:
+                    return new UniformGen(0, 1);
             }
-            return new UniformGen(0, 1);
         }
 
         public Generator(IGen requestTimeGen, IGen firstArticleGen, IGen secondArticleGen, IGen thirdArticleGen, double urgencyProb, double refuseProb,
@@ -70,12 +82,14 @@ namespace GeneratorSubsystem
 
         private int[] generateUrgencyRefuse(int n)
         {
-            double[] standGen =  uGen.generateN(n);
-            List<int> urgency = new List<int>(); 
+            var standGen =  uGen.GenerateN(n);
+            var urgency = new List<int>(); 
             foreach (double s in standGen)
             {
-                if (s <= this.urgencyProb) urgency.Add(1);
-                else if ((s > this.urgencyProb) && (s <= (this.urgencyProb+this.refuseProb))) urgency.Add(2);
+                if (s <= this.urgencyProb) 
+                    urgency.Add(1);
+                else if ((s > this.urgencyProb) && (s <= (this.urgencyProb+this.refuseProb))) 
+                    urgency.Add(2);
                 else urgency.Add(0);
             }
             return urgency.ToArray();
@@ -143,13 +157,13 @@ namespace GeneratorSubsystem
         //генерация массива заявок
         public CDemand[] generateDemands(DateTime dt)
         {
-            int[] requestTimes = this.requestTimeGen.generateForDay();
+            int[] requestTimes = this.requestTimeGen.GenerateForDay();
             double[][] articlesModifyGen = new double[3][];
 
             //собственно генерация
-            articlesModifyGen[0] = this.firstArticleGen.generateN(requestTimes.Length);
-            articlesModifyGen[1] = this.firstArticleGen.generateN(requestTimes.Length);
-            articlesModifyGen[2] = this.firstArticleGen.generateN(requestTimes.Length);
+            articlesModifyGen[0] = this.firstArticleGen.GenerateN(requestTimes.Length);
+            articlesModifyGen[1] = this.firstArticleGen.GenerateN(requestTimes.Length);
+            articlesModifyGen[2] = this.firstArticleGen.GenerateN(requestTimes.Length);
 
             int[] urgency = generateUrgencyRefuse(requestTimes.Length);
 
@@ -179,22 +193,22 @@ namespace GeneratorSubsystem
         
         public int[] generateModifyTime()
         {
-            return this.demandModifyTimeGen.generateForDay();
+            return this.demandModifyTimeGen.GenerateForDay();
         }
         
 
         public CDemand modifyDemand(CDemand[] demands, DateTime currentDate)
         {
             //List<CDemand> modifiedDemands = new List<CDemand>();
-            double[] arctProbs = uGen.generateN(demands.Length);
+            double[] arctProbs = uGen.GenerateN(demands.Length);
             int arctProbsInd = 0;
-            double[] urgProbs = uGen.generateN(demands.Length);
+            double[] urgProbs = uGen.GenerateN(demands.Length);
             int urgProbsInd = 0;
-            double[] firstArticleModifySeq = this.firstArticleModifyGen.generateN(demands.Length);
+            double[] firstArticleModifySeq = this.firstArticleModifyGen.GenerateN(demands.Length);
             int firstArctInd = 0;
-            double[] secondArticleModifySeq = this.secondArticleModifyGen.generateN(demands.Length);
+            double[] secondArticleModifySeq = this.secondArticleModifyGen.GenerateN(demands.Length);
             int secondArctInd = 0;
-            double[] thirdArticleModifySeq = this.secondArticleModifyGen.generateN(demands.Length);
+            double[] thirdArticleModifySeq = this.secondArticleModifyGen.GenerateN(demands.Length);
             int thirdArctInd = 0;
             Random rand = new Random(Guid.NewGuid().GetHashCode());           
             /*
@@ -210,7 +224,7 @@ namespace GeneratorSubsystem
                 if (modifiedDemand.m_iUrgency == 2) throw new Exception("Заявка от которой отказались не может быть изменена!");
                 TimeSpan dt = currentDate.Subtract(demands[i].m_dtGeting);
                 
-                if (this.articlesModifyGen.getProbability(dt.TotalMinutes) >= arctProbs[arctProbsInd])
+                if (this.articlesModifyGen.GetProbability(dt.TotalMinutes) >= arctProbs[arctProbsInd])
                 {
                     bool changeFlag = false;
                     while (changeFlag == false)
@@ -229,7 +243,7 @@ namespace GeneratorSubsystem
                         else
                         {
                             firstArctInd = 0;
-                            firstArticleModifySeq = this.firstArticleModifyGen.generateN(demands.Length);
+                            firstArticleModifySeq = this.firstArticleModifyGen.GenerateN(demands.Length);
                         }
                         /*
                         int modifiedSecondArticleNum = demands[i].m_products[2] + (int)Math.Round(secondArticleModifySeq[secondArctInd]);
@@ -245,7 +259,7 @@ namespace GeneratorSubsystem
                         else
                         {
                             secondArctInd = 0;
-                            secondArticleModifySeq = this.secondArticleModifyGen.generateN(demands.Length);
+                            secondArticleModifySeq = this.secondArticleModifyGen.GenerateN(demands.Length);
                         }
                         /*
                         int modifiedThirdArticleNum = demands[i].m_products[3] + (int)Math.Round(thirdArticleModifySeq[thirdArctInd]);
@@ -261,7 +275,7 @@ namespace GeneratorSubsystem
                         else
                         {
                             thirdArctInd = 0;
-                            thirdArticleModifySeq = this.thirdArticleModifyGen.generateN(demands.Length);
+                            thirdArticleModifySeq = this.thirdArticleModifyGen.GenerateN(demands.Length);
                         }
                         if (modifiedFirstArticleNum < 0) modifiedFirstArticleNum = 0;
                         if (modifiedSecondArticleNum < 0) modifiedSecondArticleNum = 0;
@@ -310,12 +324,12 @@ namespace GeneratorSubsystem
                 else
                 {
                     arctProbsInd = 0;
-                    arctProbs = uGen.generateN(demands.Length);
+                    arctProbs = uGen.GenerateN(demands.Length);
                 }
 
                 if (demands[i].m_iUrgency == 1)
                 {
-                    if (this.urgToStandModifyGen.getProbability(dt.TotalMinutes) >= urgProbs[urgProbsInd])
+                    if (this.urgToStandModifyGen.GetProbability(dt.TotalMinutes) >= urgProbs[urgProbsInd])
                     {
                         modifiedDemand.m_iUrgency = 0;
                         //modifyFlag = true;  срочность изменяется но если не изменились продукты изменение не произошло
@@ -323,7 +337,7 @@ namespace GeneratorSubsystem
                 }
                 else
                 {
-                    if (this.standToUrgModifyGen.getProbability(dt.TotalMinutes) >= urgProbs[urgProbsInd])
+                    if (this.standToUrgModifyGen.GetProbability(dt.TotalMinutes) >= urgProbs[urgProbsInd])
                     {
                         modifiedDemand.m_iUrgency = 1;
                         //modifyFlag = true; срочность изменяется но если не изменились продукты изменение не произошло
@@ -333,7 +347,7 @@ namespace GeneratorSubsystem
                 else
                 {
                     urgProbsInd = 0;
-                    urgProbs = uGen.generateN(demands.Length);
+                    urgProbs = uGen.GenerateN(demands.Length);
                 }
 
                 if (modifyFlag == true) returnDemand = modifiedDemand; 
@@ -344,11 +358,11 @@ namespace GeneratorSubsystem
         public CDeliveryDemand[] modifyDeliveries(CDeliveryDemand[] deliveries)
         {
             List<CDeliveryDemand> modifiedDeliveries = new List<CDeliveryDemand>();
-            double[] deliveryDelaySeq = this.deliveryDelayGen.generateN(deliveries.Length);
+            double[] deliveryDelaySeq = this.deliveryDelayGen.GenerateN(deliveries.Length);
             double[][] deliveryElementsModifySeq = new double[12][];
             for (int i=0;i<12;i++)
             {
-                deliveryElementsModifySeq[i] = this.deliveryElementsModifyGens[i].generateN(deliveries.Length);
+                deliveryElementsModifySeq[i] = this.deliveryElementsModifyGens[i].GenerateN(deliveries.Length);
             }
             for (int i = 0; i < deliveries.Length; i++)
             {

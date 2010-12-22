@@ -219,7 +219,7 @@ namespace Modeling
                 demand.m_dtShouldBeDone = DateTime.Now.AddDays(new Random().Next(18));
 
                 UniformGen ug = new UniformGen(1, 0);
-                if (ug.generateN(1).ElementAt(0) < 0.8) return true;
+                if (ug.GenerateN(1).ElementAt(0) < 0.8) return true;
                 else return false;
             }
         }
@@ -281,7 +281,7 @@ namespace Modeling
             {
                 //         Заглушка     
                 UniformGen ug = new UniformGen(1, 0);
-                if (ug.generateN(1).ElementAt(0) < 0.8) return true;
+                if (ug.GenerateN(1).ElementAt(0) < 0.8) return true;
                 else return false;
             }
         }

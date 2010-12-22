@@ -50,6 +50,7 @@
     <Compile Include="Demand.cs" />
     <Compile Include="GeneratedElement.cs" />
     <Compile Include="GeneratedProduct.cs" />
+    <Compile Include="GeneratorType.cs" />
     <Compile Include="Material.cs" />
     <Compile Include="MaterialCluster.cs" />
     <Compile Include="ModelError.cs" />

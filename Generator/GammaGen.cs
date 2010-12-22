@@ -269,12 +269,12 @@ namespace GeneratorSubsystem
         
         #endregion
 
-        public int[] generateForDay()
+        public int[] GenerateForDay()
         {
             List<int> sequence = new List<int>();
             int suggNum = 100;
-            double[] uSeq1 = uGen.generateN(suggNum);
-            double[] uSeq2 = uGen.generateN(suggNum);
+            double[] uSeq1 = uGen.GenerateN(suggNum);
+            double[] uSeq2 = uGen.GenerateN(suggNum);
             int j = 0;
             int sum = 0;
 
@@ -289,8 +289,8 @@ namespace GeneratorSubsystem
                 {
                     if (j == suggNum)
                     {
-                        uSeq1 = uGen.generateN(suggNum);
-                        uSeq2 = uGen.generateN(suggNum);
+                        uSeq1 = uGen.GenerateN(suggNum);
+                        uSeq2 = uGen.GenerateN(suggNum);
                         j = 0;
                     }
                     p = b * uSeq1[j];
@@ -334,8 +334,8 @@ namespace GeneratorSubsystem
                 {
                     if (j == suggNum)
                     {
-                        uSeq1 = uGen.generateN(suggNum);
-                        uSeq2 = uGen.generateN(suggNum);
+                        uSeq1 = uGen.GenerateN(suggNum);
+                        uSeq2 = uGen.GenerateN(suggNum);
                         j = 0;
                     }
                     v = a * Math.Log(uSeq1[j] / (1 - uSeq1[j]));
@@ -367,11 +367,11 @@ namespace GeneratorSubsystem
         }
             
 
-        public double[] generateN(int n)
+        public double[] GenerateN(int n)
         {
             List<double> sequence = new List<double>();
-            double[] uSeq1 = uGen.generateN(n);
-            double[] uSeq2 = uGen.generateN(n);
+            double[] uSeq1 = uGen.GenerateN(n);
+            double[] uSeq2 = uGen.GenerateN(n);
             int j = 0;
 
             if (k < 1)
@@ -385,8 +385,8 @@ namespace GeneratorSubsystem
                 {
                     if (j == n)
                     {
-                        uSeq1 = uGen.generateN(n);
-                        uSeq2 = uGen.generateN(n);
+                        uSeq1 = uGen.GenerateN(n);
+                        uSeq2 = uGen.GenerateN(n);
                         j = 0;
                     }
                     p = b * uSeq1[j];
@@ -429,8 +429,8 @@ namespace GeneratorSubsystem
                 {
                     if (j == n)
                     {
-                        uSeq1 = uGen.generateN(n);
-                        uSeq2 = uGen.generateN(n);
+                        uSeq1 = uGen.GenerateN(n);
+                        uSeq2 = uGen.GenerateN(n);
                         j = 0;
                     }
                     v = a * Math.Log(uSeq1[j] / (1 - uSeq1[j]));
@@ -460,7 +460,7 @@ namespace GeneratorSubsystem
         }
 
 
-        public double getProbability(double x)
+        public double GetProbability(double x)
         {
             return this.incompletegamma(k,x/d);
             

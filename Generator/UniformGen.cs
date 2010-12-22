@@ -17,7 +17,7 @@ namespace GeneratorSubsystem
             this.b = b;
         }
 
-        public int[] generateForDay()
+        public int[] GenerateForDay()
         {
             Random r = new Random(Guid.NewGuid().GetHashCode());
             int maxValue = 2 ^ 31 - 1;
@@ -39,7 +39,7 @@ namespace GeneratorSubsystem
 
         }
 
-        public double[] generateN(int n)
+        public double[] GenerateN(int n)
         {
             Random r = new Random(Guid.NewGuid().GetHashCode());             
             int maxValue = (int)Math.Pow(2,31) - 1;
@@ -57,7 +57,7 @@ namespace GeneratorSubsystem
             return sequence.ToArray();
         }
 
-        public double getProbability(double x)
+        public double GetProbability(double x)
         {
             if (x >= b)
             {

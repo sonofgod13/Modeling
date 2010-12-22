@@ -289,7 +289,7 @@ namespace Modeling
         }
 
 
-        private bool SetGeneratorParameters(ref int iGeneratorType, ref double fGeneratorParamFirst, ref double fGeneratorParamSecond) 
+        private bool SetGeneratorParameters(ref GeneratorType iGeneratorType, ref double fGeneratorParamFirst, ref double fGeneratorParamSecond) 
             //функция установки параметров генератора
         {
             bool bSetResult = false;
@@ -301,7 +301,7 @@ namespace Modeling
             {
                 if (DialogResult.OK == generatorForm.ShowDialog())
                 {
-                    iGeneratorType = generatorForm.Z_comboBox.SelectedIndex;
+                    iGeneratorType = (GeneratorType)generatorForm.Z_comboBox.SelectedIndex;
                     fGeneratorParamFirst = generatorForm.fGeneratorParamFirst;
                     fGeneratorParamSecond = generatorForm.fGeneratorParamSecond;
                     bSetResult = true;

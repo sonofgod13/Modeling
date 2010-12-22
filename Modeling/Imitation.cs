@@ -29,33 +29,33 @@ namespace Modeling
             pauseDone = new AutoResetEvent(false);
 
             generator = new Generator(
-                Generator.makeGenerator(CParams.m_generatorDemandsTime.m_iGeneratorType, CParams.m_generatorDemandsTime.m_fA, CParams.m_generatorDemandsTime.m_fB),
-                Generator.makeGenerator(CParams.m_products[1].m_iGeneratorType, CParams.m_products[1].m_fA, CParams.m_products[1].m_fB),
-                Generator.makeGenerator(CParams.m_products[2].m_iGeneratorType, CParams.m_products[2].m_fA, CParams.m_products[2].m_fB),
-                Generator.makeGenerator(CParams.m_products[3].m_iGeneratorType, CParams.m_products[3].m_fA, CParams.m_products[3].m_fB),
+                Generator.CreateGenerator(CParams.m_generatorDemandsTime.m_iGeneratorType, CParams.m_generatorDemandsTime.m_fA, CParams.m_generatorDemandsTime.m_fB),
+                Generator.CreateGenerator(CParams.m_products[1].m_iGeneratorType, CParams.m_products[1].m_fA, CParams.m_products[1].m_fB),
+                Generator.CreateGenerator(CParams.m_products[2].m_iGeneratorType, CParams.m_products[2].m_fA, CParams.m_products[2].m_fB),
+                Generator.CreateGenerator(CParams.m_products[3].m_iGeneratorType, CParams.m_products[3].m_fA, CParams.m_products[3].m_fB),
                 CParams.m_fUrgencyPropabilityDemand, CParams.m_fRefusePropabilityDemand,
-                Generator.makeGenerator(CParams.m_demandModifyTime.m_iGeneratorType, CParams.m_demandModifyTime.m_fA, CParams.m_demandModifyTime.m_fB),
-                Generator.makeGenerator(CParams.m_articlesModify.m_iGeneratorType, CParams.m_articlesModify.m_fA, CParams.m_articlesModify.m_fB),
-                Generator.makeGenerator(CParams.m_products[1].m_modify.m_iGeneratorType, CParams.m_products[1].m_modify.m_fA, CParams.m_products[1].m_modify.m_fB),
-                Generator.makeGenerator(CParams.m_products[2].m_modify.m_iGeneratorType, CParams.m_products[2].m_modify.m_fA, CParams.m_products[2].m_modify.m_fB),
-                Generator.makeGenerator(CParams.m_products[3].m_modify.m_iGeneratorType, CParams.m_products[3].m_modify.m_fA, CParams.m_products[3].m_modify.m_fB),
-                Generator.makeGenerator(CParams.m_ugrToStandModify.m_iGeneratorType, CParams.m_ugrToStandModify.m_fA, CParams.m_ugrToStandModify.m_fB),
-                Generator.makeGenerator(CParams.m_standToUrgModify.m_iGeneratorType, CParams.m_standToUrgModify.m_fA, CParams.m_standToUrgModify.m_fB),
-                Generator.makeGenerator(CParams.m_deliveryDelayGenerator.m_iGeneratorType, CParams.m_deliveryDelayGenerator.m_fA, CParams.m_deliveryDelayGenerator.m_fB),
+                Generator.CreateGenerator(CParams.m_demandModifyTime.m_iGeneratorType, CParams.m_demandModifyTime.m_fA, CParams.m_demandModifyTime.m_fB),
+                Generator.CreateGenerator(CParams.m_articlesModify.m_iGeneratorType, CParams.m_articlesModify.m_fA, CParams.m_articlesModify.m_fB),
+                Generator.CreateGenerator(CParams.m_products[1].m_modify.m_iGeneratorType, CParams.m_products[1].m_modify.m_fA, CParams.m_products[1].m_modify.m_fB),
+                Generator.CreateGenerator(CParams.m_products[2].m_modify.m_iGeneratorType, CParams.m_products[2].m_modify.m_fA, CParams.m_products[2].m_modify.m_fB),
+                Generator.CreateGenerator(CParams.m_products[3].m_modify.m_iGeneratorType, CParams.m_products[3].m_modify.m_fA, CParams.m_products[3].m_modify.m_fB),
+                Generator.CreateGenerator(CParams.m_ugrToStandModify.m_iGeneratorType, CParams.m_ugrToStandModify.m_fA, CParams.m_ugrToStandModify.m_fB),
+                Generator.CreateGenerator(CParams.m_standToUrgModify.m_iGeneratorType, CParams.m_standToUrgModify.m_fA, CParams.m_standToUrgModify.m_fB),
+                Generator.CreateGenerator(CParams.m_deliveryDelayGenerator.m_iGeneratorType, CParams.m_deliveryDelayGenerator.m_fA, CParams.m_deliveryDelayGenerator.m_fB),
                 new IGen[]
                 {   
-                    Generator.makeGenerator(CParams.m_materials[1].m_iGeneratorType, CParams.m_materials[1].m_fA, CParams.m_materials[1].m_fB),
-                    Generator.makeGenerator(CParams.m_materials[2].m_iGeneratorType, CParams.m_materials[2].m_fA, CParams.m_materials[2].m_fB),
-                    Generator.makeGenerator(CParams.m_materials[3].m_iGeneratorType, CParams.m_materials[3].m_fA, CParams.m_materials[3].m_fB),
-                    Generator.makeGenerator(CParams.m_materials[4].m_iGeneratorType, CParams.m_materials[4].m_fA, CParams.m_materials[4].m_fB),
-                    Generator.makeGenerator(CParams.m_materials[5].m_iGeneratorType, CParams.m_materials[5].m_fA, CParams.m_materials[5].m_fB),
-                    Generator.makeGenerator(CParams.m_materials[6].m_iGeneratorType, CParams.m_materials[6].m_fA, CParams.m_materials[6].m_fB),
-                    Generator.makeGenerator(CParams.m_materials[7].m_iGeneratorType, CParams.m_materials[7].m_fA, CParams.m_materials[7].m_fB),
-                    Generator.makeGenerator(CParams.m_materials[8].m_iGeneratorType, CParams.m_materials[8].m_fA, CParams.m_materials[8].m_fB),
-                    Generator.makeGenerator(CParams.m_materials[9].m_iGeneratorType, CParams.m_materials[9].m_fA, CParams.m_materials[9].m_fB),
-                    Generator.makeGenerator(CParams.m_materials[10].m_iGeneratorType, CParams.m_materials[10].m_fA, CParams.m_materials[10].m_fB),
-                    Generator.makeGenerator(CParams.m_materials[11].m_iGeneratorType, CParams.m_materials[11].m_fA, CParams.m_materials[11].m_fB),
-                    Generator.makeGenerator(CParams.m_materials[12].m_iGeneratorType, CParams.m_materials[12].m_fA, CParams.m_materials[12].m_fB)
+                    Generator.CreateGenerator(CParams.m_materials[1].m_iGeneratorType, CParams.m_materials[1].m_fA, CParams.m_materials[1].m_fB),
+                    Generator.CreateGenerator(CParams.m_materials[2].m_iGeneratorType, CParams.m_materials[2].m_fA, CParams.m_materials[2].m_fB),
+                    Generator.CreateGenerator(CParams.m_materials[3].m_iGeneratorType, CParams.m_materials[3].m_fA, CParams.m_materials[3].m_fB),
+                    Generator.CreateGenerator(CParams.m_materials[4].m_iGeneratorType, CParams.m_materials[4].m_fA, CParams.m_materials[4].m_fB),
+                    Generator.CreateGenerator(CParams.m_materials[5].m_iGeneratorType, CParams.m_materials[5].m_fA, CParams.m_materials[5].m_fB),
+                    Generator.CreateGenerator(CParams.m_materials[6].m_iGeneratorType, CParams.m_materials[6].m_fA, CParams.m_materials[6].m_fB),
+                    Generator.CreateGenerator(CParams.m_materials[7].m_iGeneratorType, CParams.m_materials[7].m_fA, CParams.m_materials[7].m_fB),
+                    Generator.CreateGenerator(CParams.m_materials[8].m_iGeneratorType, CParams.m_materials[8].m_fA, CParams.m_materials[8].m_fB),
+                    Generator.CreateGenerator(CParams.m_materials[9].m_iGeneratorType, CParams.m_materials[9].m_fA, CParams.m_materials[9].m_fB),
+                    Generator.CreateGenerator(CParams.m_materials[10].m_iGeneratorType, CParams.m_materials[10].m_fA, CParams.m_materials[10].m_fB),
+                    Generator.CreateGenerator(CParams.m_materials[11].m_iGeneratorType, CParams.m_materials[11].m_fA, CParams.m_materials[11].m_fB),
+                    Generator.CreateGenerator(CParams.m_materials[12].m_iGeneratorType, CParams.m_materials[12].m_fA, CParams.m_materials[12].m_fB)
                 }
             );
             this.modelingDays = CParams.m_iModelingDayToWork;
