@@ -204,17 +204,19 @@ namespace GeneratorSubsystem
             int arctProbsInd = 0;
             double[] urgProbs = uGen.GenerateN(demands.Length);
             int urgProbsInd = 0;
-            double[] firstArticleModifySeq = this.firstArticleModifyGen.GenerateN(demands.Length);
-            int firstArctInd = 0;
-            double[] secondArticleModifySeq = this.secondArticleModifyGen.GenerateN(demands.Length);
-            int secondArctInd = 0;
-            double[] thirdArticleModifySeq = this.secondArticleModifyGen.GenerateN(demands.Length);
-            int thirdArctInd = 0;
-            Random rand = new Random(Guid.NewGuid().GetHashCode());           
-            /*
-            for (int i = 0; i < demands.Length; i++)
+
+            Func<IEnumerator<double>, double> getNext = (sequence) =>
             {
-            */
+                sequence.MoveNext();
+                return sequence.Current;
+            };
+
+            var firstSequence = this.firstArticleModifyGen.GenerateSequence().GetEnumerator();
+            var secondSequence = this.secondArticleModifyGen.GenerateSequence().GetEnumerator();
+            var thirdSequence = this.thirdArticleModifyGen.GenerateSequence().GetEnumerator();
+
+            Random rand = new Random(Guid.NewGuid().GetHashCode());           
+
             CDemand returnDemand = new CDemand();
             bool modifyFlag = false;
             while (modifyFlag == false)
@@ -229,72 +231,23 @@ namespace GeneratorSubsystem
                     bool changeFlag = false;
                     while (changeFlag == false)
                     {
-                        /*
-                        int modifiedFirstArticleNum = demands[i].m_products[1] + (int)Math.Round(firstArticleModifySeq[firstArctInd]);
-                        */
-
-                        //--->
                         int modifiedFirstArticleNum = 0;
                         demands[i].m_products.GetProduct(1, out modifiedFirstArticleNum);
-                        modifiedFirstArticleNum += (int)Math.Round(firstArticleModifySeq[firstArctInd]);
-                        //<---
-
-                        if (firstArctInd < (demands.Length - 1)) firstArctInd++;
-                        else
-                        {
-                            firstArctInd = 0;
-                            firstArticleModifySeq = this.firstArticleModifyGen.GenerateN(demands.Length);
-                        }
-                        /*
-                        int modifiedSecondArticleNum = demands[i].m_products[2] + (int)Math.Round(secondArticleModifySeq[secondArctInd]);
-                         */
-
-                        //--->
+                        modifiedFirstArticleNum += (int)Math.Round(getNext(firstSequence));
+                        
                         int modifiedSecondArticleNum = 0;
                         demands[i].m_products.GetProduct(2, out modifiedSecondArticleNum);
-                        modifiedSecondArticleNum += (int)Math.Round(secondArticleModifySeq[secondArctInd]);
-                        //<---
+                        modifiedSecondArticleNum += (int)Math.Round(getNext(secondSequence));
 
-                        if (secondArctInd < (demands.Length - 1)) secondArctInd++;
-                        else
-                        {
-                            secondArctInd = 0;
-                            secondArticleModifySeq = this.secondArticleModifyGen.GenerateN(demands.Length);
-                        }
-                        /*
-                        int modifiedThirdArticleNum = demands[i].m_products[3] + (int)Math.Round(thirdArticleModifySeq[thirdArctInd]);
-                         */
-
-                        //--->
                         int modifiedThirdArticleNum = 0;
                         demands[i].m_products.GetProduct(3, out modifiedThirdArticleNum);
-                        modifiedThirdArticleNum += (int)Math.Round(thirdArticleModifySeq[thirdArctInd]);
-                        //<---
+                        modifiedThirdArticleNum += (int)Math.Round(getNext(thirdSequence));
 
-                        if (thirdArctInd < (demands.Length - 1)) thirdArctInd++;
-                        else
-                        {
-                            thirdArctInd = 0;
-                            thirdArticleModifySeq = this.thirdArticleModifyGen.GenerateN(demands.Length);
-                        }
                         if (modifiedFirstArticleNum < 0) modifiedFirstArticleNum = 0;
                         if (modifiedSecondArticleNum < 0) modifiedSecondArticleNum = 0;
                         if (modifiedThirdArticleNum < 0) modifiedThirdArticleNum = 0;
-                        /*
-                        if (modifiedFirstArticleNum != demands[i].m_products[1]) changeFlag = true;
-                        if (modifiedSecondArticleNum != demands[i].m_products[2]) changeFlag = true;
-                        if (modifiedThirdArticleNum != demands[i].m_products[3]) changeFlag = true;
-                        
-                        if (changeFlag == true)
-                        {
-                            modifiedDemand.m_products[1]=modifiedFirstArticleNum;
-                            modifiedDemand.m_products[2]=modifiedSecondArticleNum;
-                            modifiedDemand.m_products[3]=modifiedThirdArticleNum;
-                            modifyFlag = true;
-                        }  
-                        */
 
-                        //--->
+                        
                         if (!demands[i].m_products.CompareProduct(1, modifiedFirstArticleNum))
                             changeFlag = true;
 
