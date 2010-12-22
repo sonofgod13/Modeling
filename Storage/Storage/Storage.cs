@@ -245,20 +245,21 @@ namespace Storage
             if (!acceptedDemands.ContainsKey(modifiedDemand.m_iID))
                 return ModelError.Error();
 
-            //this.m_acceptedDemands[modifiedDemand.m_iID].m_iUrgency = modifiedDemand.m_iUrgency;      срочность нельзя изменить
-            this.acceptedDemands[modifiedDemand.m_iID].m_dtShouldBeDone = modifiedDemand.m_dtShouldBeDone;
+            var acceptedDemand = this.acceptedDemands[modifiedDemand.m_iID];
+
+            //acceptedDemand.m_iUrgency = modifiedDemand.m_iUrgency;      срочность нельзя изменить
+            acceptedDemand.m_dtShouldBeDone = modifiedDemand.m_dtShouldBeDone;
 
             /* //add product cluster
             for (int iProductNumber = 1; iProductNumber < CParams.PRODUCTS_NUMBER + 1; iProductNumber++)
             {
-                this.m_acceptedDemands[modifiedDemand.m_iID].m_products[iProductNumber] =
-                    modifiedDemand.m_products[iProductNumber];
+                acceptedDemand.m_products[iProductNumber] = modifiedDemand.m_products[iProductNumber];
             }
              */
 
             //--->
-            this.acceptedDemands[modifiedDemand.m_iID].m_products.CleanProductsCluster();
-            this.acceptedDemands[modifiedDemand.m_iID].m_products.AddProductCluster(modifiedDemand.m_products);
+            acceptedDemand.m_products.CleanProductsCluster();
+            acceptedDemand.m_products.AddProductCluster(modifiedDemand.m_products);
             //<---
 
             return true;
@@ -301,7 +302,7 @@ namespace Storage
         /// <returns></returns>
         public bool IsDemandDone(int demandInd)
         {
-            CPlanReportElement[] demandPlanElementReports = this.planReport.Values.Where(x => x.m_planElement.m_iDemandID == demandInd).ToArray();
+            var demandPlanElementReports = this.planReport.Values.Where(x => x.m_planElement.m_iDemandID == demandInd).ToArray();
             int firstArticle = 0;
             int thirdArticle = 0;
             int secondArticle = 0;
@@ -345,12 +346,7 @@ namespace Storage
             if (iProductValue > thirdArticle)
                 bToTrue = false;
 
-            if (bToTrue)
-                return true;
-            //<---
-
-            else
-                return false;
+            return bToTrue;
         }
 
         /// <summary>
@@ -370,8 +366,11 @@ namespace Storage
 
         public bool AddModifyStatistic(bool modified)
         {
-            if (modified == true) this.modifyStatistic[0]++;
-            else this.modifyStatistic[1]++;
+            if (modified == true)
+                this.modifyStatistic[0]++;
+            else
+                this.modifyStatistic[1]++;
+
             return true;
         }
 
@@ -386,6 +385,7 @@ namespace Storage
             {
                 plan.Enqueue(planElements[i]);
             }
+
             return true;
         }
 
@@ -457,6 +457,7 @@ namespace Storage
                 return ModelError.Error();
 
             this.DeliveryDemands.Add(deliveryDemand.m_iID, deliveryDemand);
+
             return true;
         }
 
@@ -468,22 +469,28 @@ namespace Storage
         public int GetNextDeliveryDemandTime(DateTime date)
         {
             int timeSpan = -1;
-            foreach (CDeliveryDemand d in this.DeliveryDemands.Values)
+            foreach (var demand in this.DeliveryDemands.Values)
             {
-                if (d.isDone == false)
+                if (demand.isDone)
+                    continue;
+
+                int curTimeSpan = (int)(demand.m_dtRealDelivery.Value - date).TotalMinutes;
+
+                DateTime checkDate = date.AddMinutes(curTimeSpan);
+
+                if ((curTimeSpan >= 0) && (date.Year == checkDate.Year) && (date.Month == checkDate.Month) && (date.Day == checkDate.Day))
                 {
-                    int curTimeSpan = (int)(d.m_dtRealDelivery.Value - date).TotalMinutes;
-                    DateTime checkDate = date.AddMinutes(curTimeSpan);
-                    if ((curTimeSpan >= 0) && (date.Year == checkDate.Year) && (date.Month == checkDate.Month) && (date.Day == checkDate.Day))
+                    if (timeSpan == -1)
                     {
-                        if (timeSpan == -1) timeSpan = curTimeSpan;
-                        else
-                        {
-                            if (curTimeSpan < timeSpan) timeSpan = curTimeSpan;
-                        }
+                        timeSpan = curTimeSpan;
+                    }
+                    else if (curTimeSpan < timeSpan)
+                    {
+                        timeSpan = curTimeSpan;
                     }
                 }
             }
+
             return timeSpan;
         }
 
@@ -494,11 +501,9 @@ namespace Storage
         /// <returns></returns>
         public CDeliveryDemand[] GetDeliveryDemand(DateTime date)
         {
-            List<CDeliveryDemand> list = new List<CDeliveryDemand>();
-            foreach (CDeliveryDemand d in this.DeliveryDemands.Values)
-            {
-                if ((d.m_dtRealDelivery == date) && (d.isDone == false)) list.Add(d);
-            }
+            var list = this.DeliveryDemands.Values.Where(
+                d => (d.m_dtRealDelivery == date) && !d.isDone
+            );
 
             return list.ToArray();
         }
@@ -523,25 +528,27 @@ namespace Storage
         {
             int demandsNum = 0;
             double demandsDelaySum = 0;
-            foreach (CDemand d in this.acceptedDemands.Values)
+            foreach (var demand in this.acceptedDemands.Values)
             {
-                if ((d.m_dtFinishing.HasValue == true) && (d.m_dtShouldBeDone.HasValue == true))
+                if ((demand.m_dtFinishing.HasValue == true) && (demand.m_dtShouldBeDone.HasValue == true))
                 {
                     demandsNum++;
-                    if (d.m_dtFinishing.Value > d.m_dtShouldBeDone.Value)
+                    if (demand.m_dtFinishing.Value > demand.m_dtShouldBeDone.Value)
                     {
-                        double span = (d.m_dtFinishing.Value - d.m_dtShouldBeDone.Value).TotalDays;
+                        double span = (demand.m_dtFinishing.Value - demand.m_dtShouldBeDone.Value).TotalDays;
                         demandsDelaySum = demandsDelaySum + span;
                     }
                     else
                     {
-                        double span = (d.m_dtShouldBeDone.Value - d.m_dtFinishing.Value).TotalDays;
+                        double span = (demand.m_dtShouldBeDone.Value - demand.m_dtFinishing.Value).TotalDays;
                         demandsDelaySum = demandsDelaySum - span;
                     }
                 }
             }
-            if (demandsNum > 0) return Math.Round(demandsDelaySum / demandsNum);
-            else return -1;
+
+            return (demandsNum > 0)
+                ? Math.Round(demandsDelaySum / demandsNum)
+                : -1 ;
         }
 
         /// <summary>
@@ -553,6 +560,7 @@ namespace Storage
             double notFinishedDemands = this.GetNotFinishedDemands().Count();
             double allAcceptedDemands = this.acceptedDemands.Count();
             double allCanceledDemands = this.canceledDemands.Count();
+
             return ((allAcceptedDemands - notFinishedDemands) / (allAcceptedDemands + allCanceledDemands));
         }
 
@@ -564,6 +572,7 @@ namespace Storage
         {
             double allAcceptedDemands = this.acceptedDemands.Count();
             double allCanceledDemands = this.canceledDemands.Count();
+
             return (allCanceledDemands / (allAcceptedDemands + allCanceledDemands));
         }
 
@@ -574,19 +583,22 @@ namespace Storage
         public double SumWorkTime()
         {
             double workTime = 0;
-            foreach (CPlanReportElement p in this.planReport.Values)
+            foreach (var reportElement in this.planReport.Values)
             {
+                var planElement = reportElement.m_planElement;
+
                 //workTime = workTime + (p.m_dtEndExecute - p.m_dtStartExecute).TotalMinutes; 
                 //   из-за круглосуточной работы, а именно из-за костыля которым я это здесь реализовал, такой метод будет давать ошибки
-                if (p.m_planElement.m_iDemandID == 0)
+                if (planElement.m_iDemandID == 0)
                 {
-                    workTime = workTime + CParams.retargetTimes[p.m_planElement.m_iProductID - 1];
+                    workTime += CParams.retargetTimes[planElement.m_iProductID - 1];
                 }
                 else
                 {
-                    workTime = workTime + CParams.m_products[p.m_planElement.m_iProductID].m_iTime; ;
+                    workTime += CParams.m_products[planElement.m_iProductID].m_iTime; ;
                 }
             }
+
             return workTime;
         }
 
@@ -597,13 +609,14 @@ namespace Storage
         public double SumRetargetTime()
         {
             double retargetTime = 0;
-            foreach (CPlanReportElement p in this.planReport.Values)
+            foreach (var reportElement in this.planReport.Values)
             {
-                if (p.m_planElement.m_iDemandID == 0)
+                var planElement = reportElement.m_planElement;
+                if (planElement.m_iDemandID == 0)
                 {
                     //retargetTime = retargetTime + (p.m_dtEndExecute - p.m_dtStartExecute).TotalMinutes;
                     //   из-за круглосуточной работы, а именно из-за костыля которым я это здесь реализовал, такой метод будет давать ошибки
-                    retargetTime = retargetTime + CParams.retargetTimes[p.m_planElement.m_iProductID - 1];
+                    retargetTime += CParams.retargetTimes[planElement.m_iProductID - 1];
                 }
             }
             return retargetTime;
