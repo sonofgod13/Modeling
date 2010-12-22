@@ -34,7 +34,7 @@ namespace GeneratorSubsystem
         /// <param name="fA"></param>
         /// <param name="fB"></param>
         /// <returns></returns>
-        public static IGen CreateGenerator(GeneratorType generatorType, double fA, double fB)  
+        public static IGen CreateGenerator(GeneratorType generatorType, double fA, double fB)
         {
             switch (generatorType)
             {
@@ -60,9 +60,9 @@ namespace GeneratorSubsystem
 
         public Generator(IGen requestTimeGen, IGen firstArticleGen, IGen secondArticleGen, IGen thirdArticleGen, double urgencyProb, double refuseProb,
             IGen demandModifyTimeGen, IGen articlesModifyGen, IGen firstArticleModifyGen, IGen secondArticleModifyGen, IGen thirdArticleModifyGen,
-            IGen urgToStandModifyGen, IGen standToUrgModifyGen, IGen deliveryDelayGen, IGen[] deliveryElementsModifyGens) 
+            IGen urgToStandModifyGen, IGen standToUrgModifyGen, IGen deliveryDelayGen, IGen[] deliveryElementsModifyGens)
         {
-            this.uGen = new UniformGen(0, 1);  
+            this.uGen = new UniformGen(0, 1);
             this.requestTimeGen = requestTimeGen;
             this.firstArticleGen = firstArticleGen;
             this.secondArticleGen = secondArticleGen;
@@ -73,7 +73,7 @@ namespace GeneratorSubsystem
             this.articlesModifyGen = articlesModifyGen;
             this.firstArticleModifyGen = firstArticleModifyGen;
             this.secondArticleModifyGen = secondArticleModifyGen;
-            this.thirdArticleModifyGen = thirdArticleModifyGen;            
+            this.thirdArticleModifyGen = thirdArticleModifyGen;
             this.urgToStandModifyGen = urgToStandModifyGen;
             this.standToUrgModifyGen = standToUrgModifyGen;
             this.deliveryDelayGen = deliveryDelayGen;
@@ -82,20 +82,20 @@ namespace GeneratorSubsystem
 
         private int[] generateUrgencyRefuse(int n)
         {
-            var standGen =  uGen.GenerateN(n);
-            var urgency = new List<int>(); 
+            var standGen = uGen.GenerateN(n);
+            var urgency = new List<int>();
             foreach (double s in standGen)
             {
-                if (s <= this.urgencyProb) 
+                if (s <= this.urgencyProb)
                     urgency.Add(1);
-                else if ((s > this.urgencyProb) && (s <= (this.urgencyProb+this.refuseProb))) 
+                else if ((s > this.urgencyProb) && (s <= (this.urgencyProb + this.refuseProb)))
                     urgency.Add(2);
                 else urgency.Add(0);
             }
             return urgency.ToArray();
         }
 
-        
+
         //public CDemand[] generateDemands(DateTime dt)
         //{
         //    int[] requestTimes = this.requestTimeGen.generateForDay();
@@ -190,20 +190,17 @@ namespace GeneratorSubsystem
             return demands;
         }
 
-        
+
         public int[] generateModifyTime()
         {
             return this.demandModifyTimeGen.GenerateForDay();
         }
-        
+
 
         public CDemand modifyDemand(CDemand[] demands, DateTime currentDate)
         {
-            //List<CDemand> modifiedDemands = new List<CDemand>();
-            double[] arctProbs = uGen.GenerateN(demands.Length);
-            int arctProbsInd = 0;
-            double[] urgProbs = uGen.GenerateN(demands.Length);
-            int urgProbsInd = 0;
+            var arctProbabilities = uGen.GenerateSequence().GetEnumerator();
+            var urgProbabilities = uGen.GenerateSequence().GetEnumerator();
 
             Func<IEnumerator<double>, double> getNext = (sequence) =>
             {
@@ -211,78 +208,63 @@ namespace GeneratorSubsystem
                 return sequence.Current;
             };
 
-            var firstSequence = this.firstArticleModifyGen.GenerateSequence().GetEnumerator();
-            var secondSequence = this.secondArticleModifyGen.GenerateSequence().GetEnumerator();
-            var thirdSequence = this.thirdArticleModifyGen.GenerateSequence().GetEnumerator();
+            var probabilitiesByProduct = new Dictionary<int, IEnumerator<double>>()
+            {
+                {1, this.firstArticleModifyGen.GenerateSequence().GetEnumerator()},
+                {2, this.secondArticleModifyGen.GenerateSequence().GetEnumerator()},
+                {3, this.thirdArticleModifyGen.GenerateSequence().GetEnumerator()},
+            };
 
-            Random rand = new Random(Guid.NewGuid().GetHashCode());           
+            var rand = new Random(Guid.NewGuid().GetHashCode());
 
-            CDemand returnDemand = new CDemand();
+            var returnDemand = new CDemand();
             bool modifyFlag = false;
-            while (modifyFlag == false)
+
+            while (!modifyFlag)
             {
                 int i = rand.Next(demands.Length);
-                CDemand modifiedDemand = new CDemand(demands[i]);
+                var modifiedDemand = new CDemand(demands[i]);
                 if (modifiedDemand.m_iUrgency == 2) throw new Exception("Заявка от которой отказались не может быть изменена!");
                 TimeSpan dt = currentDate.Subtract(demands[i].m_dtGeting);
-                
-                if (this.articlesModifyGen.GetProbability(dt.TotalMinutes) >= arctProbs[arctProbsInd])
+
+                var demand = demands[i];
+
+                if (this.articlesModifyGen.GetProbability(dt.TotalMinutes) >= getNext(arctProbabilities))
                 {
                     bool changeFlag = false;
                     while (changeFlag == false)
                     {
-                        int modifiedFirstArticleNum = 0;
-                        demands[i].m_products.GetProduct(1, out modifiedFirstArticleNum);
-                        modifiedFirstArticleNum += (int)Math.Round(getNext(firstSequence));
-                        
-                        int modifiedSecondArticleNum = 0;
-                        demands[i].m_products.GetProduct(2, out modifiedSecondArticleNum);
-                        modifiedSecondArticleNum += (int)Math.Round(getNext(secondSequence));
+                        var productClaster = new CProductCluster();
 
-                        int modifiedThirdArticleNum = 0;
-                        demands[i].m_products.GetProduct(3, out modifiedThirdArticleNum);
-                        modifiedThirdArticleNum += (int)Math.Round(getNext(thirdSequence));
+                        for (var productIndex = 0; productIndex <= 3; productIndex++)
+                        {
+                            int modifiedArticleNum = 0;
 
-                        if (modifiedFirstArticleNum < 0) modifiedFirstArticleNum = 0;
-                        if (modifiedSecondArticleNum < 0) modifiedSecondArticleNum = 0;
-                        if (modifiedThirdArticleNum < 0) modifiedThirdArticleNum = 0;
+                            demand.m_products.GetProduct(productIndex, out modifiedArticleNum);
 
-                        
-                        if (!demands[i].m_products.CompareProduct(1, modifiedFirstArticleNum))
-                            changeFlag = true;
+                            modifiedArticleNum += (int)Math.Round(getNext(probabilitiesByProduct[productIndex]));
 
-                        if (!demands[i].m_products.CompareProduct(2, modifiedSecondArticleNum))
-                            changeFlag = true;
+                            if (modifiedArticleNum < 0) 
+                                modifiedArticleNum = 0;
 
-                        if (!demands[i].m_products.CompareProduct(3, modifiedThirdArticleNum))
-                            changeFlag = true;
+                            if (!demand.m_products.CompareProduct(productIndex, modifiedArticleNum))
+                                changeFlag = true;
 
-                        CProductCluster productClaster = new CProductCluster();
-                        productClaster.AddProduct(1, modifiedFirstArticleNum);
-                        productClaster.AddProduct(2, modifiedSecondArticleNum);
-                        productClaster.AddProduct(3, modifiedThirdArticleNum);
+                            productClaster.AddProduct(productIndex, modifiedArticleNum);
+                        }
 
-                        if ((changeFlag == true)&&(productClaster.CompareNomenclatureIsMore(demands[i].m_products) == true))
+                        if (changeFlag && productClaster.CompareNomenclatureIsMore(demand.m_products))
                         {
                             modifiedDemand.m_products.CleanProductsCluster();
                             modifiedDemand.m_products.AddProductCluster(productClaster);
                             modifyFlag = true;
                         }
-                        
-                                               
-                    }                    
+                    }
                 }
 
-                if (arctProbsInd < (demands.Length - 1)) arctProbsInd++;
-                else
+                if (demand.m_iUrgency == 1)
                 {
-                    arctProbsInd = 0;
-                    arctProbs = uGen.GenerateN(demands.Length);
-                }
-
-                if (demands[i].m_iUrgency == 1)
-                {
-                    if (this.urgToStandModifyGen.GetProbability(dt.TotalMinutes) >= urgProbs[urgProbsInd])
+                    if (this.urgToStandModifyGen.GetProbability(dt.TotalMinutes) >= getNext(urgProbabilities))
                     {
                         modifiedDemand.m_iUrgency = 0;
                         //modifyFlag = true;  срочность изменяется но если не изменились продукты изменение не произошло
@@ -290,20 +272,15 @@ namespace GeneratorSubsystem
                 }
                 else
                 {
-                    if (this.standToUrgModifyGen.GetProbability(dt.TotalMinutes) >= urgProbs[urgProbsInd])
+                    if (this.standToUrgModifyGen.GetProbability(dt.TotalMinutes) >= getNext(urgProbabilities))
                     {
                         modifiedDemand.m_iUrgency = 1;
                         //modifyFlag = true; срочность изменяется но если не изменились продукты изменение не произошло
                     }
                 }
-                if (urgProbsInd < (demands.Length - 1)) urgProbsInd++;
-                else
-                {
-                    urgProbsInd = 0;
-                    urgProbs = uGen.GenerateN(demands.Length);
-                }
 
-                if (modifyFlag == true) returnDemand = modifiedDemand; 
+                if (modifyFlag)
+                    returnDemand = modifiedDemand;
             }
             return returnDemand;
         }
@@ -313,7 +290,7 @@ namespace GeneratorSubsystem
             List<CDeliveryDemand> modifiedDeliveries = new List<CDeliveryDemand>();
             double[] deliveryDelaySeq = this.deliveryDelayGen.GenerateN(deliveries.Length);
             double[][] deliveryElementsModifySeq = new double[12][];
-            for (int i=0;i<12;i++)
+            for (int i = 0; i < 12; i++)
             {
                 deliveryElementsModifySeq[i] = this.deliveryElementsModifyGens[i].GenerateN(deliveries.Length);
             }
@@ -337,21 +314,21 @@ namespace GeneratorSubsystem
 
                             int iTemp = 0;
                             deliveries[i].m_materialsDemand.GetMaterial(j + 1, out iTemp);
-                            iTemp-=mod;
+                            iTemp -= mod;
                             if (iTemp > 0)
                             {
-                                modifiedDelivery.m_materialsDemand.AddMaterial(j + 1, iTemp); 
-                            }   
+                                modifiedDelivery.m_materialsDemand.AddMaterial(j + 1, iTemp);
+                            }
                         }
                         /***
                         if (modifiedDelivery.m_materialsDemand[j + 1] < 0)
                         {
                             modifiedDelivery.m_materialsDemand[j + 1] = 0;
                         }
-                        */ 
+                        */
                     }
-                        
-                }                                      
+
+                }
                 /*
                 List<DeliveryElement> delivElems = new List<DeliveryElement>(modifiedDelivery.deliveryElements);
                 bool nullFlag = false;

@@ -173,11 +173,7 @@ namespace ModelingDataTypes
                 return ModelError.Error();
             }
 
-            if (m_entities[iEntityNumber] == iAmount)
-            {
-                return true;
-            }
-            return false;
+            return m_entities[iEntityNumber] == iAmount;
         }
 
         public bool CompareNomenclatureIsMore(CEntityCluster materialCluster)
