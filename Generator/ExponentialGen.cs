@@ -6,7 +6,7 @@ using ModelingDataTypes;
 
 namespace GeneratorSubsystem
 {
-    public class ExponentialGen : IGen
+    public class ExponentialGen : AbstractGen
     {
         private double m;
         private UniformGen uGen;
@@ -17,10 +17,10 @@ namespace GeneratorSubsystem
             this.uGen = new UniformGen(0, 1);
         }
 
-        public int[] GenerateForDay()
+        public override int[] GenerateForDay()
         {
             List<int> sequence = new List<int>();
-            int suggNum = (int)Math.Round((double)CParams.WORKDAY_MINUTES_NUMBER/(0.8*m));
+            int suggNum = (int)Math.Round((double)CParams.WORKDAY_MINUTES_NUMBER / (0.8 * m));
             double[] uSeq = uGen.GenerateN(suggNum);
             int i = 0;
             int sum = 0;
@@ -40,25 +40,20 @@ namespace GeneratorSubsystem
                 }
 
             }
-            
+
             return sequence.ToArray();
 
         }
 
-        public double[] GenerateN(int n)
-        {            
-            List<double> sequence = new List<double>();
-            double[] uSeq = uGen.GenerateN(n);
-            for (int i = 0; i < n; i++)
+        public override IEnumerable<double> GenerateSequence()
+        {
+            foreach (var uniform in uGen.GenerateSequence())
             {
-                sequence.Add((-1)*m*Math.Log(uSeq[i]));
-                
+                yield return (-1) * m * Math.Log(uniform);
             }
-            
-            return sequence.ToArray();
         }
 
-        public double GetProbability(double x)
+        public override double GetProbability(double x)
         {
             if (x >= 0)
             {

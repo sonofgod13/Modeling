@@ -6,7 +6,7 @@ using ModelingDataTypes;
 
 namespace GeneratorSubsystem
 {
-    public class GammaGen : IGen
+    public class GammaGen : AbstractGen
     {
         private double k;
         private double d;
@@ -269,7 +269,7 @@ namespace GeneratorSubsystem
         
         #endregion
 
-        public int[] GenerateForDay()
+        public override int[] GenerateForDay()
         {
             List<int> sequence = new List<int>();
             int suggNum = 100;
@@ -365,105 +365,84 @@ namespace GeneratorSubsystem
             return sequence.ToArray();
 
         }
-            
 
-        public double[] GenerateN(int n)
+        public override IEnumerable<double> GenerateSequence()
         {
-            List<double> sequence = new List<double>();
-            double[] uSeq1 = uGen.GenerateN(n);
-            double[] uSeq2 = uGen.GenerateN(n);
-            int j = 0;
+            var uniform = uGen.GenerateSequence().GetEnumerator();
+
+            Func<double> getNextUniform = () =>
+            {
+                uniform.MoveNext();
+                return uniform.Current;
+            };
 
             if (k < 1)
             {
                 double b = (Math.E + k) / Math.E;
                 double p;
                 double y;
-                int i = 0;
 
-                while (i < n)
+                while (true)
                 {
-                    if (j == n)
-                    {
-                        uSeq1 = uGen.GenerateN(n);
-                        uSeq2 = uGen.GenerateN(n);
-                        j = 0;
-                    }
-                    p = b * uSeq1[j];
+                    p = b * getNextUniform();
                     if (p > 1)
                     {
-                        y = Math.Pow(p,(1 / k));
-                        if (uSeq2[j] <= Math.Exp(-y))
+                        y = Math.Pow(p, (1 / k));
+                        if (getNextUniform() <= Math.Exp(-y))
                         {
-                            sequence.Add(d*y);
-                            i++;
+                            yield return d * y;
                         }
                     }
                     else
                     {
-                        y = (-1)*Math.Log((b-p)/ k);
-                        if (uSeq2[j] <= Math.Pow(y,(k-1)))
+                        y = (-1) * Math.Log((b - p) / k);
+                        if (getNextUniform() <= Math.Pow(y, (k - 1)))
                         {
-                            sequence.Add(d * y);
-                            i++;
+                            yield return d * y;
                         }
                     }
-                    j++;
-
                 }
             }
             else
             {
-                double a = Math.Sqrt(2*k-1);
+                double a = Math.Sqrt(2 * k - 1);
                 double b = k - Math.Log(4);
-                double q = (k + 1)/a;
+                double q = (k + 1) / a;
                 double bt = 4.5;
                 double r = 1 + Math.Log(bt);
                 double v;
                 double y;
                 double z;
                 double w;
-                int i = 0;
 
-                while (i < n)
+                while (true)
                 {
-                    if (j == n)
-                    {
-                        uSeq1 = uGen.GenerateN(n);
-                        uSeq2 = uGen.GenerateN(n);
-                        j = 0;
-                    }
-                    v = a * Math.Log(uSeq1[j] / (1 - uSeq1[j]));
+                    var u1 = getNextUniform();
+                    var u2 = getNextUniform();
+                    v = a * Math.Log(u1 / (1 - u1));
                     y = k * Math.Exp(v);
-                    z = uSeq1[j] * uSeq1[j] * uSeq2[j];
+                    z = u1 * u1 * u2;
                     w = b + q * v - y;
 
-                    if ((w + r - bt*z)>= 0)
+                    if ((w + r - bt * z) >= 0)
                     {
-                        sequence.Add(d * y);
-                        i++;
+                        yield return d * y;
                     }
                     else
                     {
                         if (w >= Math.Log(z))
                         {
-                            sequence.Add(d * y);
-                            i++;
-                        }                        
+                            yield return d * y;
+                        }
                     }
-                    j++;
                 }
 
             }
-            
-            return sequence.ToArray();
         }
 
-
-        public double GetProbability(double x)
+        public override double GetProbability(double x)
         {
             return this.incompletegamma(k,x/d);
-            
         }
     }
 }

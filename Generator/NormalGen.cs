@@ -6,7 +6,7 @@ using ModelingDataTypes;
 
 namespace GeneratorSubsystem
 {
-    public class NormalGen : IGen
+    public class NormalGen : AbstractGen
     {
         private double m;
         private double d;
@@ -26,7 +26,7 @@ namespace GeneratorSubsystem
             return erf;
         }
 
-        public int[] GenerateForDay()
+        public override int[] GenerateForDay()
         {
             List<int> sequence = new List<int>();
             int sum = 0;
@@ -42,20 +42,15 @@ namespace GeneratorSubsystem
 
         }
 
-        public double[] GenerateN(int n)
-        {            
-            List<double> sequence = new List<double>();
-            
-            for (int i = 0; i < n; i++)
+        public override IEnumerable<double> GenerateSequence()
+        {
+            while (true)
             {
-                sequence.Add(((uGen.GenerateN(12)).Sum()-6)*d+m);
-                
+                yield return ((uGen.GenerateN(12)).Sum() - 6) * d + m;
             }
-            
-            return sequence.ToArray();
         }
 
-        public double GetProbability(double x)
+        public override double GetProbability(double x)
         {
             return (0.5-this.erf((x-m)/d));            
         }

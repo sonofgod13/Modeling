@@ -9,6 +9,7 @@ namespace GeneratorSubsystem
     {
         int[] GenerateForDay();
         double[] GenerateN(int n);
+        IEnumerable<double> GenerateSequence();
         double GetProbability(double x);
     }    
 

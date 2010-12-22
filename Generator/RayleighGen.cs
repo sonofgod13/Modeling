@@ -6,7 +6,7 @@ using ModelingDataTypes;
 
 namespace GeneratorSubsystem
 {
-    public class RayleighGen : IGen
+    public class RayleighGen : AbstractGen
     {
         private double d;
         private UniformGen uGen;
@@ -17,7 +17,7 @@ namespace GeneratorSubsystem
             this.uGen = new UniformGen(0, 1);
         }
 
-        public int[] GenerateForDay()
+        public override int[] GenerateForDay()
         {
             List<int> sequence = new List<int>();
             int suggNum = (int)Math.Round((double)CParams.WORKDAY_MINUTES_NUMBER/d);
@@ -44,29 +44,19 @@ namespace GeneratorSubsystem
 
         }
 
-        public double[] GenerateN(int n)
-        {            
-            List<double> sequence = new List<double>();
-            double[] uSeq = uGen.GenerateN(n);
-            for (int i = 0; i < n; i++)
+        public override IEnumerable<double> GenerateSequence()
+        {
+            foreach (var currentUniform in uGen.GenerateSequence())
             {
-                sequence.Add(d*Math.Sqrt((-2)*Math.Log(uSeq[i])));
-                
+                yield return d * Math.Sqrt((-2) * Math.Log(currentUniform));
             }
-            
-            return sequence.ToArray();
         }
 
-        public double GetProbability(double x)
+        public override double GetProbability(double x)
         {
-            if (x >= 0)
-            {
-                return (1 - Math.Exp(((-1) * x * x) / (2 * d * d)));
-            }
-            else
-            {
-                return 0;
-            }
+            return (x >= 0)
+                ? (1 - Math.Exp(((-1) * x * x) / (2 * d * d)))
+                : 0;
         }
     }
 }

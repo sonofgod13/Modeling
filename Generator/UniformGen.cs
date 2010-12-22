@@ -6,7 +6,7 @@ using ModelingDataTypes;
 
 namespace GeneratorSubsystem
 {
-    public class UniformGen : IGen
+    public class UniformGen : AbstractGen
     {
         private double a;
         private double b;
@@ -17,47 +17,51 @@ namespace GeneratorSubsystem
             this.b = b;
         }
 
-        public int[] GenerateForDay()
+        public override int[] GenerateForDay()
         {
-            Random r = new Random(Guid.NewGuid().GetHashCode());
-            int maxValue = 2 ^ 31 - 1;
-            int x = r.Next(maxValue);
-            List<int> sequence = new List<int>();
-            double y =a + (b - a) * (x / maxValue);
+            var sequence = new List<int>();
+
+            var r = new Random(Guid.NewGuid().GetHashCode());
+
+            int x = r.Next(int.MaxValue);
+            
+            double y = a + (b - a) * (x / int.MaxValue);
             int sum = (int) Math.Round(y);
+
             sequence.Add(sum);
+
             while (sum <= CParams.WORKDAY_MINUTES_NUMBER)
             {
-                Math.DivRem(630360016 * x, maxValue, out x);
-                y = a + (b - a) * (x / maxValue);
+                Math.DivRem(630360016 * x, int.MaxValue, out x);
+
+                y = a + (b - a) * (x / int.MaxValue);
+
                 int yR = (int)Math.Round(y);
+
                 sum = sum + yR;
-                if (sum <= CParams.WORKDAY_MINUTES_NUMBER) sequence.Add(yR);
+                if (sum <= CParams.WORKDAY_MINUTES_NUMBER) 
+                    sequence.Add(yR);
             }
             
             return sequence.ToArray();
 
         }
 
-        public double[] GenerateN(int n)
+        public override IEnumerable<double> GenerateSequence()
         {
-            Random r = new Random(Guid.NewGuid().GetHashCode());             
-            int maxValue = (int)Math.Pow(2,31) - 1;
-            long x = r.Next(maxValue);
-            List<double> sequence = new List<double>();
-            sequence.Add(a + (b - a) * ((double)x / maxValue));
-            if (n > 1)
+            var r = new Random(Guid.NewGuid().GetHashCode());
+
+            long x = r.Next(int.MaxValue);
+
+            yield return a + (b - a) * ((double)x / int.MaxValue);
+
+            while (true)
             {
-                for (int i = 0; i < n - 1; i++)
-                {
-                    Math.DivRem((long)630360016 * x, (long)maxValue, out x);
-                    sequence.Add(a + (b - a) * ((double)x / maxValue));
-                }
+                yield return Math.DivRem((long)630360016 * x, (long)int.MaxValue, out x);
             }
-            return sequence.ToArray();
         }
 
-        public double GetProbability(double x)
+        public override double GetProbability(double x)
         {
             if (x >= b)
             {
