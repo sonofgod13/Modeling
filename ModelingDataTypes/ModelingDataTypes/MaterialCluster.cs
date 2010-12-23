@@ -12,22 +12,22 @@ namespace ModelingDataTypes
     {
         private EntityCluster cluster;
 
-        private int LIMITATION = Params.MATERIALS_NUMBER;
+        private int MaterialsCount = Params.MATERIALS_NUMBER;
 
         public MaterialCluster()
         {
-            cluster = new EntityCluster(LIMITATION);
+            cluster = new EntityCluster(MaterialsCount);
         }
 
         public MaterialCluster(MaterialCluster copy)
         {
-            cluster = new EntityCluster(copy.cluster, LIMITATION);
+            cluster = new EntityCluster(copy.cluster, MaterialsCount);
         }
 
 
-        public bool AddMaterial(int iMaterialNumber, int iAmount)
+        public bool AddMaterial(int materialIndex, int amount)
         {
-            return cluster.AddEntity(iMaterialNumber, iAmount);
+            return cluster.AddEntity(materialIndex, amount);
         }
 
         public void AddMaterialCluster(MaterialCluster materialCluster)
@@ -35,9 +35,9 @@ namespace ModelingDataTypes
             cluster.AddEntityCluster(materialCluster.cluster);
         }
 
-        public bool CleanMaterial(int iMaterialNumber)
+        public bool CleanMaterial(int materialIndex)
         {
-            return cluster.CleanEntity(iMaterialNumber);
+            return cluster.CleanEntity(materialIndex);
         }
 
         public void CleanMaterialsCluster()
@@ -45,15 +45,15 @@ namespace ModelingDataTypes
             cluster.CleanEntitysCluster();
         }
 
-        public bool GetMaterial(int iMaterialNumber, out int iMaterialValue)
+        public bool GetMaterial(int materialIndex, out int materialValue)
         {
-            iMaterialValue = 0;
-            return cluster.GetEntity(iMaterialNumber, out iMaterialValue);
+            materialValue = 0;
+            return cluster.GetEntity(materialIndex, out materialValue);
         }
 
-        public bool IsMaterial(int iMaterialNumber, int iAmount)
+        public bool IsMaterial(int materialIndex, int amount)
         {
-            return cluster.IsEntity(iMaterialNumber, iAmount);
+            return cluster.IsEntity(materialIndex, amount);
         }
 
         public bool IsMaterialCluster(MaterialCluster materialCluster)
@@ -61,9 +61,9 @@ namespace ModelingDataTypes
             return cluster.IsEntityCluster(materialCluster.cluster);
         }
 
-        public bool TakeAwayMaterial(int iMaterialNumber, int iAmount)
+        public bool TakeAwayMaterial(int materialIndex, int amount)
         {
-            return cluster.TakeAwayEntity(iMaterialNumber, iAmount);
+            return cluster.TakeAwayEntity(materialIndex, amount);
         }
 
         public bool TakeAwayMaterialCluster(MaterialCluster materialCluster)
@@ -71,9 +71,9 @@ namespace ModelingDataTypes
             return cluster.TakeAwayEntityCluster(materialCluster.cluster);
         }
 
-        public bool CompareMaterial(int iMaterialNumber, int iAmount)
+        public bool CompareMaterial(int materialIndex, int amount)
         {
-            return cluster.CompareEntity(iMaterialNumber, iAmount);
+            return cluster.CompareEntity(materialIndex, amount);
         }
 
         

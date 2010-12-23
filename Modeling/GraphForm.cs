@@ -10,14 +10,14 @@ using ZedGraph;
 
 namespace Modeling
 {
-    public partial class Graph : Form
+    public partial class GraphForm : Form
     {
         static Color[] colors = new Color[12] {
             Color.Blue, Color.Red, Color.Green, Color.Yellow,
             Color.Black, Color.Brown, Color.Khaki, Color.Gray,
             Color.Orange, Color.YellowGreen, Color.Teal, Color.Pink };
 
-        public Graph(int[][] Y, int[][] X, string[] lines, string XAxis, string YAxis, string title)
+        public GraphForm(int[][] Y, int[][] X, string[] lines, string XAxis, string YAxis, string title)
         {
             InitializeComponent();
             /*
@@ -94,7 +94,7 @@ namespace Modeling
 
         }
 
-        public Graph(Dictionary<int,double[]> Y, int[][] X, string[] lines, string XAxis, string YAxis, string title)
+        public GraphForm(Dictionary<int,double[]> Y, int[][] X, string[] lines, string XAxis, string YAxis, string title)
         {
             InitializeComponent();
             

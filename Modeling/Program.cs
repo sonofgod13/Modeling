@@ -15,7 +15,7 @@ namespace Modeling
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ImitationGUI());
+            Application.Run(new ImitationGUIForm());
         }
     }
 }

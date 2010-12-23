@@ -1,6 +1,6 @@
 ﻿namespace Modeling
 {
-    partial class ImitationGUI
+    partial class ImitationGUIForm
     {
         /// <summary>
         /// Required designer variable.

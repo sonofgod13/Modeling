@@ -12,22 +12,22 @@ namespace ModelingDataTypes
     {
         private EntityCluster Cluster;
 
-        private int LIMITATION = Params.PRODUCTS_NUMBER;
+        private int ClusterSizeLimit = Params.PRODUCTS_NUMBER;
 
         public ProductCluster()
         {
-            Cluster = new EntityCluster(LIMITATION);
+            Cluster = new EntityCluster(ClusterSizeLimit);
         }
 
         public ProductCluster(ProductCluster copy)
         {
-            Cluster = new EntityCluster(copy.Cluster, LIMITATION);
+            Cluster = new EntityCluster(copy.Cluster, ClusterSizeLimit);
         }
 
 
-        public bool AddProduct(int iProductNumber, int iAmount)
+        public bool AddProduct(int productIndex, int amount)
         {
-            return Cluster.AddEntity(iProductNumber, iAmount);
+            return Cluster.AddEntity(productIndex, amount);
         }
 
         public void AddProductCluster(ProductCluster productCluster)
@@ -35,9 +35,9 @@ namespace ModelingDataTypes
             Cluster.AddEntityCluster(productCluster.Cluster);
         }
 
-        public bool CleanProduct(int iProductNumber)
+        public bool CleanProduct(int productIndex)
         {
-            return Cluster.CleanEntity(iProductNumber);
+            return Cluster.CleanEntity(productIndex);
         }
 
         public void CleanProductsCluster()
@@ -45,15 +45,14 @@ namespace ModelingDataTypes
             Cluster.CleanEntitysCluster();
         }
 
-        public bool GetProduct(int iProductNumber, out int iProductValue)
+        public bool GetProduct(int productIndex, out int productValue)
         {
-            iProductValue = 0;
-            return Cluster.GetEntity(iProductNumber, out iProductValue);
+            return Cluster.GetEntity(productIndex, out productValue);
         }
 
-        public bool IsProduct(int iProductNumber, int iAmount)
+        public bool IsProduct(int productIndex, int amount)
         {
-            return Cluster.IsEntity(iProductNumber, iAmount);
+            return Cluster.IsEntity(productIndex, amount);
         }
 
         public bool IsProductCluster(ProductCluster productCluster)
@@ -61,9 +60,9 @@ namespace ModelingDataTypes
             return Cluster.IsEntityCluster(productCluster.Cluster);
         }
 
-        public bool TakeAwayProduct(int iProductNumber, int iAmount)
+        public bool TakeAwayProduct(int productIndex, int iAmount)
         {
-            return Cluster.TakeAwayEntity(iProductNumber, iAmount);
+            return Cluster.TakeAwayEntity(productIndex, iAmount);
         }
 
         public bool TakeAwayProductCluster(ProductCluster productCluster)
@@ -71,9 +70,9 @@ namespace ModelingDataTypes
             return Cluster.TakeAwayEntityCluster(productCluster.Cluster);
         }
 
-        public bool CompareProduct(int iProductNumber, int iAmount)
+        public bool CompareProduct(int productIndex, int amount)
         {
-            return Cluster.CompareEntity(iProductNumber, iAmount);
+            return Cluster.CompareEntity(productIndex, amount);
         }
 
         public bool CompareNomenclatureIsMore(ProductCluster productCluster)

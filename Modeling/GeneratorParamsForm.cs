@@ -10,9 +10,9 @@ using ModelingDataTypes;
 
 namespace Modeling
 {
-    public partial class generator_params : Form
+    public partial class GeneratorParamsForm : Form
     {
-        public generator_params()
+        public GeneratorParamsForm()
         {
             InitializeComponent();
 
@@ -23,7 +23,7 @@ namespace Modeling
             Z_param2_textBox.Text = "0";
         }
 
-        public generator_params(GeneratorType iGeneratorType, double fGeneratorParamFirst, double fGeneratorParamSecond)
+        public GeneratorParamsForm(GeneratorType iGeneratorType, double fGeneratorParamFirst, double fGeneratorParamSecond)
         {
             InitializeComponent();
 
@@ -104,8 +104,8 @@ namespace Modeling
             double fTempParamSecond = 0.0;
             bool bResultOK = true;
 
-            if (!(ImitationGUI.ConvertStrToDouble(Z_param1_textBox.Text, out fTempParamFirst) 
-                && ImitationGUI.ConvertStrToDouble(Z_param2_textBox.Text, out fTempParamSecond)))
+            if (!(ImitationGUIForm.ConvertStrToDouble(Z_param1_textBox.Text, out fTempParamFirst) 
+                && ImitationGUIForm.ConvertStrToDouble(Z_param2_textBox.Text, out fTempParamSecond)))
             {
                 bResultOK = false;
             }

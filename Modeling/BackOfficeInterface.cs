@@ -426,7 +426,7 @@ namespace Modeling
             }
         }
 
-        public PlanElement[] GetDailyPlan(DateTime date, ref CStorage storage)          //Получение от back office плана на день
+        public PlanElement[] GetDailyPlan(DateTime date, ref Storage.Storage storage)          //Получение от back office плана на день
         {
             if (!Params.UseFakeServices)
             {

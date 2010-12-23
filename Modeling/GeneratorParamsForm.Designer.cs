@@ -1,6 +1,6 @@
 ﻿namespace Modeling
 {
-    partial class generator_params
+    partial class GeneratorParamsForm
     {
         /// <summary>
         /// Required designer variable.

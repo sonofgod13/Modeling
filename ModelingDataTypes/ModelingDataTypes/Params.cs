@@ -200,7 +200,7 @@ namespace ModelingDataTypes
             Products.Add(3, product3);
 
 
-            Materials = new Dictionary<int, Material>();
+            Materials = new Dictionary<int, Material>(12);
             for (var materialIndex = 1; materialIndex <= 12; materialIndex++)
             {
                 Materials.Add(

@@ -1,6 +1,6 @@
 ﻿namespace Modeling
 {
-    partial class Graph
+    partial class GraphForm
     {
         /// <summary>
         /// Required designer variable.

@@ -6,7 +6,7 @@ using ModelingDataTypes;
 
 namespace Storage
 {
-    public class CStorage //временное хранилище результатов моделирования
+    public class Storage //временное хранилище результатов моделирования
     {
         /// <summary>
         /// Статистика утверждённых изменений в заявках первое - число принятых, второе - отклонённых.
@@ -78,7 +78,7 @@ namespace Storage
         /// <summary>
         /// Конструктор - инициализация значений
         /// </summary>
-        public CStorage()
+        public Storage()
         {
             modifyStatistic = new int[] { 0, 0 };
 

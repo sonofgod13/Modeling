@@ -13,7 +13,7 @@ namespace Modeling
     public class CImitation
     {
         private BackOfficeInterface backOffice;
-        private CStorage storage;       //временное хранилище результатов моделирования
+        private Storage.Storage storage;       //временное хранилище результатов моделирования
         private Generator generator;    
         private DateTime modelTime;
         private DateTime startTime;
@@ -25,7 +25,7 @@ namespace Modeling
         public CImitation()
         {
             this.backOffice = new BackOfficeInterface();
-            storage = new Storage.CStorage();   //содается временное хранилище результатов моделирования
+            storage = new Storage.Storage();   //содается временное хранилище результатов моделирования
             pauseDone = new AutoResetEvent(false);
 
             generator = new Generator(

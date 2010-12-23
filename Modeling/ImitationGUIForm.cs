@@ -17,7 +17,7 @@ using System.Diagnostics;
 
 namespace Modeling
 {
-    public partial class ImitationGUI : Form
+    public partial class ImitationGUIForm : Form
     {
         private bool modelFlag;
         private bool pauseModelFlag;
@@ -72,7 +72,7 @@ namespace Modeling
         }
 
 
-        public ImitationGUI()  //при загрузке формы основных параметров
+        public ImitationGUIForm()  //при загрузке формы основных параметров
         {
             Params.Initialization();   //инициализация начальных параметров
             InitializeComponent();
@@ -297,7 +297,7 @@ namespace Modeling
             //fGeneratorParamFirst = 0.0;
             //fGeneratorParamSecond = 0.0;
 
-            using (generator_params generatorForm = new generator_params(iGeneratorType, fGeneratorParamFirst, fGeneratorParamSecond))
+            using (GeneratorParamsForm generatorForm = new GeneratorParamsForm(iGeneratorType, fGeneratorParamFirst, fGeneratorParamSecond))
             {
                 if (DialogResult.OK == generatorForm.ShowDialog())
                 {
@@ -597,7 +597,7 @@ namespace Modeling
                 "Материал 1","Материал 2","Материал 3","Материал 4",
                 "Материал 5","Материал 6","Материал 7","Материал 8",
                 "Материал 9","Материал 10","Материал 11","Материал 12" };
-            Graph gr = new Graph(imitator.getMaterialsPerDayStatistic(),x,lines,"Дни","Количество","Изменение количества материалов на складе");
+            GraphForm gr = new GraphForm(imitator.getMaterialsPerDayStatistic(),x,lines,"Дни","Количество","Изменение количества материалов на складе");
             gr.ShowDialog();
         }
 
@@ -742,7 +742,7 @@ namespace Modeling
             x[0] = days.ToArray();
             y[0] = imitator.getIdlePerDayStatistic();
             string[] lines = new string[1] {"Доля времени простоя"};
-            Graph gr = new Graph(y, x, lines, "Дни", "Доля", "Изменение доли времени простоя от времени производства");
+            GraphForm gr = new GraphForm(y, x, lines, "Дни", "Доля", "Изменение доли времени простоя от времени производства");
             gr.ShowDialog();
         }
 
@@ -758,7 +758,7 @@ namespace Modeling
             x[0] = days.ToArray();
             y[0] = imitator.getDemandAverageDelayPerDayStatistic();
             string[] lines = new string[1] { "Среднее время задержки заказов ('-1' - нет выполненных заказов)" };
-            Graph gr = new Graph(y, x, lines, "Дни", "Среднее время (дни)", "Изменение среднего времени задержки заказов");
+            GraphForm gr = new GraphForm(y, x, lines, "Дни", "Среднее время (дни)", "Изменение среднего времени задержки заказов");
             gr.ShowDialog();
         }
 
@@ -775,7 +775,7 @@ namespace Modeling
             x[0] = days.ToArray();
             y[0] = finishedDemandsPerDayStatistic;
             string[] lines = new string[1] { "Доля выполненных заказов" };
-            Graph gr = new Graph(y, x, lines, "Дни", "Доля", "Изменение доли выполненных заказов");
+            GraphForm gr = new GraphForm(y, x, lines, "Дни", "Доля", "Изменение доли выполненных заказов");
             gr.ShowDialog();
         }
 
@@ -803,7 +803,7 @@ namespace Modeling
             x[0] = days.ToArray();
             y[0] = canceledDemandsPerDayStatistic;
             string[] lines = new string[1] { "Доля отменённых заказов" };
-            Graph gr = new Graph(y, x, lines, "Дни", "Доля", "Изменение доли отменённых заказов");
+            GraphForm gr = new GraphForm(y, x, lines, "Дни", "Доля", "Изменение доли отменённых заказов");
             gr.ShowDialog();
         }
 
