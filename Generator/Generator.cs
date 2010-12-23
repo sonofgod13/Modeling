@@ -82,7 +82,7 @@ namespace GeneratorSubsystem
             this.deliveryElementsModifyGens = deliveryElementsModifyGens;
         }
 
-        private int[] generateUrgencyRefuse(int n)
+        private int[] GenerateUrgencyRefuse(int n)
         {
             var standGen = uGen.GenerateN(n);
             var urgency = new List<int>();
@@ -156,8 +156,12 @@ namespace GeneratorSubsystem
         //}
 
 
-        //генерация массива заявок
-        public CDemand[] generateDemands(DateTime dt)
+        /// <summary>
+        /// генерация массива заявок
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public CDemand[] GenerateDemands(DateTime dt)
         {
             int[] requestTimes = this.requestTimeGen.GenerateForDay();
             double[][] articlesModifyGen = new double[3][];
@@ -167,7 +171,7 @@ namespace GeneratorSubsystem
             articlesModifyGen[1] = this.firstArticleGen.GenerateN(requestTimes.Length);
             articlesModifyGen[2] = this.firstArticleGen.GenerateN(requestTimes.Length);
 
-            int[] urgency = generateUrgencyRefuse(requestTimes.Length);
+            int[] urgency = GenerateUrgencyRefuse(requestTimes.Length);
 
             CDemand[] demands = new CDemand[requestTimes.Length];
             int minutes = 0;
@@ -193,13 +197,13 @@ namespace GeneratorSubsystem
         }
 
 
-        public int[] generateModifyTime()
+        public int[] GenerateModifyTime()
         {
             return this.demandModifyTimeGen.GenerateForDay();
         }
 
 
-        public CDemand modifyDemand(CDemand[] demands, DateTime currentDate)
+        public CDemand ModifyDemand(CDemand[] demands, DateTime currentDate)
         {
             var arctProbabilities = uGen.GenerateSequence().GetEnumerator();
             var urgProbabilities = uGen.GenerateSequence().GetEnumerator();
@@ -289,7 +293,7 @@ namespace GeneratorSubsystem
             return returnDemand;
         }
 
-        public CDeliveryDemand[] modifyDeliveries(CDeliveryDemand[] deliveries)
+        public CDeliveryDemand[] ModifyDeliveries(CDeliveryDemand[] deliveries)
         {
             List<CDeliveryDemand> modifiedDeliveries = new List<CDeliveryDemand>();
             double[] deliveryDelaySeq = this.deliveryDelayGen.GenerateN(deliveries.Length);

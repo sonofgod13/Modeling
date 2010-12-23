@@ -197,7 +197,7 @@ namespace Modeling
            // CDemand.idNext = 0; // сброс счетчика уникальности заявок
             this.currentModellingDay = 0;
             this.stopFlag = false;
-            this.backOffice.startModeling(this.modelTime);
+            this.backOffice.StartModeling(this.modelTime);
             
             ////////////////////////////  Тут определены начальные заявки и материалы - это как оказалось не нужно((((
 
@@ -311,23 +311,23 @@ namespace Modeling
                     this.storage.Materials.GetMaterial(j + 1, out materialsNumToday[j]);
                 }
                 this.storage.AddMaterialsStatisticDay(materialsNumToday);
-                CDemand[] newDemands = this.generator.generateDemands(workdayStartTime);
-                int[] modifyDemandsTime = this.generator.generateModifyTime();
+                CDemand[] newDemands = this.generator.GenerateDemands(workdayStartTime);
+                int[] modifyDemandsTime = this.generator.GenerateModifyTime();
                 
                 ////////////////////////////////////////////////// Обращение к back-office
                 this.storage.ClearAllPlan();
-                this.storage.AddDailyPlan(this.backOffice.getDailyPlan(modelTime,ref this.storage));
+                this.storage.AddDailyPlan(this.backOffice.GetDailyPlan(modelTime,ref this.storage));
 
                 int rem = -1;
                 int span = (int)(modelTime-startTime).TotalDays;
                 Math.DivRem(span,CParams.DELIVERY_PERIOD,out rem);
                 if ((rem == 0)&&(span!=0))
                 {
-                    CDeliveryDemand delivery = this.backOffice.getDeliveryDemands(modelTime);
+                    CDeliveryDemand delivery = this.backOffice.GetDeliveryDemands(modelTime);
                     if (delivery != null)
                     {
                         CDeliveryDemand[] dlvr = new CDeliveryDemand[1] { delivery }; // это мне было лень generator.modifyDeliveries() переписывать
-                        this.storage.AddDeliveryDemand(this.generator.modifyDeliveries(dlvr).ElementAt(0));
+                        this.storage.AddDeliveryDemand(this.generator.ModifyDeliveries(dlvr).ElementAt(0));
                     }
                 }
                 //////////////////////////////////////////////////
@@ -415,7 +415,7 @@ namespace Modeling
 
                         if (nextTimes.Min() == newDemandNextTime)
                         {
-                            bool approved = backOffice.approveDemand(ref newDemands[newDemandInd]);
+                            bool approved = backOffice.ApproveDemand(ref newDemands[newDemandInd]);
                             if (approved == true) storage.AddAcceptedDemand(newDemands[newDemandInd]);
                             else storage.AddDeclinedDemand(newDemands[newDemandInd]);
                             newDemandInd++;
@@ -426,10 +426,10 @@ namespace Modeling
                             var notFinishedDemands = this.storage.GetNotFinishedDemands();
                             if (notFinishedDemands.Count() > 0)
                             {
-                                CDemand modifiedDemand = this.generator.modifyDemand(notFinishedDemands.ToArray(), modelTime);
+                                CDemand modifiedDemand = this.generator.ModifyDemand(notFinishedDemands.ToArray(), modelTime);
                                 CDemand demand;
                                 this.storage.GetAcceptedDemand(modifiedDemand.ID, out demand);
-                                bool approved = backOffice.approveModifyDemand(modelTime, ref modifiedDemand, demand);
+                                bool approved = backOffice.ApproveModifyDemand(modelTime, ref modifiedDemand, demand);
                                 if (approved == true) this.storage.ModifyDemand(modifiedDemand);
                                 this.storage.AddModifyStatistic(approved);
                             }
@@ -521,7 +521,7 @@ namespace Modeling
                                         //}
                                     }
                                     */
-                                    backOffice.reportDeliveryDemand(d);
+                                    backOffice.ReportDeliveryDemand(d);
                                     d.IsDone = true;
                                 }                                
                             }

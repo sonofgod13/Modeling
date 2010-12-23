@@ -17,7 +17,10 @@ namespace Modeling
 {
     public class BackOfficeInterface
     {
-        static int ind = 0; ///заглушка
+        /// <summary>
+        /// заглушка
+        /// </summary>
+        static int ind = 0;
         static int delInd = 1;
 
         private int prevProductId;
@@ -91,7 +94,7 @@ namespace Modeling
             return default(T);
         }
 
-        private static IEnumerable<BackOfficePlanElem> planElemParse(XmlNode[] nodes)
+        private static IEnumerable<BackOfficePlanElem> PlanElemParse(XmlNode[] nodes)
         {
             int count = nodes.Count() - 1;
 
@@ -162,11 +165,11 @@ namespace Modeling
 
 
         /// <summary>
-        /// передача в back office время начала нового моделирования
+        /// Передача в back office время начала нового моделирования
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
-        public bool startModeling(DateTime date)
+        public bool StartModeling(DateTime date)
         {
             if (!CParams.UseFakeServices)
             {
@@ -182,11 +185,11 @@ namespace Modeling
         }
 
         /// <summary>
-        /// утверждение в back office новой заявки
+        /// Утверждение в back office новой заявки
         /// </summary>
         /// <param name="demand"></param>
         /// <returns></returns>
-        public bool approveDemand(ref CDemand demand)
+        public bool ApproveDemand(ref CDemand demand)
         {
             if (!CParams.UseFakeServices)
             {
@@ -194,7 +197,7 @@ namespace Modeling
                 string date = demand.GettingDate.ToString("yyyy-MM-dd HH:mm:ss");
                 var executionDate = new DateTime();
 
-                var result = new XmlNode[0];
+                XmlNode[] result;
                 try
                 {
                     int iProduct1 = 0;
@@ -237,29 +240,30 @@ namespace Modeling
             else
             {
                 //         Заглушка     
-                if ((demand.ID >= 1) && (demand.ID <= 4)) 
+                if ((demand.ID >= 1) && (demand.ID <= 4))
                     return true;
 
                 ind++;
                 demand.ID = ind;
-                if (demand.Urgency == 2) 
+                if (demand.Urgency == 2)
                     return false;
+
                 demand.ShouldBeDoneDate = DateTime.Now.AddDays(new Random().Next(18));
 
                 UniformGen ug = new UniformGen(1, 0);
-                if (ug.GenerateN(1).ElementAt(0) < 0.8) return true;
-                else return false;
+
+                return ug.GenerateN(1).ElementAt(0) < 0.8;
             }
         }
 
         /// <summary>
-        /// утверждение в back office изменения заявки
+        /// Утверждение в back office изменения заявки
         /// </summary>
         /// <param name="date"></param>
         /// <param name="modifiedDemand"></param>
         /// <param name="demand"></param>
         /// <returns></returns>
-        public bool approveModifyDemand(DateTime date, ref CDemand modifiedDemand, CDemand demand)
+        public bool ApproveModifyDemand(DateTime date, ref CDemand modifiedDemand, CDemand demand)
         {
             if (!CParams.UseFakeServices)
             {
@@ -300,12 +304,12 @@ namespace Modeling
                 }
                 else
                 {
-                    if (firstProdDelta + secondProdDelta + thirdProdDelta == 0) 
+                    if (firstProdDelta + secondProdDelta + thirdProdDelta == 0)
                         ModelError.Error("Номенклатура изменяемой завки не изменена");
 
                     string returnDateStr = frontOffice.changeOrder(
-                        dateStr, 
-                        modifiedDemand.ID, 
+                        dateStr,
+                        modifiedDemand.ID,
                         new int[] { 
                             firstProdDelta, 
                             secondProdDelta, 
@@ -316,8 +320,8 @@ namespace Modeling
                     DateTime returnDate = DateTime.Parse(returnDateStr);
 
                     bool confirmResult = frontOffice.confirmChange(
-                        dateStr, 
-                        modifiedDemand.ID, 
+                        dateStr,
+                        modifiedDemand.ID,
                         new int[] { 
                             firstProdDelta, 
                             secondProdDelta, 
@@ -325,7 +329,7 @@ namespace Modeling
                         }
                     );
 
-                    if(confirmResult)
+                    if (confirmResult)
                         modifiedDemand.ShouldBeDoneDate = returnDate;
 
                     return confirmResult;
@@ -339,22 +343,14 @@ namespace Modeling
             }
         }
 
-        /*
-        public bool reportPlanElem(CPlanReportElement curPlanElem)       // отсылка back office сообщения о выполненном элементе плана 
-        {
-            return true;
-        }
-        */
-
-
-
-        public bool reportDeliveryDemand(CDeliveryDemand del)
+        public bool ReportDeliveryDemand(CDeliveryDemand del)
         {
             if (!CParams.UseFakeServices)
             {
                 //         Реальный код
                 string date = del.RealDeliveryDate.Value.ToString("yyyy-MM-dd HH:mm:ss");
-                int[] materials = new int[12];
+                var materials = new int[12];
+
                 for (int i = 0; i < 12; i++)
                 {
                     int curMatCount = 0;
@@ -362,8 +358,9 @@ namespace Modeling
                     materials[i] = curMatCount;
                 }
 
-                bool receivingResult = simulation.receivingMaterials(date, del.ID, materials);
-                if (receivingResult == false) throw new Exception("Не удалось отослать пришедшие материалы");
+                if (!simulation.receivingMaterials(date, del.ID, materials))
+                    throw new Exception("Не удалось отослать пришедшие материалы");
+
                 return true;
             }
             else
@@ -374,7 +371,7 @@ namespace Modeling
             }
         }
 
-        public CDeliveryDemand getDeliveryDemands(DateTime date)          //Получение от back office заявок на поставки материалов
+        public CDeliveryDemand GetDeliveryDemands(DateTime date)          //Получение от back office заявок на поставки материалов
         {
             if (!CParams.UseFakeServices)
             {
@@ -429,15 +426,15 @@ namespace Modeling
             }
         }
 
-        public CPlanElement[] getDailyPlan(DateTime date, ref CStorage storage)          //Получение от back office плана на день
+        public CPlanElement[] GetDailyPlan(DateTime date, ref CStorage storage)          //Получение от back office плана на день
         {
             if (!CParams.UseFakeServices)
             {
                 //      Реальный код
                 string dateStr = date.ToString("yyyy-MM-dd HH:mm:ss");
-                List<CPlanElement> dailyPlan = new List<CPlanElement>();
+                var dailyPlan = new List<CPlanElement>();
 
-                XmlNode[] result = new XmlNode[0];
+                var result = new XmlNode[0];
                 try
                 {
                     result = simulation.getDayPlan(dateStr) as XmlNode[];
@@ -450,7 +447,7 @@ namespace Modeling
                 if (result != null)
                 {
                     //int[] canc = cancelElemParse(result);
-                    var plan = planElemParse(result);
+                    var plan = PlanElemParse(result);
                     //BackOfficePlanElem[] tran = planElemParse(result, "transArray");
 
                     /*for (int i = 0; i < canc.Length; i++)
@@ -516,16 +513,15 @@ namespace Modeling
             }
             else
             {
-                //         Заглушка     
-                CPlanElement p1 = new CPlanElement() { DemandID = 1, ProductID = 2 };
-                CPlanElement p2 = new CPlanElement() { DemandID = 1, ProductID = 1 };
-                CPlanElement p3 = new CPlanElement() { DemandID = 2, ProductID = 2 };
-                CPlanElement p4 = new CPlanElement() { DemandID = 0, ProductID = 3 };
-                CPlanElement p5 = new CPlanElement() { DemandID = 3, ProductID = 3 };
-                CPlanElement p6 = new CPlanElement() { DemandID = 2, ProductID = 2 };
-                CPlanElement p7 = new CPlanElement() { DemandID = 4, ProductID = 1 };
-
-                return new CPlanElement[] { p1, p2, p3, p4, p5, p6, p7 };
+                return new[] {
+                    new CPlanElement() { DemandID = 1, ProductID = 2 },
+                    new CPlanElement() { DemandID = 1, ProductID = 1 },
+                    new CPlanElement() { DemandID = 2, ProductID = 2 },
+                    new CPlanElement() { DemandID = 0, ProductID = 3 },
+                    new CPlanElement() { DemandID = 3, ProductID = 3 },
+                    new CPlanElement() { DemandID = 2, ProductID = 2 },
+                    new CPlanElement() { DemandID = 4, ProductID = 1 }
+                };
             }
         }
 
