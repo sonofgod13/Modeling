@@ -22,6 +22,9 @@ namespace Modeling
 
         private int prevProductId;
 
+        /// <summary>
+        /// WTF?!
+        /// </summary>
         private /*Modeling.MamlayBackOfficeFront.*/ BackOfficeFront.FrontOfficeService frontOffice;
         private /*Modeling.MamlayBackOfficeSim.*/ BackOfficeSim.SimulationService simulation;
 
@@ -36,21 +39,28 @@ namespace Modeling
         public BackOfficeInterface()
         {
             prevProductId = 0;
+            // WTF
             frontOffice = new Modeling.BackOfficeFront.FrontOfficeService(); //new Modeling.MamlayBackOfficeFront.FrontOfficeService();
             simulation = new Modeling.BackOfficeSim.SimulationService(); //new Modeling.MamlayBackOfficeSim.SimulationService();
         }
 
         private static XElement GetXElement(XmlNode node)
         {
-            XDocument xDoc = new XDocument();
-            using (XmlWriter xmlWriter = xDoc.CreateWriter())
+            var xDoc = new XDocument();
+
+            using (var xmlWriter = xDoc.CreateWriter())
                 node.WriteTo(xmlWriter);
+
             return xDoc.Root;
         }
 
         private static T GetNodeValueByKey<T>(XmlNode[] nodes, string key)
         {
-            foreach (XElement node in nodes.Where(n => n.NodeType == XmlNodeType.Element).Select(n => GetXElement(n)))
+            var elements = from node in nodes
+                           where node.NodeType == XmlNodeType.Element
+                           select GetXElement(node);
+
+            foreach (var node in elements)
             {
                 if (node.Elements().Where(n => n.Name == "key" & n.Value == key).Count() != 0)
                 {
@@ -59,8 +69,12 @@ namespace Modeling
                     {
                         if (typeof(T) == typeof(String))
                         {
-                            return (T)Convert.ChangeType(value.Value, typeof(T));
+                            return (T)Convert.ChangeType(value.Value, typeof(String));
                         }
+
+                        // wtf! reflection calls must be cached! Invoke is slooooooooowwwwwwww
+                        // spowpoke wtf!
+                        // rewrite to expression construction + compilation + caching
                         Type t = typeof(T);
                         MethodInfo parseMethod = t.GetMethod("Parse", new Type[] { typeof(String) });
                         if (parseMethod != null)
@@ -70,107 +84,117 @@ namespace Modeling
                     }
                     catch (Exception e)
                     {
-                        throw e;
+                        throw;
                     }
                 }
             }
             return default(T);
         }
 
-        private static BackOfficePlanElem[] planElemParse(XmlNode[] nodes)
+        private static IEnumerable<BackOfficePlanElem> planElemParse(XmlNode[] nodes)
         {
             int count = nodes.Count() - 1;
-            List<XElement> xElems = new List<XElement>();
-            foreach (XmlNode xN in nodes)
+
+            var xElems = new List<XElement>(
+                from node in nodes
+                where node.NodeType == XmlNodeType.Element
+                select GetXElement(node)
+            );
+
+            var planElems = new List<BackOfficePlanElem>();
+
+            var elements = from element in xElems
+                           let key = int.Parse(element.Element("key").Value)
+                           where key >= 1 && key <= count
+                           orderby key ascending
+                           select element;
+
+            foreach (var node in elements)
             {
-                if (xN.NodeType == XmlNodeType.Element) xElems.Add(GetXElement(xN));
-            }
-            List<BackOfficePlanElem> planElems = new List<BackOfficePlanElem>();
-            for (int i = 1; i < count + 1; i++)
-            {
-                XElement node = xElems.Where(n => n.Element("key").Value == i.ToString()).Single();
-                BackOfficePlanElem temp = new BackOfficePlanElem();
-                foreach (XElement nodd in node.Element("value").Elements().ToArray())
+                var newPlanElement = new BackOfficePlanElem();
+
+                foreach (var nodd in node.Element("value").Elements())
                 {
                     if (nodd.Elements().Where(n => n.Name == "key" & n.Value == "demandId").Count() != 0)
                     {
-                        XElement value = nodd.Elements().Where(n => n.Name == "value").FirstOrDefault();
+                        var value = nodd.Elements().Where(n => n.Name == "value").FirstOrDefault();
                         try
                         {
-                            Type t = typeof(int);
-                            MethodInfo parseMethod = t.GetMethod("Parse", new Type[] { typeof(String) });
-                            if (parseMethod != null)
-                            {
-                                temp.demandId = (int)parseMethod.Invoke(null, new object[] { value.Value });
-                            }
+                            newPlanElement.demandId = int.Parse(value.Value);
                         }
                         catch (Exception e)
                         {
-                            throw e;
+                            throw;
                         }
                     }
+
                     if (nodd.Elements().Where(n => n.Name == "key" & n.Value == "productId").Count() != 0)
                     {
-                        XElement value = nodd.Elements().Where(n => n.Name == "value").FirstOrDefault();
+                        var value = nodd.Elements().Where(n => n.Name == "value").FirstOrDefault();
                         try
                         {
-                            Type t = typeof(int);
-                            MethodInfo parseMethod = t.GetMethod("Parse", new Type[] { typeof(String) });
-                            if (parseMethod != null)
-                            {
-                                temp.productId = (int)parseMethod.Invoke(null, new object[] { value.Value });
-                            }
+                            newPlanElement.productId = int.Parse(value.Value);
                         }
                         catch (Exception e)
                         {
-                            throw e;
+                            throw;
                         }
                     }
+
                     if (nodd.Elements().Where(n => n.Name == "key" & n.Value == "count").Count() != 0)
                     {
-                        XElement value = nodd.Elements().Where(n => n.Name == "value").FirstOrDefault();
+                        var value = nodd.Elements().Where(n => n.Name == "value").FirstOrDefault();
                         try
                         {
-                            Type t = typeof(int);
-                            MethodInfo parseMethod = t.GetMethod("Parse", new Type[] { typeof(String) });
-                            if (parseMethod != null)
-                            {
-                                temp.count = (int)parseMethod.Invoke(null, new object[] { value.Value });
-                            }
+                            newPlanElement.count = int.Parse(value.Value);
                         }
                         catch (Exception e)
                         {
-                            throw e;
+                            throw;
                         }
                     }
                 }
-                planElems.Add(temp);
+                planElems.Add(newPlanElement);
             }
-            return planElems.ToArray();
+
+            return planElems;
         }
 
 
-        public bool startModeling(DateTime date)                       // передача в back office время начала нового моделирования
+        /// <summary>
+        /// передача в back office время начала нового моделирования
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public bool startModeling(DateTime date)
         {
             if (!CParams.m_bUseFakeServices)
             {
                 //         Реальный код    
                 string dateStr = date.ToString("yyyy-MM-dd HH:mm:ss");
+
                 bool startResult = simulation.niceStart(dateStr);
-                if (startResult == false) return ModelError.Error("Не удалось начать новое моделирование");
-            }            
+
+                if (!simulation.niceStart(dateStr))
+                    return ModelError.Error("Не удалось начать новое моделирование");
+            }
             return true;
         }
 
-        public bool approveDemand(ref CDemand demand)                    // утверждение в back office новой заявки
+        /// <summary>
+        /// утверждение в back office новой заявки
+        /// </summary>
+        /// <param name="demand"></param>
+        /// <returns></returns>
+        public bool approveDemand(ref CDemand demand)
         {
             if (!CParams.m_bUseFakeServices)
             {
                 //         Реальный код            
                 string date = demand.GettingDate.ToString("yyyy-MM-dd HH:mm:ss");
-                DateTime executionDate = new DateTime();
+                var executionDate = new DateTime();
 
-                XmlNode[] result = new XmlNode[0];
+                var result = new XmlNode[0];
                 try
                 {
                     int iProduct1 = 0;
@@ -186,7 +210,7 @@ namespace Modeling
                 }
                 catch (Exception e)
                 {
-                    throw e;
+                    throw;
                 }
                 if (result != null)
                 {
@@ -203,19 +227,23 @@ namespace Modeling
                 else
                 {
                     demand.ShouldBeDoneDate = executionDate.AddDays(7 * (demand.Urgency + 1));
-                    bool confirmResult = frontOffice.confirmOrder(date, demand.ID, demand.Urgency + 2);
-                    if (confirmResult == false) throw new Exception("Не удалось подтвердить заявку");
+
+                    if (!frontOffice.confirmOrder(date, demand.ID, demand.Urgency + 2))
+                        throw new Exception("Не удалось подтвердить заявку");
+
                     return true;
                 }
             }
             else
             {
                 //         Заглушка     
-                if ((demand.ID == 1) || (demand.ID == 2) || (demand.ID == 3) || (demand.ID == 4)) return true;
-                            
+                if ((demand.ID >= 1) && (demand.ID <= 4)) 
+                    return true;
+
                 ind++;
                 demand.ID = ind;
-                if (demand.Urgency == 2) return false;
+                if (demand.Urgency == 2) 
+                    return false;
                 demand.ShouldBeDoneDate = DateTime.Now.AddDays(new Random().Next(18));
 
                 UniformGen ug = new UniformGen(1, 0);
@@ -224,7 +252,14 @@ namespace Modeling
             }
         }
 
-        public bool approveModifyDemand(DateTime date, ref CDemand modifiedDemand, CDemand demand)               // утверждение в back office изменения заявки
+        /// <summary>
+        /// утверждение в back office изменения заявки
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="modifiedDemand"></param>
+        /// <param name="demand"></param>
+        /// <returns></returns>
+        public bool approveModifyDemand(DateTime date, ref CDemand modifiedDemand, CDemand demand)
         {
             if (!CParams.m_bUseFakeServices)
             {
@@ -265,24 +300,42 @@ namespace Modeling
                 }
                 else
                 {
-                    if (firstProdDelta + secondProdDelta + thirdProdDelta == 0) ModelError.Error("Номенклатура изменяемой завки не изменена");
-                    string returnDateStr = frontOffice.changeOrder(dateStr, modifiedDemand.ID, new int[] { firstProdDelta, secondProdDelta, thirdProdDelta });
+                    if (firstProdDelta + secondProdDelta + thirdProdDelta == 0) 
+                        ModelError.Error("Номенклатура изменяемой завки не изменена");
+
+                    string returnDateStr = frontOffice.changeOrder(
+                        dateStr, 
+                        modifiedDemand.ID, 
+                        new int[] { 
+                            firstProdDelta, 
+                            secondProdDelta, 
+                            thirdProdDelta 
+                        }
+                    );
+
                     DateTime returnDate = DateTime.Parse(returnDateStr);
-                    bool confirmResult = frontOffice.confirmChange(dateStr, modifiedDemand.ID, new int[] { firstProdDelta, secondProdDelta, thirdProdDelta });
-                    if (confirmResult == false) return false;
-                    else
-                    {
+
+                    bool confirmResult = frontOffice.confirmChange(
+                        dateStr, 
+                        modifiedDemand.ID, 
+                        new int[] { 
+                            firstProdDelta, 
+                            secondProdDelta, 
+                            thirdProdDelta 
+                        }
+                    );
+
+                    if(confirmResult)
                         modifiedDemand.ShouldBeDoneDate = returnDate;
-                        return true;
-                    }
+
+                    return confirmResult;
                 }
             }
             else
             {
                 //         Заглушка     
                 UniformGen ug = new UniformGen(1, 0);
-                if (ug.GenerateN(1).ElementAt(0) < 0.8) return true;
-                else return false;
+                return ug.GenerateN(1).ElementAt(0) < 0.8;
             }
         }
 
@@ -317,7 +370,7 @@ namespace Modeling
             {
                 //         Заглушка     
                 bool g = del.RealDeliveryDate.HasValue; // заглушка
-                return true;            
+                return true;
             }
         }
 
@@ -336,7 +389,7 @@ namespace Modeling
                 }
                 catch (Exception e)
                 {
-                    throw e;
+                    throw;
                 }
                 if (result != null)
                 {
@@ -370,8 +423,8 @@ namespace Modeling
                 materialToAdd.AddMaterial(10, 7);
                 materialToAdd.AddMaterial(11, 4);
                 materialToAdd.AddMaterial(12, 8);
-              
-                CDeliveryDemand del = new CDeliveryDemand(delInd, date, materialToAdd);            
+
+                CDeliveryDemand del = new CDeliveryDemand(delInd, date, materialToAdd);
                 return del;
             }
         }
@@ -391,12 +444,13 @@ namespace Modeling
                 }
                 catch (Exception e)
                 {
-                    throw e;
+                    throw;
                 }
+
                 if (result != null)
                 {
                     //int[] canc = cancelElemParse(result);
-                    BackOfficePlanElem[] plan = planElemParse(result);
+                    var plan = planElemParse(result);
                     //BackOfficePlanElem[] tran = planElemParse(result, "transArray");
 
                     /*for (int i = 0; i < canc.Length; i++)
@@ -416,31 +470,39 @@ namespace Modeling
                     }                
                     */
                     int idleTime = 0;
-                    if (plan.Where(z => z.demandId == 1 && z.count == 0).Count() == 2)
+                    if (plan.Where(p => p.demandId == 1 && p.count == 0).Count() == 2)
                     {
                         storage.SaveIdleStatistic(1);
                     }
                     else
                     {
-                        for (int i = 0; i < plan.Length; i++)
+                        foreach (var planElement in plan)
                         {
-                            if (plan[i].productId != 4)
+                            if (planElement.productId != 4)
                             {
-                                if ((prevProductId != 0) && (plan[i].productId != prevProductId))
+                                if ((prevProductId != 0) && (planElement.productId != prevProductId))
                                 {
-                                    dailyPlan.Add(new CPlanElement { m_iDemandID = 0, m_iProductID = plan[i].productId });
+                                    dailyPlan.Add(new CPlanElement
+                                    {
+                                        m_iDemandID = 0,
+                                        m_iProductID = planElement.productId
+                                    });
                                 }
-                                for (int j = 0; j < plan[i].count; j++)
+                                for (int j = 0; j < planElement.count; j++)
                                 {
-                                    dailyPlan.Add(new CPlanElement { m_iDemandID = plan[i].demandId, m_iProductID = plan[i].productId });
-                                    prevProductId = plan[i].productId;
+                                    dailyPlan.Add(new CPlanElement
+                                    {
+                                        m_iDemandID = planElement.demandId,
+                                        m_iProductID = planElement.productId
+                                    });
+                                    prevProductId = planElement.productId;
                                 }
                             }
                             else
                             {
-                                int ticks = plan[i].count;
-                                if (ticks!=-99.0)
-                                idleTime = idleTime + ticks / 60;    // Простой = (n/100)*24*60 - минуты
+                                int ticks = planElement.count;
+                                if (ticks != -99.0)
+                                    idleTime = idleTime + ticks / 60;    // Простой = (n/100)*24*60 - минуты
                             }
                         }
                         storage.SaveIdleStatistic((double)idleTime / CParams.WORKDAY_MINUTES_NUMBER);
@@ -450,7 +512,7 @@ namespace Modeling
                 {
                     storage.SaveIdleStatistic(1);
                 }
-                return dailyPlan.ToArray();  
+                return dailyPlan.ToArray();
             }
             else
             {
@@ -462,10 +524,10 @@ namespace Modeling
                 CPlanElement p5 = new CPlanElement() { m_iDemandID = 3, m_iProductID = 3 };
                 CPlanElement p6 = new CPlanElement() { m_iDemandID = 2, m_iProductID = 2 };
                 CPlanElement p7 = new CPlanElement() { m_iDemandID = 4, m_iProductID = 1 };
-                
-                return new CPlanElement[]{ p1,p2,p3,p4,p5,p6,p7};
+
+                return new CPlanElement[] { p1, p2, p3, p4, p5, p6, p7 };
             }
-        }           
-        
+        }
+
     }
 }
