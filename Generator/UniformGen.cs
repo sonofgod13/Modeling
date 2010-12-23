@@ -57,7 +57,8 @@ namespace GeneratorSubsystem
 
             while (true)
             {
-                yield return Math.DivRem((long)630360016 * x, (long)int.MaxValue, out x);
+                Math.DivRem((long)630360016 * x, (long)int.MaxValue, out x);
+                yield return a + (b - a) * ((double)x / int.MaxValue);
             }
         }
 

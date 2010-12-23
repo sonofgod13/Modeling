@@ -43,7 +43,7 @@ namespace ModelingDataTypes
         /// <param name="entityCluster"></param>
         public void AddEntityCluster(EntityCluster entityCluster)
         {
-            foreach (var entityIndex in this.Entities.Keys)
+            for (var entityIndex = 1; entityIndex < this.Entities.Count + 1; entityIndex++)
             {
                 this.Entities[entityIndex] += entityCluster.Entities[entityIndex];
             }
@@ -92,7 +92,7 @@ namespace ModelingDataTypes
         /// </summary>
         public void CleanEntitysCluster()
         {
-            foreach (var entityIndex in this.Entities.Keys)
+            for(var entityIndex = 1; entityIndex < this.Entities.Count + 1; entityIndex++)
             {
                 this.Entities[entityIndex] = 0;
             }

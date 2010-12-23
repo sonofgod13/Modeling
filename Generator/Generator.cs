@@ -244,7 +244,7 @@ namespace GeneratorSubsystem
                     {
                         var productClaster = new ProductCluster();
 
-                        for (var productIndex = 0; productIndex <= 3; productIndex++)
+                        for (var productIndex = 1; productIndex <= 3; productIndex++)
                         {
                             int modifiedArticleNum = 0;
 
