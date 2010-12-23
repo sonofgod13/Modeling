@@ -5,17 +5,32 @@ using System.Text;
 
 namespace ModelingDataTypes
 {
-    public class CGeneratedProduct : CGeneratedElement
-    //класс параметров продукта
+    /// <summary>
+    /// Класс параметров продукта
+    /// </summary>
+    public class GeneratedProduct : GeneratedElement
     {
-        public int Index;            //индекс продукта (его номер - начиная с единицы)
-        public int Time;             //время производства продукта
-        //public int[] m_iMaterials;      //количество материалов 
-        public CMaterialCluster Materials; //кластер материалов 
+        /// <summary>
+        /// Индекс продукта (его номер - начиная с единицы)
+        /// </summary>
+        public int Index;
 
-        public CGeneratedElement Modify; // изменения продукта
+        /// <summary>
+        /// Время производства продукта
+        /// </summary>
+        public int Time;
 
-        public CGeneratedProduct()
+        /// <summary>
+        /// Кластер материалов 
+        /// </summary>
+        public MaterialCluster Materials;
+
+        /// <summary>
+        /// Изменения продукта
+        /// </summary>
+        public GeneratedElement Modify;
+
+        public GeneratedProduct()
         {
             GeneratorType = GeneratorType.Normal;   //CGeneratedElement
             fA = 2.0;             //CGeneratedElement
@@ -23,9 +38,9 @@ namespace ModelingDataTypes
 
             Index = 0;
             Time = 0;
-            Materials = new CMaterialCluster();
+            Materials = new MaterialCluster();
 
-            Modify = new CGeneratedElement();
+            Modify = new GeneratedElement();
             Modify.GeneratorType = GeneratorType.Normal;
             Modify.fA = 2.0;
             Modify.fB = 1.0;

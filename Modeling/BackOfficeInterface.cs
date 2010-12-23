@@ -171,7 +171,7 @@ namespace Modeling
         /// <returns></returns>
         public bool StartModeling(DateTime date)
         {
-            if (!CParams.UseFakeServices)
+            if (!Params.UseFakeServices)
             {
                 //         Реальный код    
                 string dateStr = date.ToString("yyyy-MM-dd HH:mm:ss");
@@ -189,9 +189,9 @@ namespace Modeling
         /// </summary>
         /// <param name="demand"></param>
         /// <returns></returns>
-        public bool ApproveDemand(ref CDemand demand)
+        public bool ApproveDemand(ref Demand demand)
         {
-            if (!CParams.UseFakeServices)
+            if (!Params.UseFakeServices)
             {
                 //         Реальный код            
                 string date = demand.GettingDate.ToString("yyyy-MM-dd HH:mm:ss");
@@ -263,9 +263,9 @@ namespace Modeling
         /// <param name="modifiedDemand"></param>
         /// <param name="demand"></param>
         /// <returns></returns>
-        public bool ApproveModifyDemand(DateTime date, ref CDemand modifiedDemand, CDemand demand)
+        public bool ApproveModifyDemand(DateTime date, ref Demand modifiedDemand, Demand demand)
         {
-            if (!CParams.UseFakeServices)
+            if (!Params.UseFakeServices)
             {
                 //         Реальный код
                 string dateStr = date.ToString("yyyy-MM-dd HH:mm:ss");
@@ -343,9 +343,9 @@ namespace Modeling
             }
         }
 
-        public bool ReportDeliveryDemand(CDeliveryDemand del)
+        public bool ReportDeliveryDemand(DeliveryDemand del)
         {
-            if (!CParams.UseFakeServices)
+            if (!Params.UseFakeServices)
             {
                 //         Реальный код
                 string date = del.RealDeliveryDate.Value.ToString("yyyy-MM-dd HH:mm:ss");
@@ -371,13 +371,13 @@ namespace Modeling
             }
         }
 
-        public CDeliveryDemand GetDeliveryDemands(DateTime date)          //Получение от back office заявок на поставки материалов
+        public DeliveryDemand GetDeliveryDemands(DateTime date)          //Получение от back office заявок на поставки материалов
         {
-            if (!CParams.UseFakeServices)
+            if (!Params.UseFakeServices)
             {
                 //         Реальный код
                 string dateStr = date.ToString("yyyy-MM-dd HH:mm:ss");
-                CDeliveryDemand delivery = null;
+                DeliveryDemand delivery = null;
 
                 XmlNode[] result = new XmlNode[0];
                 try
@@ -390,12 +390,12 @@ namespace Modeling
                 }
                 if (result != null)
                 {
-                    CMaterialCluster materials = new CMaterialCluster();
-                    for (int i = 1; i < CParams.MATERIALS_NUMBER + 1; i++)
+                    MaterialCluster materials = new MaterialCluster();
+                    for (int i = 1; i < Params.MATERIALS_NUMBER + 1; i++)
                     {
                         materials.AddMaterial(i, GetNodeValueByKey<int>(result, i.ToString()));
                     }
-                    delivery = new CDeliveryDemand(delInd, date, materials);
+                    delivery = new DeliveryDemand(delInd, date, materials);
                 }
                 delInd++;
                 return delivery;
@@ -407,7 +407,7 @@ namespace Modeling
                 //***Dictionary<int, int> dict = new Dictionary<int, int>(){{1,2},{2,3},{3,1},{4,7},{5,4},{6,9},{7,7},
                 //{8,3},{9,2},{10,7},{11,4},{12,8}};
 
-                CMaterialCluster materialToAdd = new CMaterialCluster();
+                MaterialCluster materialToAdd = new MaterialCluster();
                 materialToAdd.AddMaterial(1, 2);
                 materialToAdd.AddMaterial(2, 3);
                 materialToAdd.AddMaterial(3, 1);
@@ -421,18 +421,18 @@ namespace Modeling
                 materialToAdd.AddMaterial(11, 4);
                 materialToAdd.AddMaterial(12, 8);
 
-                CDeliveryDemand del = new CDeliveryDemand(delInd, date, materialToAdd);
+                DeliveryDemand del = new DeliveryDemand(delInd, date, materialToAdd);
                 return del;
             }
         }
 
-        public CPlanElement[] GetDailyPlan(DateTime date, ref CStorage storage)          //Получение от back office плана на день
+        public PlanElement[] GetDailyPlan(DateTime date, ref CStorage storage)          //Получение от back office плана на день
         {
-            if (!CParams.UseFakeServices)
+            if (!Params.UseFakeServices)
             {
                 //      Реальный код
                 string dateStr = date.ToString("yyyy-MM-dd HH:mm:ss");
-                var dailyPlan = new List<CPlanElement>();
+                var dailyPlan = new List<PlanElement>();
 
                 var result = new XmlNode[0];
                 try
@@ -479,7 +479,7 @@ namespace Modeling
                             {
                                 if ((prevProductId != 0) && (planElement.productId != prevProductId))
                                 {
-                                    dailyPlan.Add(new CPlanElement
+                                    dailyPlan.Add(new PlanElement
                                     {
                                         DemandID = 0,
                                         ProductID = planElement.productId
@@ -487,7 +487,7 @@ namespace Modeling
                                 }
                                 for (int j = 0; j < planElement.count; j++)
                                 {
-                                    dailyPlan.Add(new CPlanElement
+                                    dailyPlan.Add(new PlanElement
                                     {
                                         DemandID = planElement.demandId,
                                         ProductID = planElement.productId
@@ -502,7 +502,7 @@ namespace Modeling
                                     idleTime = idleTime + ticks / 60;    // Простой = (n/100)*24*60 - минуты
                             }
                         }
-                        storage.SaveIdleStatistic((double)idleTime / CParams.WORKDAY_MINUTES_NUMBER);
+                        storage.SaveIdleStatistic((double)idleTime / Params.WORKDAY_MINUTES_NUMBER);
                     }
                 }
                 else
@@ -514,13 +514,13 @@ namespace Modeling
             else
             {
                 return new[] {
-                    new CPlanElement() { DemandID = 1, ProductID = 2 },
-                    new CPlanElement() { DemandID = 1, ProductID = 1 },
-                    new CPlanElement() { DemandID = 2, ProductID = 2 },
-                    new CPlanElement() { DemandID = 0, ProductID = 3 },
-                    new CPlanElement() { DemandID = 3, ProductID = 3 },
-                    new CPlanElement() { DemandID = 2, ProductID = 2 },
-                    new CPlanElement() { DemandID = 4, ProductID = 1 }
+                    new PlanElement() { DemandID = 1, ProductID = 2 },
+                    new PlanElement() { DemandID = 1, ProductID = 1 },
+                    new PlanElement() { DemandID = 2, ProductID = 2 },
+                    new PlanElement() { DemandID = 0, ProductID = 3 },
+                    new PlanElement() { DemandID = 3, ProductID = 3 },
+                    new PlanElement() { DemandID = 2, ProductID = 2 },
+                    new PlanElement() { DemandID = 4, ProductID = 1 }
                 };
             }
         }

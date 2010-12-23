@@ -20,11 +20,11 @@ namespace GeneratorSubsystem
         public override int[] GenerateForDay()
         {
             List<int> sequence = new List<int>();
-            int suggNum = (int)Math.Round((double)CParams.WORKDAY_MINUTES_NUMBER / (0.8 * m));
+            int suggNum = (int)Math.Round((double)Params.WORKDAY_MINUTES_NUMBER / (0.8 * m));
             double[] uSeq = uGen.GenerateN(suggNum);
             int i = 0;
             int sum = 0;
-            while (sum <= CParams.WORKDAY_MINUTES_NUMBER)
+            while (sum <= Params.WORKDAY_MINUTES_NUMBER)
             {
                 if (i == suggNum)
                 {
@@ -33,7 +33,7 @@ namespace GeneratorSubsystem
                 }
                 int x = (int)Math.Round((-1) * m * Math.Log(uSeq[i]));
                 sum = sum + x;
-                if (sum <= CParams.WORKDAY_MINUTES_NUMBER)
+                if (sum <= Params.WORKDAY_MINUTES_NUMBER)
                 {
                     i++;
                     sequence.Add(x);

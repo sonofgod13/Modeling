@@ -5,7 +5,10 @@ using System.Text;
 
 namespace ModelingDataTypes
 {
-    public class ModelError     // класс вывода и поиска особых ошибок
+    /// <summary>
+    /// Класс вывода и поиска особых ошибок
+    /// </summary>
+    public class ModelError
     {
         public static bool Error()
         {

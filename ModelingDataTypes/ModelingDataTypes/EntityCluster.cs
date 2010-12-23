@@ -5,25 +5,21 @@ using System.Text;
 
 namespace ModelingDataTypes
 {
-    public class CEntityCluster
+    public class EntityCluster
     {
         /// <summary>
         /// Продукты. Пара: идентификатор материала - его количество
         /// </summary>
         protected Dictionary<int, int> Entities;
 
-        protected int ClusterSize;
-
         /// <summary>
         /// Конструктор по умоланию инициализирует кластер нулевыми значениями
         /// </summary>
         /// <param name="iLimitation"></param>
-        public CEntityCluster(int clusterSize)
+        public EntityCluster(int clusterSize)
         {
-            this.ClusterSize = clusterSize;
-
             this.Entities = new Dictionary<int, int>(clusterSize);
-            for (int entityIndex = 1; entityIndex < this.ClusterSize + 1; entityIndex++)
+            for (int entityIndex = 1; entityIndex < clusterSize + 1; entityIndex++)
             {
                 this.Entities.Add(entityIndex, 0);
             }
@@ -36,10 +32,8 @@ namespace ModelingDataTypes
         /// </summary>
         /// <param name="copy"></param>
         /// <param name="iLimitation"></param>
-        public CEntityCluster(CEntityCluster copy, int clusterSize)
+        public EntityCluster(EntityCluster copy, int clusterSize)
         {
-            ClusterSize = clusterSize;
-
             this.Entities = new Dictionary<int, int>(copy.Entities);
         }
 
@@ -47,9 +41,9 @@ namespace ModelingDataTypes
         /// Приплюсовать к текущим материалам перед. кластер
         /// </summary>
         /// <param name="entityCluster"></param>
-        public void AddEntityCluster(CEntityCluster entityCluster)
+        public void AddEntityCluster(EntityCluster entityCluster)
         {
-            for (int entityIndex = 1; entityIndex < this.ClusterSize + 1; entityIndex++)
+            foreach (var entityIndex in this.Entities.Keys)
             {
                 this.Entities[entityIndex] += entityCluster.Entities[entityIndex];
             }
@@ -61,15 +55,16 @@ namespace ModelingDataTypes
         /// </summary>
         /// <param name="entityCluster"></param>
         /// <returns></returns>
-        public bool IsEntityCluster(CEntityCluster entityCluster)
+        public bool IsEntityCluster(EntityCluster entityCluster)
         {
-            for (int entityIndex = 1; entityIndex < this.ClusterSize + 1; entityIndex++)
+            for (int entityIndex = 1; entityIndex < this.Entities.Count + 1; entityIndex++)
             {
                 if (this.Entities[entityIndex] < entityCluster.Entities[entityIndex])
                 {
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -78,14 +73,14 @@ namespace ModelingDataTypes
         /// </summary>
         /// <param name="entityCluster"></param>
         /// <returns></returns>
-        public bool TakeAwayEntityCluster(CEntityCluster entityCluster)
+        public bool TakeAwayEntityCluster(EntityCluster entityCluster)
         {
             if (!IsEntityCluster(entityCluster))
             //проверка: есть ли такое кол-то материалов в кластере как в перед. кластере
             {
                 return false;
             }
-            for (int iEntityNumber = 1; iEntityNumber < this.ClusterSize + 1; iEntityNumber++)
+            for (int iEntityNumber = 1; iEntityNumber < this.Entities.Count + 1; iEntityNumber++)
             {
                 this.Entities[iEntityNumber] -= entityCluster.Entities[iEntityNumber];
             }
@@ -97,9 +92,9 @@ namespace ModelingDataTypes
         /// </summary>
         public void CleanEntitysCluster()
         {
-            for (int iEntityNumber = 1; iEntityNumber < this.ClusterSize + 1; iEntityNumber++)
+            foreach (var entityIndex in this.Entities.Keys)
             {
-                this.Entities[iEntityNumber] = 0;
+                this.Entities[entityIndex] = 0;
             }
         }
 
@@ -111,7 +106,7 @@ namespace ModelingDataTypes
         /// <returns></returns>
         public bool AddEntity(int iEntityNumber, int iAmount)
         {
-            if (iEntityNumber < 1 || iEntityNumber > this.ClusterSize || iAmount < 0)
+            if (iEntityNumber < 1 || iEntityNumber > this.Entities.Count || iAmount < 0)
             {
                 return ModelError.Error();
             }
@@ -128,7 +123,7 @@ namespace ModelingDataTypes
         /// <returns></returns>
         public bool IsEntity(int iEntityNumber, int iAmount)
         {
-            if (iEntityNumber < 1 || iEntityNumber > this.ClusterSize)
+            if (iEntityNumber < 1 || iEntityNumber > this.Entities.Count)
             {
                 return ModelError.Error();
             }
@@ -148,7 +143,7 @@ namespace ModelingDataTypes
         /// <returns></returns>
         public bool TakeAwayEntity(int iEntityNumber, int iAmount)
         {
-            if (iEntityNumber < 1 || iEntityNumber > this.ClusterSize)
+            if (iEntityNumber < 1 || iEntityNumber > this.Entities.Count)
             {
                 return ModelError.Error();
             }
@@ -174,7 +169,7 @@ namespace ModelingDataTypes
         /// <returns></returns>
         public bool CleanEntity(int iEntityNumber)
         {
-            if (iEntityNumber < 1 || iEntityNumber > this.ClusterSize)
+            if (iEntityNumber < 1 || iEntityNumber > this.Entities.Count)
             {
                 return ModelError.Error();
             }
@@ -193,7 +188,7 @@ namespace ModelingDataTypes
         {
             iEntityValue = 0;
 
-            if (iEntityNumber < 1 || iEntityNumber > this.ClusterSize)
+            if (iEntityNumber < 1 || iEntityNumber > this.Entities.Count)
             {
                 return ModelError.Error();
             }
@@ -211,7 +206,7 @@ namespace ModelingDataTypes
         /// <returns></returns>
         public bool CompareEntity(int iEntityNumber, int iAmount)
         {
-            if (iEntityNumber < 1 || iEntityNumber > this.ClusterSize)
+            if (iEntityNumber < 1 || iEntityNumber > this.Entities.Count)
             {
                 return ModelError.Error();
             }
@@ -219,11 +214,11 @@ namespace ModelingDataTypes
             return this.Entities[iEntityNumber] == iAmount;
         }
 
-        public bool CompareNomenclatureIsMore(CEntityCluster materialCluster)
+        public bool CompareNomenclatureIsMore(EntityCluster materialCluster)
         {
             bool isMoreFlag = false;
 
-            for (int iEntityNumber = 1; iEntityNumber < this.ClusterSize + 1; iEntityNumber++)
+            for (int iEntityNumber = 1; iEntityNumber < this.Entities.Count + 1; iEntityNumber++)
             {
                 if (this.Entities[iEntityNumber] < materialCluster.Entities[iEntityNumber])
                     return false;

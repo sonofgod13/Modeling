@@ -30,7 +30,7 @@ namespace GeneratorSubsystem
 
             sequence.Add(sum);
 
-            while (sum <= CParams.WORKDAY_MINUTES_NUMBER)
+            while (sum <= Params.WORKDAY_MINUTES_NUMBER)
             {
                 Math.DivRem(630360016 * x, int.MaxValue, out x);
 
@@ -39,7 +39,7 @@ namespace GeneratorSubsystem
                 int yR = (int)Math.Round(y);
 
                 sum = sum + yR;
-                if (sum <= CParams.WORKDAY_MINUTES_NUMBER) 
+                if (sum <= Params.WORKDAY_MINUTES_NUMBER) 
                     sequence.Add(yR);
             }
             

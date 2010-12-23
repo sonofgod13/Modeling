@@ -17,37 +17,37 @@ namespace Storage
         /// <summary>
         /// Принятые Заявки. 
         /// </summary>
-        private Dictionary<int, CDemand> acceptedDemands;
+        private Dictionary<int, Demand> acceptedDemands;
 
         /// <summary>
         /// Отклонённые Заявки
         /// </summary>
-        private Dictionary<int, CDemand> declinedDemands;
+        private Dictionary<int, Demand> declinedDemands;
 
         /// <summary>
         /// Отменённые Заявки
         /// </summary>
-        private Dictionary<int, CDemand> canceledDemands;
+        private Dictionary<int, Demand> canceledDemands;
 
         /// <summary>
         /// Очередь из элементов плана на день
         /// </summary>
-        private Queue<CPlanElement> plan;
+        private Queue<PlanElement> plan;
 
         /// <summary>
         /// Склад. Кластер материалов.
         /// </summary>
-        public CMaterialCluster Materials;
+        public MaterialCluster Materials;
 
         /// <summary>
         /// Статистика производства. Пара: время окончания выполнения - элемент плана
         /// </summary>
-        private Dictionary<DateTime, CPlanReportElement> planReport;
+        private Dictionary<DateTime, PlanReportElement> planReport;
 
         /// <summary>
         /// Обработанные заявки на поставку материалов
         /// </summary>
-        private Dictionary<int, CDeliveryDemand> DeliveryDemands;
+        private Dictionary<int, DeliveryDemand> DeliveryDemands;
 
         /// <summary>
         /// Cтатистика - количество материалов на каждый день моделирования 
@@ -83,25 +83,25 @@ namespace Storage
             modifyStatistic = new int[] { 0, 0 };
 
 
-            acceptedDemands = new Dictionary<int, CDemand>(); // Принятые Заявки.
+            acceptedDemands = new Dictionary<int, Demand>(); // Принятые Заявки.
 
-            declinedDemands = new Dictionary<int, CDemand>(); // Отклонённые Заявки
+            declinedDemands = new Dictionary<int, Demand>(); // Отклонённые Заявки
 
-            canceledDemands = new Dictionary<int, CDemand>(); // Оменённые Заявки
-
-
-            plan = new Queue<CPlanElement>(); //очередь из элементов плана на день
+            canceledDemands = new Dictionary<int, Demand>(); // Оменённые Заявки
 
 
-            Materials = new CMaterialCluster();
+            plan = new Queue<PlanElement>(); //очередь из элементов плана на день
+
+
+            Materials = new MaterialCluster();
             //Инициализация склада нулевыми значениями
 
 
-            planReport = new Dictionary<DateTime, CPlanReportElement>();
+            planReport = new Dictionary<DateTime, PlanReportElement>();
             //Статистика производства. Пара: время окончания выполнения - элемент плана
 
 
-            DeliveryDemands = new Dictionary<int, CDeliveryDemand>();
+            DeliveryDemands = new Dictionary<int, DeliveryDemand>();
             // обработанные заявки на поставку материалов
 
 
@@ -135,7 +135,7 @@ namespace Storage
         /// </summary>
         /// <param name="demand"></param>
         /// <returns></returns>
-        public bool AddAcceptedDemand(CDemand demand)
+        public bool AddAcceptedDemand(Demand demand)
         {
             if (acceptedDemands.ContainsKey(demand.ID))
                 return ModelError.Error();
@@ -155,10 +155,10 @@ namespace Storage
             if (acceptedDemands.ContainsKey(id))
                 ModelError.Error();
 
-            var demand = new CDemand(acceptedDemands[id]);
+            var demand = new Demand(acceptedDemands[id]);
             var demandPlanElementReports = this.planReport.Values.Where(x => x.PlanElement.DemandID == demand.ID);
 
-            foreach (CPlanReportElement c in demandPlanElementReports)
+            foreach (PlanReportElement c in demandPlanElementReports)
             {
                 c.PlanElement.DemandID = -1;
             }
@@ -177,7 +177,7 @@ namespace Storage
         /// </summary>
         /// <param name="demand"></param>
         /// <returns></returns>
-        public bool AddDeclinedDemand(CDemand demand)
+        public bool AddDeclinedDemand(Demand demand)
         {
             if (declinedDemands.ContainsKey(demand.ID))
                 return ModelError.Error();
@@ -190,7 +190,7 @@ namespace Storage
         /// посчитать кол-во принятых заявок
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<CDemand> GetNotFinishedDemands()
+        public IEnumerable<Demand> GetNotFinishedDemands()
         {
             // TODO Denis Bykov: в исходном варианте массив копировался, нужно проверить, нет ли необходимости в этом
             var demands = acceptedDemands.Values;
@@ -204,16 +204,16 @@ namespace Storage
         /// <param name="ind"></param>
         /// <param name="demand"></param>
         /// <returns></returns>
-        public bool GetAcceptedDemand(int ind, out CDemand demand)
+        public bool GetAcceptedDemand(int ind, out Demand demand)
         {
-            demand = new CDemand();
+            demand = new Demand();
 
             if (!acceptedDemands.ContainsKey(ind))
                 return ModelError.Error();
 
             //ВАЖНО! Возможно здесь надо принудительно вызвать деструктор для demand
             // 
-            demand = new CDemand(this.acceptedDemands[ind]);
+            demand = new Demand(this.acceptedDemands[ind]);
             return true;
         }
 
@@ -240,7 +240,7 @@ namespace Storage
         /// </summary>
         /// <param name="modifiedDemand"></param>
         /// <returns></returns>
-        public bool ModifyDemand(CDemand modifiedDemand)
+        public bool ModifyDemand(Demand modifiedDemand)
         {
             if (!acceptedDemands.ContainsKey(modifiedDemand.ID))
                 return ModelError.Error();
@@ -323,7 +323,7 @@ namespace Storage
                         break;
                 }
             }
-            CDemand demand;
+            Demand demand;
             this.GetAcceptedDemand(demandInd, out demand);
             /* 
             if ((demand.m_products[1] <= firstArticle) && (demand.m_products[2] <= secondArticle) && (demand.m_products[3] <= thirdArticle))
@@ -379,7 +379,7 @@ namespace Storage
         /// </summary>
         /// <param name="planElements"></param>
         /// <returns></returns>
-        public bool AddDailyPlan(CPlanElement[] planElements)
+        public bool AddDailyPlan(PlanElement[] planElements)
         {
             for (int i = 0; i < planElements.Length; i++)
             {
@@ -393,7 +393,7 @@ namespace Storage
         /// вынуть первый элемент плана
         /// </summary>
         /// <returns></returns>
-        public CPlanElement GetFirstPlanElementAndDelete()
+        public PlanElement GetFirstPlanElementAndDelete()
         {
             return plan.Dequeue();
         }
@@ -402,7 +402,7 @@ namespace Storage
         /// вернуть первый элемент плана
         /// </summary>
         /// <returns></returns>
-        public CPlanElement GetFirstPlanElement()
+        public PlanElement GetFirstPlanElement()
         {
             return plan.Peek();
         }
@@ -451,7 +451,7 @@ namespace Storage
         /// </summary>
         /// <param name="deliveryDemand"></param>
         /// <returns></returns>
-        public bool AddDeliveryDemand(CDeliveryDemand deliveryDemand)
+        public bool AddDeliveryDemand(DeliveryDemand deliveryDemand)
         {
             if (DeliveryDemands.ContainsKey(deliveryDemand.ID))
                 return ModelError.Error();
@@ -499,7 +499,7 @@ namespace Storage
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
-        public CDeliveryDemand[] GetDeliveryDemand(DateTime date)
+        public DeliveryDemand[] GetDeliveryDemand(DateTime date)
         {
             var list = this.DeliveryDemands.Values.Where(
                 d => (d.RealDeliveryDate == date) && !d.IsDone
@@ -513,7 +513,7 @@ namespace Storage
         /// </summary>
         /// <param name="planReportElement"></param>
         /// <returns></returns>
-        public bool AddPlanReportElement(CPlanReportElement planReportElement)
+        public bool AddPlanReportElement(PlanReportElement planReportElement)
         {
             planReport.Add(planReportElement.EndExecuteDate, planReportElement);
             //!!! Здесь при добавлении еще нужно упорядочивать элементы
@@ -591,11 +591,11 @@ namespace Storage
                 //   из-за круглосуточной работы, а именно из-за костыля которым я это здесь реализовал, такой метод будет давать ошибки
                 if (planElement.DemandID == 0)
                 {
-                    workTime += CParams.RetargetTimes[planElement.ProductID - 1];
+                    workTime += Params.RetargetTimes[planElement.ProductID - 1];
                 }
                 else
                 {
-                    workTime += CParams.Products[planElement.ProductID].Time; ;
+                    workTime += Params.Products[planElement.ProductID].Time; ;
                 }
             }
 
@@ -616,7 +616,7 @@ namespace Storage
                 {
                     //retargetTime = retargetTime + (p.m_dtEndExecute - p.m_dtStartExecute).TotalMinutes;
                     //   из-за круглосуточной работы, а именно из-за костыля которым я это здесь реализовал, такой метод будет давать ошибки
-                    retargetTime += CParams.RetargetTimes[planElement.ProductID - 1];
+                    retargetTime += Params.RetargetTimes[planElement.ProductID - 1];
                 }
             }
             return retargetTime;

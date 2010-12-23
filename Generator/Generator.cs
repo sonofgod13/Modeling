@@ -161,7 +161,7 @@ namespace GeneratorSubsystem
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
-        public CDemand[] GenerateDemands(DateTime dt)
+        public Demand[] GenerateDemands(DateTime dt)
         {
             int[] requestTimes = this.requestTimeGen.GenerateForDay();
             double[][] articlesModifyGen = new double[3][];
@@ -173,17 +173,17 @@ namespace GeneratorSubsystem
 
             int[] urgency = GenerateUrgencyRefuse(requestTimes.Length);
 
-            CDemand[] demands = new CDemand[requestTimes.Length];
+            Demand[] demands = new Demand[requestTimes.Length];
             int minutes = 0;
             //цикл по заявкам
             for (int iDemandNumber = 0; iDemandNumber < requestTimes.Length; iDemandNumber++)
             {
                 minutes = minutes + requestTimes[iDemandNumber];
 
-                CProductCluster productCluster = new CProductCluster();
+                ProductCluster productCluster = new ProductCluster();
 
                 //заполнение кластера продуктов
-                for (int iProductNumber = 1; iProductNumber <= CParams.PRODUCTS_NUMBER; iProductNumber++)
+                for (int iProductNumber = 1; iProductNumber <= Params.PRODUCTS_NUMBER; iProductNumber++)
                 {
                     if (articlesModifyGen[iProductNumber - 1][iDemandNumber] > 0)
                     {
@@ -191,7 +191,7 @@ namespace GeneratorSubsystem
                     }
                 }
 
-                demands[iDemandNumber] = new CDemand(0, dt.AddMinutes(minutes), urgency[iDemandNumber], productCluster);
+                demands[iDemandNumber] = new Demand(0, dt.AddMinutes(minutes), urgency[iDemandNumber], productCluster);
             }
             return demands;
         }
@@ -203,7 +203,7 @@ namespace GeneratorSubsystem
         }
 
 
-        public CDemand ModifyDemand(CDemand[] demands, DateTime currentDate)
+        public Demand ModifyDemand(Demand[] demands, DateTime currentDate)
         {
             var arctProbabilities = uGen.GenerateSequence().GetEnumerator();
             var urgProbabilities = uGen.GenerateSequence().GetEnumerator();
@@ -223,13 +223,13 @@ namespace GeneratorSubsystem
 
             var rand = new Random(Guid.NewGuid().GetHashCode());
 
-            var returnDemand = new CDemand();
+            var returnDemand = new Demand();
             bool modifyFlag = false;
 
             while (!modifyFlag)
             {
                 int i = rand.Next(demands.Length);
-                var modifiedDemand = new CDemand(demands[i]);
+                var modifiedDemand = new Demand(demands[i]);
                 if (modifiedDemand.Urgency == 2)
                     throw new Exception("Заявка от которой отказались не может быть изменена!");
 
@@ -242,7 +242,7 @@ namespace GeneratorSubsystem
                     bool changeFlag = false;
                     while (changeFlag == false)
                     {
-                        var productClaster = new CProductCluster();
+                        var productClaster = new ProductCluster();
 
                         for (var productIndex = 0; productIndex <= 3; productIndex++)
                         {
@@ -293,9 +293,9 @@ namespace GeneratorSubsystem
             return returnDemand;
         }
 
-        public CDeliveryDemand[] ModifyDeliveries(CDeliveryDemand[] deliveries)
+        public DeliveryDemand[] ModifyDeliveries(DeliveryDemand[] deliveries)
         {
-            List<CDeliveryDemand> modifiedDeliveries = new List<CDeliveryDemand>();
+            List<DeliveryDemand> modifiedDeliveries = new List<DeliveryDemand>();
             double[] deliveryDelaySeq = this.deliveryDelayGen.GenerateN(deliveries.Length);
             double[][] deliveryElementsModifySeq = new double[12][];
             for (int i = 0; i < 12; i++)
@@ -304,11 +304,11 @@ namespace GeneratorSubsystem
             }
             for (int i = 0; i < deliveries.Length; i++)
             {
-                CDeliveryDemand modifiedDelivery = new CDeliveryDemand(deliveries[i]);
+                DeliveryDemand modifiedDelivery = new DeliveryDemand(deliveries[i]);
 
                 if (deliveryDelaySeq[i] > 0) modifiedDelivery.RealDeliveryDate = modifiedDelivery.FillDeliveryDate.AddMinutes((int)Math.Round(deliveryDelaySeq[i]));
 
-                for (int j = 0; j < CParams.MATERIALS_NUMBER; j++)
+                for (int j = 0; j < Params.MATERIALS_NUMBER; j++)
                 {
                     //***if (deliveries[i].m_materialsDemand[j + 1] != 0)
                     if (deliveries[i].MaterialsDemand.IsMaterial(j + 1, 1))

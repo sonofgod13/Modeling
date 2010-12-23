@@ -8,7 +8,7 @@ namespace ModelingDataTypes
     /// <summary>
     /// элемент плана
     /// </summary>
-    public class CPlanElement
+    public class PlanElement
     {
         /// <summary>
         /// идентификатор заявки.

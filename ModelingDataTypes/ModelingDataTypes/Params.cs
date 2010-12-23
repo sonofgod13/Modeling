@@ -8,7 +8,7 @@ namespace ModelingDataTypes
     /// <summary>
     /// класс параметров моделирования
     /// </summary>
-    public class CParams                                
+    public class Params                                
     {
         /// <summary>
         /// количество типов продуктов
@@ -43,12 +43,12 @@ namespace ModelingDataTypes
         /// <summary>
         /// описание всех типов производимых продуктов. пара: номер продукта - продукт (номера начинаются с единицы)
         /// </summary>
-        public static Dictionary<int, CGeneratedProduct> Products;
+        public static Dictionary<int, GeneratedProduct> Products;
 
         /// <summary>
         /// описание всех используемых материалов. пара: номер материала - материал (номера начинаются с единицы)
         /// </summary>
-        public static Dictionary<int, CMaterial> Materials;
+        public static Dictionary<int, Material> Materials;
 
         /// <summary>
         /// время на перенастройку оборудования
@@ -58,7 +58,7 @@ namespace ModelingDataTypes
         /// <summary>
         /// генератор поступления заявок
         /// </summary>
-        public static CGeneratedElement GeneratorDemandsTime;
+        public static GeneratedElement GeneratorDemandsTime;
 
         /// <summary>
         /// вероятность срочности заявки
@@ -73,27 +73,27 @@ namespace ModelingDataTypes
         /// <summary>
         /// генератор времени задержки поставки материалов
         /// </summary>
-        public static CGeneratedElement DeliveryDelayGenerator;
+        public static GeneratedElement DeliveryDelayGenerator;
 
         /// <summary>
         /// генератор времени изменения заявки
         /// </summary>
-        public static CGeneratedElement DemandModifyTime;
+        public static GeneratedElement DemandModifyTime;
 
         /// <summary>
         /// генератор ???
         /// </summary>
-        public static CGeneratedElement UgrToStandModify;
+        public static GeneratedElement UgrToStandModify;
 
         /// <summary>
         /// генератор ???
         /// </summary>
-        public static CGeneratedElement StandToUrgModify;
+        public static GeneratedElement StandToUrgModify;
 
         /// <summary>
         /// генератор ???
         /// </summary>
-        public static CGeneratedElement ArticlesModify;
+        public static GeneratedElement ArticlesModify;
 
         /// <summary>
         /// использовать фиктивные внешние сервисы
@@ -126,7 +126,7 @@ namespace ModelingDataTypes
             DELIVERY_PERIOD = 1;            //период в днях между получением заказов на поставки материалов
 
 
-            Action<CGeneratedProduct, int[]> assignMaterialsCount = (product, materialsCount) =>
+            Action<GeneratedProduct, int[]> assignMaterialsCount = (product, materialsCount) =>
             {
                 for (var materialIndex = 0; materialIndex < 12; materialIndex++)
                 {
@@ -137,16 +137,16 @@ namespace ModelingDataTypes
                 }
             };
 
-            Products = new Dictionary<int, CGeneratedProduct>();
+            Products = new Dictionary<int, GeneratedProduct>();
 
-            CGeneratedProduct product1 = new CGeneratedProduct()
+            GeneratedProduct product1 = new GeneratedProduct()
             {
                 Time = 26,
                 Index = 1,
                 GeneratorType = GeneratorType.Normal,
                 fA = 5.0,
                 fB = 2.0,
-                Modify = new CGeneratedElement
+                Modify = new GeneratedElement
                 {
                     GeneratorType = GeneratorType.Normal,
                     fA = 0.0,
@@ -160,14 +160,14 @@ namespace ModelingDataTypes
             Products.Add(1, product1);
 
 
-            CGeneratedProduct product2 = new CGeneratedProduct()
+            GeneratedProduct product2 = new GeneratedProduct()
             {
                 Time = 72,
                 Index = 2,
                 GeneratorType = GeneratorType.Normal,
                 fA = 5.0,
                 fB = 2.0,
-                Modify = new CGeneratedElement
+                Modify = new GeneratedElement
                 {
                     GeneratorType = GeneratorType.Normal,
                     fA = 0.0,
@@ -180,14 +180,14 @@ namespace ModelingDataTypes
             Products.Add(2, product2);
 
 
-            CGeneratedProduct product3 = new CGeneratedProduct()
+            GeneratedProduct product3 = new GeneratedProduct()
             {
                 Time = 49,
                 Index = 3,
                 GeneratorType = GeneratorType.Normal,
                 fA = 5.0,
                 fB = 2.0,
-                Modify = new CGeneratedElement
+                Modify = new GeneratedElement
                 {
                     GeneratorType = GeneratorType.Normal,
                     fA = 0.0,
@@ -200,19 +200,19 @@ namespace ModelingDataTypes
             Products.Add(3, product3);
 
 
-            Materials = new Dictionary<int, CMaterial>();
+            Materials = new Dictionary<int, Material>();
             for (var materialIndex = 1; materialIndex <= 12; materialIndex++)
             {
                 Materials.Add(
                     materialIndex,
-                    new CMaterial { Index = materialIndex, GeneratorType = GeneratorType.Normal, fA = 3.0, fB = 4.0 }
+                    new Material { Index = materialIndex, GeneratorType = GeneratorType.Normal, fA = 3.0, fB = 4.0 }
                 );
             }
 
             RetargetTimes = new int[] { 68, 39, 95 }; // время на перенастройку оборудования
 
 
-            GeneratorDemandsTime = new CGeneratedElement()    //генератор поступления заявок
+            GeneratorDemandsTime = new GeneratedElement()    //генератор поступления заявок
             {
                 GeneratorType = GeneratorType.Exponential,
                 fA = 636.0,
@@ -225,7 +225,7 @@ namespace ModelingDataTypes
             fRefusePropabilityDemand = 0.07;      //вероятность отказа от заявки
 
 
-            DeliveryDelayGenerator = new CGeneratedElement()
+            DeliveryDelayGenerator = new GeneratedElement()
             //генератор времени задержки поставки материалов
             {
                 GeneratorType = GeneratorType.Normal,
@@ -234,7 +234,7 @@ namespace ModelingDataTypes
             };
 
 
-            DemandModifyTime = new CGeneratedElement()
+            DemandModifyTime = new GeneratedElement()
             //генератор времени изменения заявки
             {
                 GeneratorType = GeneratorType.Normal,
@@ -243,7 +243,7 @@ namespace ModelingDataTypes
             };
 
 
-            UgrToStandModify = new CGeneratedElement()
+            UgrToStandModify = new GeneratedElement()
             //генератор ???
             {
                 GeneratorType = GeneratorType.Rayleigh,
@@ -252,7 +252,7 @@ namespace ModelingDataTypes
             };
 
 
-            StandToUrgModify = new CGeneratedElement()
+            StandToUrgModify = new GeneratedElement()
             //генератор ??? 
             {
                 GeneratorType = GeneratorType.Rayleigh,
@@ -261,7 +261,7 @@ namespace ModelingDataTypes
             };
 
 
-            ArticlesModify = new CGeneratedElement()
+            ArticlesModify = new GeneratedElement()
             //генератор ???
             {
                 GeneratorType = GeneratorType.Exponential,

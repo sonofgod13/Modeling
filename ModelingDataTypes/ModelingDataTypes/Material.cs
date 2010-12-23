@@ -5,9 +5,14 @@ using System.Text;
 
 namespace ModelingDataTypes
 {
-    public class CMaterial : CGeneratedElement
-    //класс параметров материала
+    /// <summary>
+    /// Класс параметров материала
+    /// </summary>
+    public class Material : GeneratedElement
     {
-        public int Index;            //индекс материала
+        /// <summary>
+        /// Индекс материала
+        /// </summary>
+        public int Index;
     }
 }

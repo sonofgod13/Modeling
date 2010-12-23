@@ -8,12 +8,12 @@ namespace ModelingDataTypes
     /// <summary>
     /// элемент выполнения плана
     /// </summary>
-    public class CPlanReportElement
+    public class PlanReportElement
     {
         /// <summary>
         /// элемент плана
         /// </summary>
-        public CPlanElement PlanElement;
+        public PlanElement PlanElement;
 
         /// <summary>
         /// фактическое начало его выполнения

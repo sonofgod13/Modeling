@@ -8,7 +8,7 @@ namespace ModelingDataTypes
     /// <summary>
     /// заявка на поставку материалов
     /// </summary>
-    public class CDeliveryDemand
+    public class DeliveryDemand
     {
         ///// <summary>
         ///// счетчик создания заявок
@@ -33,31 +33,31 @@ namespace ModelingDataTypes
         /// <summary>
         /// Материалы. Пара: идентификатор материала - его количество
         /// </summary>
-        public CMaterialCluster MaterialsDemand;
+        public MaterialCluster MaterialsDemand;
 
         /// <summary>
         /// Заявка отправлена
         /// </summary>
         public bool IsDone;
 
-        public CDeliveryDemand(int id, DateTime fillDeliveryDate, CMaterialCluster materialsDemand)
+        public DeliveryDemand(int id, DateTime fillDeliveryDate, MaterialCluster materialsDemand)
         {
             this.ID = id;
             this.RealDeliveryDate = null;
             this.FillDeliveryDate = fillDeliveryDate;
             this.IsDone = false;
 
-            MaterialsDemand = new CMaterialCluster(materialsDemand);
+            MaterialsDemand = new MaterialCluster(materialsDemand);
         }
 
-        public CDeliveryDemand(CDeliveryDemand copy)
+        public DeliveryDemand(DeliveryDemand copy)
         {
             this.ID = copy.ID;
             this.IsDone = copy.IsDone;
             this.RealDeliveryDate = copy.RealDeliveryDate;
             this.FillDeliveryDate = copy.FillDeliveryDate;
 
-            this.MaterialsDemand = new CMaterialCluster(copy.MaterialsDemand); 
+            this.MaterialsDemand = new MaterialCluster(copy.MaterialsDemand); 
         }
     }
 }

@@ -74,7 +74,7 @@ namespace Modeling
 
         public ImitationGUI()  //при загрузке формы основных параметров
         {
-            CParams.Initialization();   //инициализация начальных параметров
+            Params.Initialization();   //инициализация начальных параметров
             InitializeComponent();
 
             /////////  Это чтоб нельзя было задать параметры изменений срочности заявок
@@ -98,14 +98,14 @@ namespace Modeling
             frontOffice = new Modeling.FrontOffice.FrontOfficeImitationHelper();
             frontOfficeUrl = ConfigurationSettings.AppSettings["FrontOfficeUrl"].ToString();
 
-            dUrg_BASE = CParams.fUrgencyPropabilityDemand;    //вероятность срочности заявки
-            dRef_BASE = CParams.fRefusePropabilityDemand;     //вероятность отказа от заявки
+            dUrg_BASE = Params.fUrgencyPropabilityDemand;    //вероятность срочности заявки
+            dRef_BASE = Params.fRefusePropabilityDemand;     //вероятность отказа от заявки
             this.textBox_UrgencyPropabilityDemand.Text = dUrg_BASE.ToString();          
             //вероятность срочности заявки (поле ввода)
             this.textBox_RefusePropabilityDemand.Text = dRef_BASE.ToString();          
             //вероятность отказа от заявки (поле ввода)
 
-            ModelingDayToWork_BASE = CParams.ModelingDayToWork;  //время моделирования в днях
+            ModelingDayToWork_BASE = Params.ModelingDayToWork;  //время моделирования в днях
             this.textBox_ModelingDayCount.Text = ModelingDayToWork_BASE.ToString();
             //время моделирования в днях (поле ввода)
         }
@@ -317,9 +317,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.GeneratorDemandsTime.GeneratorType,
-                ref CParams.GeneratorDemandsTime.fA,
-                ref CParams.GeneratorDemandsTime.fB
+                ref Params.GeneratorDemandsTime.GeneratorType,
+                ref Params.GeneratorDemandsTime.fA,
+                ref Params.GeneratorDemandsTime.fB
                 );
         }
 
@@ -328,9 +328,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Products[1].GeneratorType,
-                ref CParams.Products[1].fA,
-                ref CParams.Products[1].fB
+                ref Params.Products[1].GeneratorType,
+                ref Params.Products[1].fA,
+                ref Params.Products[1].fB
                 );
         }
 
@@ -339,9 +339,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Products[2].GeneratorType,
-                ref CParams.Products[2].fA,
-                ref CParams.Products[2].fB
+                ref Params.Products[2].GeneratorType,
+                ref Params.Products[2].fA,
+                ref Params.Products[2].fB
                 );
         }
 
@@ -350,9 +350,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Products[3].GeneratorType,
-                ref CParams.Products[3].fA,
-                ref CParams.Products[3].fB
+                ref Params.Products[3].GeneratorType,
+                ref Params.Products[3].fA,
+                ref Params.Products[3].fB
                 );
         }
 
@@ -361,9 +361,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Materials[1].GeneratorType,
-                ref CParams.Materials[1].fA,
-                ref CParams.Materials[1].fB
+                ref Params.Materials[1].GeneratorType,
+                ref Params.Materials[1].fA,
+                ref Params.Materials[1].fB
                 );
         }
 
@@ -372,9 +372,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Materials[2].GeneratorType,
-                ref CParams.Materials[2].fA,
-                ref CParams.Materials[2].fB
+                ref Params.Materials[2].GeneratorType,
+                ref Params.Materials[2].fA,
+                ref Params.Materials[2].fB
                 );
         }
 
@@ -383,9 +383,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Materials[3].GeneratorType,
-                ref CParams.Materials[3].fA,
-                ref CParams.Materials[3].fB
+                ref Params.Materials[3].GeneratorType,
+                ref Params.Materials[3].fA,
+                ref Params.Materials[3].fB
                 );
         }
 
@@ -394,9 +394,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Materials[4].GeneratorType,
-                ref CParams.Materials[4].fA,
-                ref CParams.Materials[4].fB
+                ref Params.Materials[4].GeneratorType,
+                ref Params.Materials[4].fA,
+                ref Params.Materials[4].fB
                 );
         }
 
@@ -405,9 +405,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Materials[5].GeneratorType,
-                ref CParams.Materials[5].fA,
-                ref CParams.Materials[5].fB
+                ref Params.Materials[5].GeneratorType,
+                ref Params.Materials[5].fA,
+                ref Params.Materials[5].fB
                 );
         }
 
@@ -416,9 +416,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Materials[6].GeneratorType,
-                ref CParams.Materials[6].fA,
-                ref CParams.Materials[6].fB
+                ref Params.Materials[6].GeneratorType,
+                ref Params.Materials[6].fA,
+                ref Params.Materials[6].fB
                 );
         }
 
@@ -427,9 +427,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Materials[7].GeneratorType,
-                ref CParams.Materials[7].fA,
-                ref CParams.Materials[7].fB
+                ref Params.Materials[7].GeneratorType,
+                ref Params.Materials[7].fA,
+                ref Params.Materials[7].fB
                 );
         }
 
@@ -438,9 +438,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Materials[8].GeneratorType,
-                ref CParams.Materials[8].fA,
-                ref CParams.Materials[8].fB
+                ref Params.Materials[8].GeneratorType,
+                ref Params.Materials[8].fA,
+                ref Params.Materials[8].fB
                 );
         }
 
@@ -449,9 +449,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Materials[9].GeneratorType,
-                ref CParams.Materials[9].fA,
-                ref CParams.Materials[9].fB
+                ref Params.Materials[9].GeneratorType,
+                ref Params.Materials[9].fA,
+                ref Params.Materials[9].fB
                 );
         }
 
@@ -460,9 +460,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Materials[10].GeneratorType,
-                ref CParams.Materials[10].fA,
-                ref CParams.Materials[10].fB
+                ref Params.Materials[10].GeneratorType,
+                ref Params.Materials[10].fA,
+                ref Params.Materials[10].fB
                 );
         }
 
@@ -471,9 +471,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Materials[11].GeneratorType,
-                ref CParams.Materials[11].fA,
-                ref CParams.Materials[11].fB
+                ref Params.Materials[11].GeneratorType,
+                ref Params.Materials[11].fA,
+                ref Params.Materials[11].fB
                 );
         }
 
@@ -482,9 +482,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Materials[12].GeneratorType,
-                ref CParams.Materials[12].fA,
-                ref CParams.Materials[12].fB
+                ref Params.Materials[12].GeneratorType,
+                ref Params.Materials[12].fA,
+                ref Params.Materials[12].fB
                 );
         }
 
@@ -493,9 +493,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.DeliveryDelayGenerator.GeneratorType,
-                ref CParams.DeliveryDelayGenerator.fA,
-                ref CParams.DeliveryDelayGenerator.fB
+                ref Params.DeliveryDelayGenerator.GeneratorType,
+                ref Params.DeliveryDelayGenerator.fA,
+                ref Params.DeliveryDelayGenerator.fB
                 );
         }
 
@@ -509,9 +509,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.DemandModifyTime.GeneratorType,
-                ref CParams.DemandModifyTime.fA,
-                ref CParams.DemandModifyTime.fB
+                ref Params.DemandModifyTime.GeneratorType,
+                ref Params.DemandModifyTime.fA,
+                ref Params.DemandModifyTime.fB
                 );
         }
 
@@ -520,9 +520,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.ArticlesModify.GeneratorType,
-                ref CParams.ArticlesModify.fA,
-                ref CParams.ArticlesModify.fB
+                ref Params.ArticlesModify.GeneratorType,
+                ref Params.ArticlesModify.fA,
+                ref Params.ArticlesModify.fB
                 );
         }
 
@@ -531,9 +531,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Products[1].Modify.GeneratorType,
-                ref CParams.Products[1].Modify.fA,
-                ref CParams.Products[1].Modify.fB
+                ref Params.Products[1].Modify.GeneratorType,
+                ref Params.Products[1].Modify.fA,
+                ref Params.Products[1].Modify.fB
                 );
         }
 
@@ -542,9 +542,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Products[2].Modify.GeneratorType,
-                ref CParams.Products[2].Modify.fA,
-                ref CParams.Products[2].Modify.fB
+                ref Params.Products[2].Modify.GeneratorType,
+                ref Params.Products[2].Modify.fA,
+                ref Params.Products[2].Modify.fB
                 );
         }
 
@@ -553,9 +553,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.Products[3].Modify.GeneratorType,
-                ref CParams.Products[3].Modify.fA,
-                ref CParams.Products[3].Modify.fB
+                ref Params.Products[3].Modify.GeneratorType,
+                ref Params.Products[3].Modify.fA,
+                ref Params.Products[3].Modify.fB
                 );
         }
 
@@ -564,9 +564,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.UgrToStandModify.GeneratorType,
-                ref CParams.UgrToStandModify.fA,
-                ref CParams.UgrToStandModify.fB
+                ref Params.UgrToStandModify.GeneratorType,
+                ref Params.UgrToStandModify.fA,
+                ref Params.UgrToStandModify.fB
                 );
         }
 
@@ -575,21 +575,21 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.StandToUrgModify.GeneratorType,
-                ref CParams.StandToUrgModify.fA,
-                ref CParams.StandToUrgModify.fB
+                ref Params.StandToUrgModify.GeneratorType,
+                ref Params.StandToUrgModify.fA,
+                ref Params.StandToUrgModify.fB
                 );
         }
 
         private void materials_button_Click(object sender, EventArgs e)
         {
-            int[][] x = new int[CParams.MATERIALS_NUMBER][];
+            int[][] x = new int[Params.MATERIALS_NUMBER][];
             List<int> days = new List<int>();
             for (int i = 0; i < imitator.getMaterialsPerDayStatistic()[0].Length; i++)
             {
                 days.Add(i+1);
             }
-            for (int i=0;i<CParams.MATERIALS_NUMBER;i++)
+            for (int i=0;i<Params.MATERIALS_NUMBER;i++)
             {                       
                 x[i] = days.ToArray();
             }
@@ -652,8 +652,8 @@ namespace Modeling
                 MessageBox.Show("Сумаа вероятностей срочности заявки и отаза от заявки не должна быть больше единицы!");
                 return false;
             }
-            CParams.fRefusePropabilityDemand = dRef;
-            CParams.fUrgencyPropabilityDemand = dUrg;
+            Params.fRefusePropabilityDemand = dRef;
+            Params.fUrgencyPropabilityDemand = dUrg;
             return true;
         }
 
@@ -689,7 +689,7 @@ namespace Modeling
                 {
                     if (iModelDays > 0)
                     {
-                        CParams.ModelingDayToWork = iModelDays;
+                        Params.ModelingDayToWork = iModelDays;
                         return;
                     }
                     else bResultModelDays = false; 

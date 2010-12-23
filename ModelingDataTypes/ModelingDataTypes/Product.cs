@@ -5,8 +5,14 @@ using System.Text;
 
 namespace ModelingDataTypes
 {
-    public class CProduct       //класс параметров продукта (дима: ё-моё оказалось, он нигде не используется)
+    /// <summary>
+    /// Класс параметров продукта (дима: ё-моё оказалось, он нигде не используется)
+    /// </summary>
+    public class Product
     {
-        public int Index;            //индекс продукта (его номер - начиная с единицы)
+        /// <summary>
+        /// индекс продукта (его номер - начиная с единицы)
+        /// </summary>
+        public int Index;
     }
 }

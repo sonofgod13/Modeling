@@ -5,20 +5,23 @@ using System.Text;
 
 namespace ModelingDataTypes
 {
-    public class CMaterialCluster   //wrapper-class для EntityCluster
+    /// <summary>
+    /// wrapper-class для EntityCluster
+    /// </summary>
+    public class MaterialCluster
     {
-        private CEntityCluster cluster;
+        private EntityCluster cluster;
 
-        private int LIMITATION = CParams.MATERIALS_NUMBER;
+        private int LIMITATION = Params.MATERIALS_NUMBER;
 
-        public CMaterialCluster()
+        public MaterialCluster()
         {
-            cluster = new CEntityCluster(LIMITATION);
+            cluster = new EntityCluster(LIMITATION);
         }
 
-        public CMaterialCluster(CMaterialCluster copy)
+        public MaterialCluster(MaterialCluster copy)
         {
-            cluster = new CEntityCluster(copy.cluster, LIMITATION);
+            cluster = new EntityCluster(copy.cluster, LIMITATION);
         }
 
 
@@ -27,7 +30,7 @@ namespace ModelingDataTypes
             return cluster.AddEntity(iMaterialNumber, iAmount);
         }
 
-        public void AddMaterialCluster(CMaterialCluster materialCluster)
+        public void AddMaterialCluster(MaterialCluster materialCluster)
         {
             cluster.AddEntityCluster(materialCluster.cluster);
         }
@@ -53,7 +56,7 @@ namespace ModelingDataTypes
             return cluster.IsEntity(iMaterialNumber, iAmount);
         }
 
-        public bool IsMaterialCluster(CMaterialCluster materialCluster)
+        public bool IsMaterialCluster(MaterialCluster materialCluster)
         {
             return cluster.IsEntityCluster(materialCluster.cluster);
         }
@@ -63,7 +66,7 @@ namespace ModelingDataTypes
             return cluster.TakeAwayEntity(iMaterialNumber, iAmount);
         }
 
-        public bool TakeAwayMaterialCluster(CMaterialCluster materialCluster)
+        public bool TakeAwayMaterialCluster(MaterialCluster materialCluster)
         {
             return cluster.TakeAwayEntityCluster(materialCluster.cluster);
         }

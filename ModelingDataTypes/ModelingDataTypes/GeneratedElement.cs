@@ -5,10 +5,24 @@ using System.Text;
 
 namespace ModelingDataTypes
 {
-    public class CGeneratedElement      //элемент для которого требуется полноценнай генератор
+    /// <summary>
+    /// Элемент для которого требуется полноценный генератор
+    /// </summary>
+    public class GeneratedElement
     {
-        public GeneratorType GeneratorType;    //тип генератора
-        public double fA;             //первый параметр генератора
-        public double fB;             //второй параметр генератора
+        /// <summary>
+        /// Тип генератора
+        /// </summary>
+        public GeneratorType GeneratorType;
+
+        /// <summary>
+        /// Первый параметр генератора
+        /// </summary>
+        public double fA;
+
+        /// <summary>
+        /// второй параметр генератора
+        /// </summary>
+        public double fB;
     }
 }

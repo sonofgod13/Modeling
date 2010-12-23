@@ -8,7 +8,7 @@ namespace ModelingDataTypes
     /// <summary>
     /// заявка
     /// </summary>
-    public class CDemand
+    public class Demand
     {
         //  public static int idNext;               //счетчик создания заявок
 
@@ -40,14 +40,14 @@ namespace ModelingDataTypes
         /// <summary>
         /// кластер продуктов
         /// </summary>
-        public CProductCluster Products;
+        public ProductCluster Products;
 
-        public CDemand()
+        public Demand()
         {
-            Products = new CProductCluster();
+            Products = new ProductCluster();
         }
 
-        public CDemand(int id, DateTime geting, int urgency, CProductCluster productCluster)
+        public Demand(int id, DateTime geting, int urgency, ProductCluster productCluster)
         {
             this.ID = id;
 
@@ -55,10 +55,10 @@ namespace ModelingDataTypes
             this.FinishingDate = null;
             this.ShouldBeDoneDate = null;
             this.Urgency = urgency;
-            this.Products = new CProductCluster(productCluster);
+            this.Products = new ProductCluster(productCluster);
         }
 
-        public CDemand(CDemand copy)
+        public Demand(Demand copy)
         {
             this.ID = copy.ID;
 
@@ -66,7 +66,7 @@ namespace ModelingDataTypes
             this.FinishingDate = copy.FinishingDate;
             this.ShouldBeDoneDate = copy.ShouldBeDoneDate;
             this.Urgency = copy.Urgency;
-            this.Products = new CProductCluster(copy.Products);
+            this.Products = new ProductCluster(copy.Products);
         }
     }
 }

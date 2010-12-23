@@ -285,7 +285,7 @@ namespace GeneratorSubsystem
                 double p;
                 double y;
 
-                while (sum <= CParams.WORKDAY_MINUTES_NUMBER)
+                while (sum <= Params.WORKDAY_MINUTES_NUMBER)
                 {
                     if (j == suggNum)
                     {
@@ -301,7 +301,7 @@ namespace GeneratorSubsystem
                         {
                             int x = (int)Math.Round(d * y);
                             sum = sum + x;
-                            if (sum <= CParams.WORKDAY_MINUTES_NUMBER) sequence.Add(x);
+                            if (sum <= Params.WORKDAY_MINUTES_NUMBER) sequence.Add(x);
                         }                        
                     }
                     else
@@ -311,7 +311,7 @@ namespace GeneratorSubsystem
                         {
                             int x = (int)Math.Round(d * y);
                             sum = sum + x;
-                            if (sum <= CParams.WORKDAY_MINUTES_NUMBER) sequence.Add(x);
+                            if (sum <= Params.WORKDAY_MINUTES_NUMBER) sequence.Add(x);
                         }                        
                     }
                     j++;
@@ -330,7 +330,7 @@ namespace GeneratorSubsystem
                 double z;
                 double w;
 
-                while (sum <= CParams.WORKDAY_MINUTES_NUMBER)
+                while (sum <= Params.WORKDAY_MINUTES_NUMBER)
                 {
                     if (j == suggNum)
                     {
@@ -347,7 +347,7 @@ namespace GeneratorSubsystem
                     {
                         int x = (int)Math.Round(d * y);
                         sum = sum + x;
-                        if (sum <= CParams.WORKDAY_MINUTES_NUMBER) sequence.Add(x);
+                        if (sum <= Params.WORKDAY_MINUTES_NUMBER) sequence.Add(x);
                     }
                     else
                     {
@@ -355,7 +355,7 @@ namespace GeneratorSubsystem
                         {
                             int x = (int)Math.Round(d * y);
                             sum = sum + x;
-                            if (sum <= CParams.WORKDAY_MINUTES_NUMBER) sequence.Add(x);
+                            if (sum <= Params.WORKDAY_MINUTES_NUMBER) sequence.Add(x);
                         }
                     }
                     j++;

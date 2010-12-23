@@ -30,11 +30,11 @@ namespace GeneratorSubsystem
         {
             List<int> sequence = new List<int>();
             int sum = 0;
-            while (sum <= CParams.WORKDAY_MINUTES_NUMBER)
+            while (sum <= Params.WORKDAY_MINUTES_NUMBER)
             {
                 int x = (int) Math.Round(((uGen.GenerateN(12)).Sum() - 6) * d + m);
                 sum = sum + x;
-                if (sum <= CParams.WORKDAY_MINUTES_NUMBER) sequence.Add(x);
+                if (sum <= Params.WORKDAY_MINUTES_NUMBER) sequence.Add(x);
 
             }
             
