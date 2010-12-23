@@ -7,8 +7,8 @@ namespace ModelingDataTypes
 {
     public class CGeneratedElement      //элемент для которого требуется полноценнай генератор
     {
-        public GeneratorType m_iGeneratorType;    //тип генератора
-        public double m_fA;             //первый параметр генератора
-        public double m_fB;             //второй параметр генератора
+        public GeneratorType GeneratorType;    //тип генератора
+        public double fA;             //первый параметр генератора
+        public double fB;             //второй параметр генератора
     }
 }

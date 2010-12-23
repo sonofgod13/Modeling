@@ -5,10 +5,24 @@ using System.Text;
 
 namespace ModelingDataTypes
 {
-    public class CPlanReportElement // элемент выполнения плана
+    /// <summary>
+    /// элемент выполнения плана
+    /// </summary>
+    public class CPlanReportElement
     {
-        public CPlanElement m_planElement;    // элемент плана
-        public DateTime m_dtStartExecute;   // фактическое начало его выполнения
-        public DateTime m_dtEndExecute;   // фактическое окончание его выполнения // если время нулевое то элемент не выполнен
+        /// <summary>
+        /// элемент плана
+        /// </summary>
+        public CPlanElement PlanElement;
+
+        /// <summary>
+        /// фактическое начало его выполнения
+        /// </summary>
+        public DateTime StartExecuteDate;
+
+        /// <summary>
+        /// фактическое окончание его выполнения. если время нулевое то элемент не выполнен
+        /// </summary>
+        public DateTime EndExecuteDate;
     }
 }

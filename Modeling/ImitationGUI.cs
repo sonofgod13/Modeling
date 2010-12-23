@@ -98,14 +98,14 @@ namespace Modeling
             frontOffice = new Modeling.FrontOffice.FrontOfficeImitationHelper();
             frontOfficeUrl = ConfigurationSettings.AppSettings["FrontOfficeUrl"].ToString();
 
-            dUrg_BASE = CParams.m_fUrgencyPropabilityDemand;    //вероятность срочности заявки
-            dRef_BASE = CParams.m_fRefusePropabilityDemand;     //вероятность отказа от заявки
+            dUrg_BASE = CParams.fUrgencyPropabilityDemand;    //вероятность срочности заявки
+            dRef_BASE = CParams.fRefusePropabilityDemand;     //вероятность отказа от заявки
             this.textBox_UrgencyPropabilityDemand.Text = dUrg_BASE.ToString();          
             //вероятность срочности заявки (поле ввода)
             this.textBox_RefusePropabilityDemand.Text = dRef_BASE.ToString();          
             //вероятность отказа от заявки (поле ввода)
 
-            ModelingDayToWork_BASE = CParams.m_iModelingDayToWork;  //время моделирования в днях
+            ModelingDayToWork_BASE = CParams.ModelingDayToWork;  //время моделирования в днях
             this.textBox_ModelingDayCount.Text = ModelingDayToWork_BASE.ToString();
             //время моделирования в днях (поле ввода)
         }
@@ -317,9 +317,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_generatorDemandsTime.m_iGeneratorType,
-                ref CParams.m_generatorDemandsTime.m_fA,
-                ref CParams.m_generatorDemandsTime.m_fB
+                ref CParams.GeneratorDemandsTime.GeneratorType,
+                ref CParams.GeneratorDemandsTime.fA,
+                ref CParams.GeneratorDemandsTime.fB
                 );
         }
 
@@ -328,9 +328,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_products[1].m_iGeneratorType,
-                ref CParams.m_products[1].m_fA,
-                ref CParams.m_products[1].m_fB
+                ref CParams.Products[1].GeneratorType,
+                ref CParams.Products[1].fA,
+                ref CParams.Products[1].fB
                 );
         }
 
@@ -339,9 +339,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_products[2].m_iGeneratorType,
-                ref CParams.m_products[2].m_fA,
-                ref CParams.m_products[2].m_fB
+                ref CParams.Products[2].GeneratorType,
+                ref CParams.Products[2].fA,
+                ref CParams.Products[2].fB
                 );
         }
 
@@ -350,9 +350,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_products[3].m_iGeneratorType,
-                ref CParams.m_products[3].m_fA,
-                ref CParams.m_products[3].m_fB
+                ref CParams.Products[3].GeneratorType,
+                ref CParams.Products[3].fA,
+                ref CParams.Products[3].fB
                 );
         }
 
@@ -361,9 +361,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_materials[1].m_iGeneratorType,
-                ref CParams.m_materials[1].m_fA,
-                ref CParams.m_materials[1].m_fB
+                ref CParams.Materials[1].GeneratorType,
+                ref CParams.Materials[1].fA,
+                ref CParams.Materials[1].fB
                 );
         }
 
@@ -372,9 +372,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_materials[2].m_iGeneratorType,
-                ref CParams.m_materials[2].m_fA,
-                ref CParams.m_materials[2].m_fB
+                ref CParams.Materials[2].GeneratorType,
+                ref CParams.Materials[2].fA,
+                ref CParams.Materials[2].fB
                 );
         }
 
@@ -383,9 +383,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_materials[3].m_iGeneratorType,
-                ref CParams.m_materials[3].m_fA,
-                ref CParams.m_materials[3].m_fB
+                ref CParams.Materials[3].GeneratorType,
+                ref CParams.Materials[3].fA,
+                ref CParams.Materials[3].fB
                 );
         }
 
@@ -394,9 +394,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_materials[4].m_iGeneratorType,
-                ref CParams.m_materials[4].m_fA,
-                ref CParams.m_materials[4].m_fB
+                ref CParams.Materials[4].GeneratorType,
+                ref CParams.Materials[4].fA,
+                ref CParams.Materials[4].fB
                 );
         }
 
@@ -405,9 +405,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_materials[5].m_iGeneratorType,
-                ref CParams.m_materials[5].m_fA,
-                ref CParams.m_materials[5].m_fB
+                ref CParams.Materials[5].GeneratorType,
+                ref CParams.Materials[5].fA,
+                ref CParams.Materials[5].fB
                 );
         }
 
@@ -416,9 +416,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_materials[6].m_iGeneratorType,
-                ref CParams.m_materials[6].m_fA,
-                ref CParams.m_materials[6].m_fB
+                ref CParams.Materials[6].GeneratorType,
+                ref CParams.Materials[6].fA,
+                ref CParams.Materials[6].fB
                 );
         }
 
@@ -427,9 +427,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_materials[7].m_iGeneratorType,
-                ref CParams.m_materials[7].m_fA,
-                ref CParams.m_materials[7].m_fB
+                ref CParams.Materials[7].GeneratorType,
+                ref CParams.Materials[7].fA,
+                ref CParams.Materials[7].fB
                 );
         }
 
@@ -438,9 +438,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_materials[8].m_iGeneratorType,
-                ref CParams.m_materials[8].m_fA,
-                ref CParams.m_materials[8].m_fB
+                ref CParams.Materials[8].GeneratorType,
+                ref CParams.Materials[8].fA,
+                ref CParams.Materials[8].fB
                 );
         }
 
@@ -449,9 +449,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_materials[9].m_iGeneratorType,
-                ref CParams.m_materials[9].m_fA,
-                ref CParams.m_materials[9].m_fB
+                ref CParams.Materials[9].GeneratorType,
+                ref CParams.Materials[9].fA,
+                ref CParams.Materials[9].fB
                 );
         }
 
@@ -460,9 +460,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_materials[10].m_iGeneratorType,
-                ref CParams.m_materials[10].m_fA,
-                ref CParams.m_materials[10].m_fB
+                ref CParams.Materials[10].GeneratorType,
+                ref CParams.Materials[10].fA,
+                ref CParams.Materials[10].fB
                 );
         }
 
@@ -471,9 +471,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_materials[11].m_iGeneratorType,
-                ref CParams.m_materials[11].m_fA,
-                ref CParams.m_materials[11].m_fB
+                ref CParams.Materials[11].GeneratorType,
+                ref CParams.Materials[11].fA,
+                ref CParams.Materials[11].fB
                 );
         }
 
@@ -482,9 +482,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_materials[12].m_iGeneratorType,
-                ref CParams.m_materials[12].m_fA,
-                ref CParams.m_materials[12].m_fB
+                ref CParams.Materials[12].GeneratorType,
+                ref CParams.Materials[12].fA,
+                ref CParams.Materials[12].fB
                 );
         }
 
@@ -493,9 +493,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_deliveryDelayGenerator.m_iGeneratorType,
-                ref CParams.m_deliveryDelayGenerator.m_fA,
-                ref CParams.m_deliveryDelayGenerator.m_fB
+                ref CParams.DeliveryDelayGenerator.GeneratorType,
+                ref CParams.DeliveryDelayGenerator.fA,
+                ref CParams.DeliveryDelayGenerator.fB
                 );
         }
 
@@ -509,9 +509,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_demandModifyTime.m_iGeneratorType,
-                ref CParams.m_demandModifyTime.m_fA,
-                ref CParams.m_demandModifyTime.m_fB
+                ref CParams.DemandModifyTime.GeneratorType,
+                ref CParams.DemandModifyTime.fA,
+                ref CParams.DemandModifyTime.fB
                 );
         }
 
@@ -520,9 +520,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_articlesModify.m_iGeneratorType,
-                ref CParams.m_articlesModify.m_fA,
-                ref CParams.m_articlesModify.m_fB
+                ref CParams.ArticlesModify.GeneratorType,
+                ref CParams.ArticlesModify.fA,
+                ref CParams.ArticlesModify.fB
                 );
         }
 
@@ -531,9 +531,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_products[1].m_modify.m_iGeneratorType,
-                ref CParams.m_products[1].m_modify.m_fA,
-                ref CParams.m_products[1].m_modify.m_fB
+                ref CParams.Products[1].Modify.GeneratorType,
+                ref CParams.Products[1].Modify.fA,
+                ref CParams.Products[1].Modify.fB
                 );
         }
 
@@ -542,9 +542,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_products[2].m_modify.m_iGeneratorType,
-                ref CParams.m_products[2].m_modify.m_fA,
-                ref CParams.m_products[2].m_modify.m_fB
+                ref CParams.Products[2].Modify.GeneratorType,
+                ref CParams.Products[2].Modify.fA,
+                ref CParams.Products[2].Modify.fB
                 );
         }
 
@@ -553,9 +553,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_products[3].m_modify.m_iGeneratorType,
-                ref CParams.m_products[3].m_modify.m_fA,
-                ref CParams.m_products[3].m_modify.m_fB
+                ref CParams.Products[3].Modify.GeneratorType,
+                ref CParams.Products[3].Modify.fA,
+                ref CParams.Products[3].Modify.fB
                 );
         }
 
@@ -564,9 +564,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_ugrToStandModify.m_iGeneratorType,
-                ref CParams.m_ugrToStandModify.m_fA,
-                ref CParams.m_ugrToStandModify.m_fB
+                ref CParams.UgrToStandModify.GeneratorType,
+                ref CParams.UgrToStandModify.fA,
+                ref CParams.UgrToStandModify.fB
                 );
         }
 
@@ -575,9 +575,9 @@ namespace Modeling
             bool bSetOK = false;
 
             bSetOK = SetGeneratorParameters(
-                ref CParams.m_standToUrgModify.m_iGeneratorType,
-                ref CParams.m_standToUrgModify.m_fA,
-                ref CParams.m_standToUrgModify.m_fB
+                ref CParams.StandToUrgModify.GeneratorType,
+                ref CParams.StandToUrgModify.fA,
+                ref CParams.StandToUrgModify.fB
                 );
         }
 
@@ -652,8 +652,8 @@ namespace Modeling
                 MessageBox.Show("Сумаа вероятностей срочности заявки и отаза от заявки не должна быть больше единицы!");
                 return false;
             }
-            CParams.m_fRefusePropabilityDemand = dRef;
-            CParams.m_fUrgencyPropabilityDemand = dUrg;
+            CParams.fRefusePropabilityDemand = dRef;
+            CParams.fUrgencyPropabilityDemand = dUrg;
             return true;
         }
 
@@ -689,7 +689,7 @@ namespace Modeling
                 {
                     if (iModelDays > 0)
                     {
-                        CParams.m_iModelingDayToWork = iModelDays;
+                        CParams.ModelingDayToWork = iModelDays;
                         return;
                     }
                     else bResultModelDays = false; 

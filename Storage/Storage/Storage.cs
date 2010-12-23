@@ -156,11 +156,11 @@ namespace Storage
                 ModelError.Error();
 
             var demand = new CDemand(acceptedDemands[id]);
-            var demandPlanElementReports = this.planReport.Values.Where(x => x.m_planElement.m_iDemandID == demand.ID);
+            var demandPlanElementReports = this.planReport.Values.Where(x => x.PlanElement.DemandID == demand.ID);
 
             foreach (CPlanReportElement c in demandPlanElementReports)
             {
-                c.m_planElement.m_iDemandID = -1;
+                c.PlanElement.DemandID = -1;
             }
 
             acceptedDemands.Remove(id);
@@ -277,13 +277,13 @@ namespace Storage
             try
             {
                 var demandPlanElementReports = this.planReport.Values.Where(
-                    x => (x.m_planElement.m_iDemandID == -1) &&
-                         (x.m_planElement.m_iProductID == prodId)
+                    x => (x.PlanElement.DemandID == -1) &&
+                         (x.PlanElement.ProductID == prodId)
                 ).Take(count);
 
                 foreach (var c in demandPlanElementReports)
                 {
-                    c.m_planElement.m_iDemandID = demandInd;
+                    c.PlanElement.DemandID = demandInd;
                 }
 
                 return true;
@@ -302,13 +302,13 @@ namespace Storage
         /// <returns></returns>
         public bool IsDemandDone(int demandInd)
         {
-            var demandPlanElementReports = this.planReport.Values.Where(x => x.m_planElement.m_iDemandID == demandInd).ToArray();
+            var demandPlanElementReports = this.planReport.Values.Where(x => x.PlanElement.DemandID == demandInd).ToArray();
             int firstArticle = 0;
             int thirdArticle = 0;
             int secondArticle = 0;
             for (int i = 0; i < demandPlanElementReports.Length; i++)
             {
-                switch (demandPlanElementReports[i].m_planElement.m_iProductID)
+                switch (demandPlanElementReports[i].PlanElement.ProductID)
                 {
                     case 1:
                         firstArticle++;
@@ -515,7 +515,7 @@ namespace Storage
         /// <returns></returns>
         public bool AddPlanReportElement(CPlanReportElement planReportElement)
         {
-            planReport.Add(planReportElement.m_dtEndExecute, planReportElement);
+            planReport.Add(planReportElement.EndExecuteDate, planReportElement);
             //!!! Здесь при добавлении еще нужно упорядочивать элементы
             return true;
         }
@@ -585,17 +585,17 @@ namespace Storage
             double workTime = 0;
             foreach (var reportElement in this.planReport.Values)
             {
-                var planElement = reportElement.m_planElement;
+                var planElement = reportElement.PlanElement;
 
                 //workTime = workTime + (p.m_dtEndExecute - p.m_dtStartExecute).TotalMinutes; 
                 //   из-за круглосуточной работы, а именно из-за костыля которым я это здесь реализовал, такой метод будет давать ошибки
-                if (planElement.m_iDemandID == 0)
+                if (planElement.DemandID == 0)
                 {
-                    workTime += CParams.retargetTimes[planElement.m_iProductID - 1];
+                    workTime += CParams.RetargetTimes[planElement.ProductID - 1];
                 }
                 else
                 {
-                    workTime += CParams.m_products[planElement.m_iProductID].m_iTime; ;
+                    workTime += CParams.Products[planElement.ProductID].Time; ;
                 }
             }
 
@@ -611,12 +611,12 @@ namespace Storage
             double retargetTime = 0;
             foreach (var reportElement in this.planReport.Values)
             {
-                var planElement = reportElement.m_planElement;
-                if (planElement.m_iDemandID == 0)
+                var planElement = reportElement.PlanElement;
+                if (planElement.DemandID == 0)
                 {
                     //retargetTime = retargetTime + (p.m_dtEndExecute - p.m_dtStartExecute).TotalMinutes;
                     //   из-за круглосуточной работы, а именно из-за костыля которым я это здесь реализовал, такой метод будет давать ошибки
-                    retargetTime += CParams.retargetTimes[planElement.m_iProductID - 1];
+                    retargetTime += CParams.RetargetTimes[planElement.ProductID - 1];
                 }
             }
             return retargetTime;

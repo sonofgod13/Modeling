@@ -29,36 +29,36 @@ namespace Modeling
             pauseDone = new AutoResetEvent(false);
 
             generator = new Generator(
-                Generator.CreateGenerator(CParams.m_generatorDemandsTime.m_iGeneratorType, CParams.m_generatorDemandsTime.m_fA, CParams.m_generatorDemandsTime.m_fB),
-                Generator.CreateGenerator(CParams.m_products[1].m_iGeneratorType, CParams.m_products[1].m_fA, CParams.m_products[1].m_fB),
-                Generator.CreateGenerator(CParams.m_products[2].m_iGeneratorType, CParams.m_products[2].m_fA, CParams.m_products[2].m_fB),
-                Generator.CreateGenerator(CParams.m_products[3].m_iGeneratorType, CParams.m_products[3].m_fA, CParams.m_products[3].m_fB),
-                CParams.m_fUrgencyPropabilityDemand, CParams.m_fRefusePropabilityDemand,
-                Generator.CreateGenerator(CParams.m_demandModifyTime.m_iGeneratorType, CParams.m_demandModifyTime.m_fA, CParams.m_demandModifyTime.m_fB),
-                Generator.CreateGenerator(CParams.m_articlesModify.m_iGeneratorType, CParams.m_articlesModify.m_fA, CParams.m_articlesModify.m_fB),
-                Generator.CreateGenerator(CParams.m_products[1].m_modify.m_iGeneratorType, CParams.m_products[1].m_modify.m_fA, CParams.m_products[1].m_modify.m_fB),
-                Generator.CreateGenerator(CParams.m_products[2].m_modify.m_iGeneratorType, CParams.m_products[2].m_modify.m_fA, CParams.m_products[2].m_modify.m_fB),
-                Generator.CreateGenerator(CParams.m_products[3].m_modify.m_iGeneratorType, CParams.m_products[3].m_modify.m_fA, CParams.m_products[3].m_modify.m_fB),
-                Generator.CreateGenerator(CParams.m_ugrToStandModify.m_iGeneratorType, CParams.m_ugrToStandModify.m_fA, CParams.m_ugrToStandModify.m_fB),
-                Generator.CreateGenerator(CParams.m_standToUrgModify.m_iGeneratorType, CParams.m_standToUrgModify.m_fA, CParams.m_standToUrgModify.m_fB),
-                Generator.CreateGenerator(CParams.m_deliveryDelayGenerator.m_iGeneratorType, CParams.m_deliveryDelayGenerator.m_fA, CParams.m_deliveryDelayGenerator.m_fB),
+                Generator.CreateGenerator(CParams.GeneratorDemandsTime.GeneratorType, CParams.GeneratorDemandsTime.fA, CParams.GeneratorDemandsTime.fB),
+                Generator.CreateGenerator(CParams.Products[1].GeneratorType, CParams.Products[1].fA, CParams.Products[1].fB),
+                Generator.CreateGenerator(CParams.Products[2].GeneratorType, CParams.Products[2].fA, CParams.Products[2].fB),
+                Generator.CreateGenerator(CParams.Products[3].GeneratorType, CParams.Products[3].fA, CParams.Products[3].fB),
+                CParams.fUrgencyPropabilityDemand, CParams.fRefusePropabilityDemand,
+                Generator.CreateGenerator(CParams.DemandModifyTime.GeneratorType, CParams.DemandModifyTime.fA, CParams.DemandModifyTime.fB),
+                Generator.CreateGenerator(CParams.ArticlesModify.GeneratorType, CParams.ArticlesModify.fA, CParams.ArticlesModify.fB),
+                Generator.CreateGenerator(CParams.Products[1].Modify.GeneratorType, CParams.Products[1].Modify.fA, CParams.Products[1].Modify.fB),
+                Generator.CreateGenerator(CParams.Products[2].Modify.GeneratorType, CParams.Products[2].Modify.fA, CParams.Products[2].Modify.fB),
+                Generator.CreateGenerator(CParams.Products[3].Modify.GeneratorType, CParams.Products[3].Modify.fA, CParams.Products[3].Modify.fB),
+                Generator.CreateGenerator(CParams.UgrToStandModify.GeneratorType, CParams.UgrToStandModify.fA, CParams.UgrToStandModify.fB),
+                Generator.CreateGenerator(CParams.StandToUrgModify.GeneratorType, CParams.StandToUrgModify.fA, CParams.StandToUrgModify.fB),
+                Generator.CreateGenerator(CParams.DeliveryDelayGenerator.GeneratorType, CParams.DeliveryDelayGenerator.fA, CParams.DeliveryDelayGenerator.fB),
                 new IGen[]
                 {   
-                    Generator.CreateGenerator(CParams.m_materials[1].m_iGeneratorType, CParams.m_materials[1].m_fA, CParams.m_materials[1].m_fB),
-                    Generator.CreateGenerator(CParams.m_materials[2].m_iGeneratorType, CParams.m_materials[2].m_fA, CParams.m_materials[2].m_fB),
-                    Generator.CreateGenerator(CParams.m_materials[3].m_iGeneratorType, CParams.m_materials[3].m_fA, CParams.m_materials[3].m_fB),
-                    Generator.CreateGenerator(CParams.m_materials[4].m_iGeneratorType, CParams.m_materials[4].m_fA, CParams.m_materials[4].m_fB),
-                    Generator.CreateGenerator(CParams.m_materials[5].m_iGeneratorType, CParams.m_materials[5].m_fA, CParams.m_materials[5].m_fB),
-                    Generator.CreateGenerator(CParams.m_materials[6].m_iGeneratorType, CParams.m_materials[6].m_fA, CParams.m_materials[6].m_fB),
-                    Generator.CreateGenerator(CParams.m_materials[7].m_iGeneratorType, CParams.m_materials[7].m_fA, CParams.m_materials[7].m_fB),
-                    Generator.CreateGenerator(CParams.m_materials[8].m_iGeneratorType, CParams.m_materials[8].m_fA, CParams.m_materials[8].m_fB),
-                    Generator.CreateGenerator(CParams.m_materials[9].m_iGeneratorType, CParams.m_materials[9].m_fA, CParams.m_materials[9].m_fB),
-                    Generator.CreateGenerator(CParams.m_materials[10].m_iGeneratorType, CParams.m_materials[10].m_fA, CParams.m_materials[10].m_fB),
-                    Generator.CreateGenerator(CParams.m_materials[11].m_iGeneratorType, CParams.m_materials[11].m_fA, CParams.m_materials[11].m_fB),
-                    Generator.CreateGenerator(CParams.m_materials[12].m_iGeneratorType, CParams.m_materials[12].m_fA, CParams.m_materials[12].m_fB)
+                    Generator.CreateGenerator(CParams.Materials[1].GeneratorType, CParams.Materials[1].fA, CParams.Materials[1].fB),
+                    Generator.CreateGenerator(CParams.Materials[2].GeneratorType, CParams.Materials[2].fA, CParams.Materials[2].fB),
+                    Generator.CreateGenerator(CParams.Materials[3].GeneratorType, CParams.Materials[3].fA, CParams.Materials[3].fB),
+                    Generator.CreateGenerator(CParams.Materials[4].GeneratorType, CParams.Materials[4].fA, CParams.Materials[4].fB),
+                    Generator.CreateGenerator(CParams.Materials[5].GeneratorType, CParams.Materials[5].fA, CParams.Materials[5].fB),
+                    Generator.CreateGenerator(CParams.Materials[6].GeneratorType, CParams.Materials[6].fA, CParams.Materials[6].fB),
+                    Generator.CreateGenerator(CParams.Materials[7].GeneratorType, CParams.Materials[7].fA, CParams.Materials[7].fB),
+                    Generator.CreateGenerator(CParams.Materials[8].GeneratorType, CParams.Materials[8].fA, CParams.Materials[8].fB),
+                    Generator.CreateGenerator(CParams.Materials[9].GeneratorType, CParams.Materials[9].fA, CParams.Materials[9].fB),
+                    Generator.CreateGenerator(CParams.Materials[10].GeneratorType, CParams.Materials[10].fA, CParams.Materials[10].fB),
+                    Generator.CreateGenerator(CParams.Materials[11].GeneratorType, CParams.Materials[11].fA, CParams.Materials[11].fB),
+                    Generator.CreateGenerator(CParams.Materials[12].GeneratorType, CParams.Materials[12].fA, CParams.Materials[12].fB)
                 }
             );
-            this.modelingDays = CParams.m_iModelingDayToWork;
+            this.modelingDays = CParams.ModelingDayToWork;
             this.modelTime = new DateTime(DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day,0,0,0);
             this.startTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
 
@@ -272,7 +272,7 @@ namespace Modeling
             if (stopFlag == true) return true;
             else
             {
-                if (currentModellingDay == (CParams.m_iModelingDayToWork - 1)) return false;
+                if (currentModellingDay == (CParams.ModelingDayToWork - 1)) return false;
                 else
                 {
                     this.stopFlag = true;
@@ -341,11 +341,11 @@ namespace Modeling
                 CPlanReportElement curPlanElem = new CPlanReportElement();
                 try
                 {
-                    if (this.storage.GetFirstPlanElement().m_iDemandID != 0)
+                    if (this.storage.GetFirstPlanElement().DemandID != 0)
                     {
-                        int prodId = this.storage.GetFirstPlanElement().m_iProductID;
-                        nextPlanElemEndTime = CParams.m_products[prodId].m_iTime;
-                        bool canDo = this.storage.Materials.TakeAwayMaterialCluster(CParams.m_products[prodId].m_materials);
+                        int prodId = this.storage.GetFirstPlanElement().ProductID;
+                        nextPlanElemEndTime = CParams.Products[prodId].Time;
+                        bool canDo = this.storage.Materials.TakeAwayMaterialCluster(CParams.Products[prodId].Materials);
                         if (canDo == false) throw new Exception("Не достаточно материалов для производства товара");
                         /*                        
                         for (int j = 1; j <= CParams.MATERIALS_NUMBER; j++)
@@ -366,9 +366,9 @@ namespace Modeling
                     }
                     else
                     {
-                        nextPlanElemEndTime = CParams.retargetTimes[this.storage.GetFirstPlanElement().m_iProductID-1];
+                        nextPlanElemEndTime = CParams.RetargetTimes[this.storage.GetFirstPlanElement().ProductID-1];
                     }
-                    curPlanElem.m_dtStartExecute=modelTime;
+                    curPlanElem.StartExecuteDate=modelTime;
                 }
                 catch 
                 {
@@ -442,21 +442,21 @@ namespace Modeling
                         if (nextTimes.Min() == nextPlanElemEndTime)
                         {
                             CPlanElement planElem = this.storage.GetFirstPlanElementAndDelete();
-                            curPlanElem.m_planElement = planElem;
-                            curPlanElem.m_dtEndExecute = modelTime;
+                            curPlanElem.PlanElement = planElem;
+                            curPlanElem.EndExecuteDate = modelTime;
                             this.storage.AddPlanReportElement(curPlanElem);
                            // backOffice.reportPlanElem(curPlanElem);   отчёт в бекофис не надо
-                            if ((planElem.m_iDemandID!=0)&&(this.storage.IsDemandDone(planElem.m_iDemandID) == true))
-                                this.storage.FinishDemand(planElem.m_iDemandID, modelTime);
+                            if ((planElem.DemandID!=0)&&(this.storage.IsDemandDone(planElem.DemandID) == true))
+                                this.storage.FinishDemand(planElem.DemandID, modelTime);
 
                             curPlanElem = new CPlanReportElement();
                             try
                             {
-                                if (this.storage.GetFirstPlanElement().m_iDemandID != 0)
+                                if (this.storage.GetFirstPlanElement().DemandID != 0)
                                 {
-                                    int prodId = this.storage.GetFirstPlanElement().m_iProductID;
-                                    nextPlanElemEndTime = CParams.m_products[prodId].m_iTime;
-                                    bool canDo = this.storage.Materials.TakeAwayMaterialCluster(CParams.m_products[prodId].m_materials);
+                                    int prodId = this.storage.GetFirstPlanElement().ProductID;
+                                    nextPlanElemEndTime = CParams.Products[prodId].Time;
+                                    bool canDo = this.storage.Materials.TakeAwayMaterialCluster(CParams.Products[prodId].Materials);
                                     if (canDo == false) throw new Exception("Не достаточно материалов для производства товара");
                                     /*
                                     for (int j = 1; j <= CParams.MATERIALS_NUMBER; j++)
@@ -477,9 +477,9 @@ namespace Modeling
                                 }
                                 else
                                 {
-                                    nextPlanElemEndTime = CParams.retargetTimes[this.storage.GetFirstPlanElement().m_iProductID-1];
+                                    nextPlanElemEndTime = CParams.RetargetTimes[this.storage.GetFirstPlanElement().ProductID-1];
                                 }
-                                curPlanElem.m_dtStartExecute = modelTime;
+                                curPlanElem.StartExecuteDate = modelTime;
 
                             }
                             catch

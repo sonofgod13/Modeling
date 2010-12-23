@@ -5,72 +5,116 @@ using System.Text;
 
 namespace ModelingDataTypes
 {
-    public class CParams                                //класс параметров моделирования
+    /// <summary>
+    /// класс параметров моделирования
+    /// </summary>
+    public class CParams                                
     {
-        public static int PRODUCTS_NUMBER;              //количество типов продуктов
-        public static int MATERIALS_NUMBER;             //количество типов материалов
-        public static int WORKDAY_MINUTES_NUMBER;       //рабочее время в минутах
-        public static int DELIVERY_PERIOD;              //период в днях между получением заказов на поставки материалов
+        /// <summary>
+        /// количество типов продуктов
+        /// </summary>
+        public static int PRODUCTS_NUMBER;
 
-        public static int m_iModelingDayToWork;         //время работы моделирования до остановки
+        /// <summary>
+        /// количество типов материалов
+        /// </summary>
+        public static int MATERIALS_NUMBER;
 
-        private static bool m_bInitialized = false;     //параметры моделирования инициализированы (да/нет)
+        /// <summary>
+        /// рабочее время в минутах
+        /// </summary>
+        public static int WORKDAY_MINUTES_NUMBER;
 
+        /// <summary>
+        /// период в днях между получением заказов на поставки материалов
+        /// </summary>
+        public static int DELIVERY_PERIOD;
 
-        public static Dictionary<int, CGeneratedProduct> m_products;
-        //описание всех типов производимых продуктов
-        //пара: номер продукта - продукт (номера начинаются с единицы)
+        /// <summary>
+        /// время работы моделирования до остановки
+        /// </summary>
+        public static int ModelingDayToWork;
 
+        /// <summary>
+        /// параметры моделирования инициализированы (да/нет)
+        /// </summary>
+        private static bool Initialized = false;
 
-        public static Dictionary<int, CMaterial> m_materials;
-        //описание всех используемых материалов
-        //пара: номер материала - материал (номера начинаются с единицы)
+        /// <summary>
+        /// описание всех типов производимых продуктов. пара: номер продукта - продукт (номера начинаются с единицы)
+        /// </summary>
+        public static Dictionary<int, CGeneratedProduct> Products;
 
+        /// <summary>
+        /// описание всех используемых материалов. пара: номер материала - материал (номера начинаются с единицы)
+        /// </summary>
+        public static Dictionary<int, CMaterial> Materials;
 
-        public static int[] retargetTimes;  // время на перенастройку оборудования
+        /// <summary>
+        /// время на перенастройку оборудования
+        /// </summary>
+        public static int[] RetargetTimes;
 
+        /// <summary>
+        /// генератор поступления заявок
+        /// </summary>
+        public static CGeneratedElement GeneratorDemandsTime;
 
-        public static CGeneratedElement m_generatorDemandsTime; //генератор поступления заявок
+        /// <summary>
+        /// вероятность срочности заявки
+        /// </summary>
+        public static double fUrgencyPropabilityDemand;
 
+        /// <summary>
+        /// вероятность отказа от заявки
+        /// </summary>
+        public static double fRefusePropabilityDemand;
 
-        public static double m_fUrgencyPropabilityDemand;       //вероятность срочности заявки
+        /// <summary>
+        /// генератор времени задержки поставки материалов
+        /// </summary>
+        public static CGeneratedElement DeliveryDelayGenerator;
 
-        public static double m_fRefusePropabilityDemand;        //вероятность отказа от заявки
+        /// <summary>
+        /// генератор времени изменения заявки
+        /// </summary>
+        public static CGeneratedElement DemandModifyTime;
 
+        /// <summary>
+        /// генератор ???
+        /// </summary>
+        public static CGeneratedElement UgrToStandModify;
 
-        public static CGeneratedElement m_deliveryDelayGenerator;
-        //генератор времени задержки поставки материалов
+        /// <summary>
+        /// генератор ???
+        /// </summary>
+        public static CGeneratedElement StandToUrgModify;
 
+        /// <summary>
+        /// генератор ???
+        /// </summary>
+        public static CGeneratedElement ArticlesModify;
 
-        public static CGeneratedElement m_demandModifyTime;
-        //генератор времени изменения заявки
-
-
-        public static CGeneratedElement m_ugrToStandModify; //генератор ???
-
-
-        public static CGeneratedElement m_standToUrgModify; //генератор ???
-
-
-        public static CGeneratedElement m_articlesModify;   //генератор ???
-
-
-        public static bool m_bUseFakeServices; // использовать фиктивные внешние сервисы
-
-
-
-
-        public static bool Initialization() //инициализация начальных параметров
+        /// <summary>
+        /// использовать фиктивные внешние сервисы
+        /// </summary>
+        public static bool UseFakeServices;
+        
+        /// <summary>
+        /// инициализация начальных параметров
+        /// </summary>
+        /// <returns></returns>
+        public static bool Initialization()
         {
-            if (m_bInitialized) //если параметры уже инициализированы, ничего не делать
+            if (Initialized) //если параметры уже инициализированы, ничего не делать
                 return false;
 
-            m_bUseFakeServices = false; // НЕ использовать фиктивные внешние сервисы
+            UseFakeServices = false; // НЕ использовать фиктивные внешние сервисы
 
             WORKDAY_MINUTES_NUMBER = 1440;  //рабочее время в минутах
 
 
-            m_iModelingDayToWork = 20;      //время работы моделирования до остановки
+            ModelingDayToWork = 20;      //время работы моделирования до остановки
 
 
             MATERIALS_NUMBER = 12;        //количество типов материалов
@@ -86,147 +130,147 @@ namespace ModelingDataTypes
             {
                 for (var materialIndex = 0; materialIndex < 12; materialIndex++)
                 {
-                    product.m_materials.AddMaterial(
+                    product.Materials.AddMaterial(
                         materialIndex + 1,
                         materialsCount[materialIndex]
                     );
                 }
             };
 
-            m_products = new Dictionary<int, CGeneratedProduct>();
+            Products = new Dictionary<int, CGeneratedProduct>();
 
             CGeneratedProduct product1 = new CGeneratedProduct()
             {
-                m_iTime = 26,
-                m_iIndex = 1,
-                m_iGeneratorType = GeneratorType.Normal,
-                m_fA = 5.0,
-                m_fB = 2.0,
-                m_modify = new CGeneratedElement
+                Time = 26,
+                Index = 1,
+                GeneratorType = GeneratorType.Normal,
+                fA = 5.0,
+                fB = 2.0,
+                Modify = new CGeneratedElement
                 {
-                    m_iGeneratorType = GeneratorType.Normal,
-                    m_fA = 0.0,
-                    m_fB = 3.0
+                    GeneratorType = GeneratorType.Normal,
+                    fA = 0.0,
+                    fB = 3.0
                 }
             };
 
             // Denis Bykov: да, это тоже плохо, посмотрим, что можно будет сделать впоследствии
             assignMaterialsCount(product1, new[] { 6, 2, 3, 0, 2, 4, 5, 0, 3, 8, 2, 1 });
 
-            m_products.Add(1, product1);
+            Products.Add(1, product1);
 
 
             CGeneratedProduct product2 = new CGeneratedProduct()
             {
-                m_iTime = 72,
-                m_iIndex = 2,
-                m_iGeneratorType = GeneratorType.Normal,
-                m_fA = 5.0,
-                m_fB = 2.0,
-                m_modify = new CGeneratedElement
+                Time = 72,
+                Index = 2,
+                GeneratorType = GeneratorType.Normal,
+                fA = 5.0,
+                fB = 2.0,
+                Modify = new CGeneratedElement
                 {
-                    m_iGeneratorType = GeneratorType.Normal,
-                    m_fA = 0.0,
-                    m_fB = 3.0
+                    GeneratorType = GeneratorType.Normal,
+                    fA = 0.0,
+                    fB = 3.0
                 }
             };
 
             assignMaterialsCount(product2, new[] { 0, 0, 1, 4, 5, 1, 2, 4, 7, 8, 8, 3 });
 
-            m_products.Add(2, product2);
+            Products.Add(2, product2);
 
 
             CGeneratedProduct product3 = new CGeneratedProduct()
             {
-                m_iTime = 49,
-                m_iIndex = 3,
-                m_iGeneratorType = GeneratorType.Normal,
-                m_fA = 5.0,
-                m_fB = 2.0,
-                m_modify = new CGeneratedElement
+                Time = 49,
+                Index = 3,
+                GeneratorType = GeneratorType.Normal,
+                fA = 5.0,
+                fB = 2.0,
+                Modify = new CGeneratedElement
                 {
-                    m_iGeneratorType = GeneratorType.Normal,
-                    m_fA = 0.0,
-                    m_fB = 3.0
+                    GeneratorType = GeneratorType.Normal,
+                    fA = 0.0,
+                    fB = 3.0
                 }
             };
 
             assignMaterialsCount(product3, new[] { 2, 6, 5, 3, 1, 6, 9, 2, 1, 3, 0, 4 });
 
-            m_products.Add(3, product3);
+            Products.Add(3, product3);
 
 
-            m_materials = new Dictionary<int, CMaterial>();
+            Materials = new Dictionary<int, CMaterial>();
             for (var materialIndex = 1; materialIndex <= 12; materialIndex++)
             {
-                m_materials.Add(
+                Materials.Add(
                     materialIndex,
-                    new CMaterial { m_iIndex = materialIndex, m_iGeneratorType = GeneratorType.Normal, m_fA = 3.0, m_fB = 4.0 }
+                    new CMaterial { Index = materialIndex, GeneratorType = GeneratorType.Normal, fA = 3.0, fB = 4.0 }
                 );
             }
 
-            retargetTimes = new int[] { 68, 39, 95 }; // время на перенастройку оборудования
+            RetargetTimes = new int[] { 68, 39, 95 }; // время на перенастройку оборудования
 
 
-            m_generatorDemandsTime = new CGeneratedElement()    //генератор поступления заявок
+            GeneratorDemandsTime = new CGeneratedElement()    //генератор поступления заявок
             {
-                m_iGeneratorType = GeneratorType.Exponential,
-                m_fA = 636.0,
-                m_fB = 0.0
+                GeneratorType = GeneratorType.Exponential,
+                fA = 636.0,
+                fB = 0.0
             };
 
 
-            m_fUrgencyPropabilityDemand = 0.3;      //вероятность срочности заявки
+            fUrgencyPropabilityDemand = 0.3;      //вероятность срочности заявки
 
-            m_fRefusePropabilityDemand = 0.07;      //вероятность отказа от заявки
+            fRefusePropabilityDemand = 0.07;      //вероятность отказа от заявки
 
 
-            m_deliveryDelayGenerator = new CGeneratedElement()
+            DeliveryDelayGenerator = new CGeneratedElement()
             //генератор времени задержки поставки материалов
             {
-                m_iGeneratorType = GeneratorType.Normal,
-                m_fA = 12.0,
-                m_fB = 0.0
+                GeneratorType = GeneratorType.Normal,
+                fA = 12.0,
+                fB = 0.0
             };
 
 
-            m_demandModifyTime = new CGeneratedElement()
+            DemandModifyTime = new CGeneratedElement()
             //генератор времени изменения заявки
             {
-                m_iGeneratorType = GeneratorType.Normal,
-                m_fA = 1281.0,
-                m_fB = 0.0
+                GeneratorType = GeneratorType.Normal,
+                fA = 1281.0,
+                fB = 0.0
             };
 
 
-            m_ugrToStandModify = new CGeneratedElement()
+            UgrToStandModify = new CGeneratedElement()
             //генератор ???
             {
-                m_iGeneratorType = GeneratorType.Rayleigh,
-                m_fA = 3000.0,
-                m_fB = 0.0
+                GeneratorType = GeneratorType.Rayleigh,
+                fA = 3000.0,
+                fB = 0.0
             };
 
 
-            m_standToUrgModify = new CGeneratedElement()
+            StandToUrgModify = new CGeneratedElement()
             //генератор ??? 
             {
-                m_iGeneratorType = GeneratorType.Rayleigh,
-                m_fA = 3000.0,
-                m_fB = 0.0
+                GeneratorType = GeneratorType.Rayleigh,
+                fA = 3000.0,
+                fB = 0.0
             };
 
 
-            m_articlesModify = new CGeneratedElement()
+            ArticlesModify = new CGeneratedElement()
             //генератор ???
             {
-                m_iGeneratorType = GeneratorType.Exponential,
-                m_fA = 9.0,
-                m_fB = 30.0
+                GeneratorType = GeneratorType.Exponential,
+                fA = 9.0,
+                fB = 30.0
             };
 
 
-            m_bInitialized = true;  //параметры моделирования инициализированы
+            Initialized = true;  //параметры моделирования инициализированы
             return true;
 
         } //end Initialization

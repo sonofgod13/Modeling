@@ -8,6 +8,6 @@ namespace ModelingDataTypes
     public class CMaterial : CGeneratedElement
     //класс параметров материала
     {
-        public int m_iIndex;            //индекс материала
+        public int Index;            //индекс материала
     }
 }

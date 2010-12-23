@@ -168,7 +168,7 @@ namespace Modeling
         /// <returns></returns>
         public bool startModeling(DateTime date)
         {
-            if (!CParams.m_bUseFakeServices)
+            if (!CParams.UseFakeServices)
             {
                 //         Реальный код    
                 string dateStr = date.ToString("yyyy-MM-dd HH:mm:ss");
@@ -188,7 +188,7 @@ namespace Modeling
         /// <returns></returns>
         public bool approveDemand(ref CDemand demand)
         {
-            if (!CParams.m_bUseFakeServices)
+            if (!CParams.UseFakeServices)
             {
                 //         Реальный код            
                 string date = demand.GettingDate.ToString("yyyy-MM-dd HH:mm:ss");
@@ -261,7 +261,7 @@ namespace Modeling
         /// <returns></returns>
         public bool approveModifyDemand(DateTime date, ref CDemand modifiedDemand, CDemand demand)
         {
-            if (!CParams.m_bUseFakeServices)
+            if (!CParams.UseFakeServices)
             {
                 //         Реальный код
                 string dateStr = date.ToString("yyyy-MM-dd HH:mm:ss");
@@ -350,7 +350,7 @@ namespace Modeling
 
         public bool reportDeliveryDemand(CDeliveryDemand del)
         {
-            if (!CParams.m_bUseFakeServices)
+            if (!CParams.UseFakeServices)
             {
                 //         Реальный код
                 string date = del.RealDeliveryDate.Value.ToString("yyyy-MM-dd HH:mm:ss");
@@ -376,7 +376,7 @@ namespace Modeling
 
         public CDeliveryDemand getDeliveryDemands(DateTime date)          //Получение от back office заявок на поставки материалов
         {
-            if (!CParams.m_bUseFakeServices)
+            if (!CParams.UseFakeServices)
             {
                 //         Реальный код
                 string dateStr = date.ToString("yyyy-MM-dd HH:mm:ss");
@@ -431,7 +431,7 @@ namespace Modeling
 
         public CPlanElement[] getDailyPlan(DateTime date, ref CStorage storage)          //Получение от back office плана на день
         {
-            if (!CParams.m_bUseFakeServices)
+            if (!CParams.UseFakeServices)
             {
                 //      Реальный код
                 string dateStr = date.ToString("yyyy-MM-dd HH:mm:ss");
@@ -484,16 +484,16 @@ namespace Modeling
                                 {
                                     dailyPlan.Add(new CPlanElement
                                     {
-                                        m_iDemandID = 0,
-                                        m_iProductID = planElement.productId
+                                        DemandID = 0,
+                                        ProductID = planElement.productId
                                     });
                                 }
                                 for (int j = 0; j < planElement.count; j++)
                                 {
                                     dailyPlan.Add(new CPlanElement
                                     {
-                                        m_iDemandID = planElement.demandId,
-                                        m_iProductID = planElement.productId
+                                        DemandID = planElement.demandId,
+                                        ProductID = planElement.productId
                                     });
                                     prevProductId = planElement.productId;
                                 }
@@ -517,13 +517,13 @@ namespace Modeling
             else
             {
                 //         Заглушка     
-                CPlanElement p1 = new CPlanElement() { m_iDemandID = 1, m_iProductID = 2 };
-                CPlanElement p2 = new CPlanElement() { m_iDemandID = 1, m_iProductID = 1 };
-                CPlanElement p3 = new CPlanElement() { m_iDemandID = 2, m_iProductID = 2 };
-                CPlanElement p4 = new CPlanElement() { m_iDemandID = 0, m_iProductID = 3 };
-                CPlanElement p5 = new CPlanElement() { m_iDemandID = 3, m_iProductID = 3 };
-                CPlanElement p6 = new CPlanElement() { m_iDemandID = 2, m_iProductID = 2 };
-                CPlanElement p7 = new CPlanElement() { m_iDemandID = 4, m_iProductID = 1 };
+                CPlanElement p1 = new CPlanElement() { DemandID = 1, ProductID = 2 };
+                CPlanElement p2 = new CPlanElement() { DemandID = 1, ProductID = 1 };
+                CPlanElement p3 = new CPlanElement() { DemandID = 2, ProductID = 2 };
+                CPlanElement p4 = new CPlanElement() { DemandID = 0, ProductID = 3 };
+                CPlanElement p5 = new CPlanElement() { DemandID = 3, ProductID = 3 };
+                CPlanElement p6 = new CPlanElement() { DemandID = 2, ProductID = 2 };
+                CPlanElement p7 = new CPlanElement() { DemandID = 4, ProductID = 1 };
 
                 return new CPlanElement[] { p1, p2, p3, p4, p5, p6, p7 };
             }
