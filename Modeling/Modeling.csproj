@@ -235,7 +235,6 @@
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
     <None Include="Web References\FrontOffice\FrontOfficeImitationHelper.disco" />
     <None Include="Web References\MamlayBackOfficeSim\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>

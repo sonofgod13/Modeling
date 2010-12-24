@@ -28,6 +28,8 @@ namespace Modeling
 
         private string frontOfficeUrl;
 
+        private Dictionary<Button, Func<GeneratedElement>> BindedButtons = new Dictionary<Button, Func<GeneratedElement>>();
+
         private void setStringButton(Button button, string text)
         {
             if (button.InvokeRequired)
@@ -107,6 +109,39 @@ namespace Modeling
             ModelingDayToWork_BASE = Params.ModelingDayToWork;  //время моделирования в днях
             this.textBox_ModelingDayCount.Text = ModelingDayToWork_BASE.ToString();
             //время моделирования в днях (поле ввода)
+        }
+
+        private void BindButtons()
+        {
+            BindedButtons.Add(this.Z_g_time_button, () => Params.GeneratorDemandsTime);
+
+            BindedButtons.Add(this.Z_g_p1_button, () => Params.Products[1]);
+            BindedButtons.Add(this.Z_g_p2_button, () => Params.Products[2]);
+            BindedButtons.Add(this.Z_g_p3_button, () => Params.Products[3]);
+
+            BindedButtons.Add(this.M_g_m1_button, () => Params.Materials[1]);
+            BindedButtons.Add(this.M_g_m2_button, () => Params.Materials[2]);
+            BindedButtons.Add(this.M_g_m3_button, () => Params.Materials[3]);
+            BindedButtons.Add(this.M_g_m4_button, () => Params.Materials[4]);
+            BindedButtons.Add(this.M_g_m5_button, () => Params.Materials[5]);
+            BindedButtons.Add(this.M_g_m6_button, () => Params.Materials[6]);
+            BindedButtons.Add(this.M_g_m7_button, () => Params.Materials[7]);
+            BindedButtons.Add(this.M_g_m8_button, () => Params.Materials[8]);
+            BindedButtons.Add(this.M_g_m9_button, () => Params.Materials[9]);
+            BindedButtons.Add(this.M_g_m10_button, () => Params.Materials[10]);
+            BindedButtons.Add(this.M_g_m11_button, () => Params.Materials[11]);
+            BindedButtons.Add(this.M_g_m12_button, () => Params.Materials[12]);
+
+            BindedButtons.Add(this.button_deliveryDelayGenerator, () => Params.DeliveryDelayGenerator);
+            BindedButtons.Add(this.button_demandModifyTime, () => Params.DemandModifyTime);
+            BindedButtons.Add(this.button8, () => Params.ArticlesModify);
+
+            BindedButtons.Add(this.button7, () => Params.Products[1]);
+            BindedButtons.Add(this.button6, () => Params.Products[2]);
+            BindedButtons.Add(this.button5, () => Params.Products[3]);
+
+            BindedButtons.Add(this.button4, () => Params.UgrToStandModify);
+            BindedButtons.Add(this.button3, () => Params.StandToUrgModify);
         }
 
         private void StartClickThreadWorkerStart()
@@ -354,8 +389,6 @@ namespace Modeling
             return bSetResult;
         }
 
-        private Dictionary<Button, Func<GeneratedElement>> BindedButtons = new Dictionary<Button, Func<GeneratedElement>>();
-
         private void GenericSetGeneratorParametersClick(object sender, EventArgs e)
         {
             var button = sender as Button;
@@ -370,39 +403,6 @@ namespace Modeling
                 ref generatorParameters.fA,
                 ref generatorParameters.fB
             );
-        }
-
-        private void BindButtons()
-        {
-            BindedButtons.Add(this.Z_g_time_button, () => Params.GeneratorDemandsTime);
-
-            BindedButtons.Add(this.Z_g_p1_button, () => Params.Products[1]);
-            BindedButtons.Add(this.Z_g_p2_button, () => Params.Products[2]);
-            BindedButtons.Add(this.Z_g_p3_button, () => Params.Products[3]);
-
-            BindedButtons.Add(this.M_g_m1_button, () => Params.Materials[1]);
-            BindedButtons.Add(this.M_g_m2_button, () => Params.Materials[2]);
-            BindedButtons.Add(this.M_g_m3_button, () => Params.Materials[3]);
-            BindedButtons.Add(this.M_g_m4_button, () => Params.Materials[4]);
-            BindedButtons.Add(this.M_g_m5_button, () => Params.Materials[5]);
-            BindedButtons.Add(this.M_g_m6_button, () => Params.Materials[6]);
-            BindedButtons.Add(this.M_g_m7_button, () => Params.Materials[7]);
-            BindedButtons.Add(this.M_g_m8_button, () => Params.Materials[8]);
-            BindedButtons.Add(this.M_g_m9_button, () => Params.Materials[9]);
-            BindedButtons.Add(this.M_g_m10_button, () => Params.Materials[10]);
-            BindedButtons.Add(this.M_g_m11_button, () => Params.Materials[11]);
-            BindedButtons.Add(this.M_g_m12_button, () => Params.Materials[12]);
-
-            BindedButtons.Add(this.button_deliveryDelayGenerator, () => Params.DeliveryDelayGenerator);
-            BindedButtons.Add(this.button_demandModifyTime, () => Params.DemandModifyTime);
-            BindedButtons.Add(this.button8, () => Params.ArticlesModify);
-
-            BindedButtons.Add(this.button7, () => Params.Products[1]);
-            BindedButtons.Add(this.button6, () => Params.Products[2]);
-            BindedButtons.Add(this.button5, () => Params.Products[3]);
-
-            BindedButtons.Add(this.button4, () => Params.UgrToStandModify);
-            BindedButtons.Add(this.button3, () => Params.StandToUrgModify);
         }
 
         private void materials_button_Click(object sender, EventArgs e)
