@@ -138,7 +138,7 @@
             this.Z_g_time_button.TabIndex = 9;
             this.Z_g_time_button.Text = "Выбрать";
             this.Z_g_time_button.UseVisualStyleBackColor = true;
-            this.Z_g_time_button.Click += new System.EventHandler(this.Z_g_time_button_Click);
+            this.Z_g_time_button.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // tabPage2
             // 
@@ -184,7 +184,7 @@
             this.button_deliveryDelayGenerator.TabIndex = 38;
             this.button_deliveryDelayGenerator.Text = "Выбрать";
             this.button_deliveryDelayGenerator.UseVisualStyleBackColor = true;
-            this.button_deliveryDelayGenerator.Click += new System.EventHandler(this.button2_Click);
+            this.button_deliveryDelayGenerator.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // label2
             // 
@@ -203,7 +203,7 @@
             this.M_g_m1_button.TabIndex = 36;
             this.M_g_m1_button.Text = "Выбрать";
             this.M_g_m1_button.UseVisualStyleBackColor = true;
-            this.M_g_m1_button.Click += new System.EventHandler(this.M_g_m1_button_Click);
+            this.M_g_m1_button.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // M_g_m2_button
             // 
@@ -213,7 +213,7 @@
             this.M_g_m2_button.TabIndex = 35;
             this.M_g_m2_button.Text = "Выбрать";
             this.M_g_m2_button.UseVisualStyleBackColor = true;
-            this.M_g_m2_button.Click += new System.EventHandler(this.M_g_m2_button_Click);
+            this.M_g_m2_button.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // M_g_m3_button
             // 
@@ -223,7 +223,7 @@
             this.M_g_m3_button.TabIndex = 34;
             this.M_g_m3_button.Text = "Выбрать";
             this.M_g_m3_button.UseVisualStyleBackColor = true;
-            this.M_g_m3_button.Click += new System.EventHandler(this.M_g_m3_button_Click);
+            this.M_g_m3_button.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // M_g_m4_button
             // 
@@ -233,7 +233,7 @@
             this.M_g_m4_button.TabIndex = 33;
             this.M_g_m4_button.Text = "Выбрать";
             this.M_g_m4_button.UseVisualStyleBackColor = true;
-            this.M_g_m4_button.Click += new System.EventHandler(this.M_g_m4_button_Click);
+            this.M_g_m4_button.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // M_g_m5_button
             // 
@@ -243,7 +243,7 @@
             this.M_g_m5_button.TabIndex = 32;
             this.M_g_m5_button.Text = "Выбрать";
             this.M_g_m5_button.UseVisualStyleBackColor = true;
-            this.M_g_m5_button.Click += new System.EventHandler(this.M_g_m5_button_Click);
+            this.M_g_m5_button.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // M_g_m6_button
             // 
@@ -253,7 +253,7 @@
             this.M_g_m6_button.TabIndex = 31;
             this.M_g_m6_button.Text = "Выбрать";
             this.M_g_m6_button.UseVisualStyleBackColor = true;
-            this.M_g_m6_button.Click += new System.EventHandler(this.M_g_m6_button_Click);
+            this.M_g_m6_button.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // M_g_m7_button
             // 
@@ -263,7 +263,7 @@
             this.M_g_m7_button.TabIndex = 30;
             this.M_g_m7_button.Text = "Выбрать";
             this.M_g_m7_button.UseVisualStyleBackColor = true;
-            this.M_g_m7_button.Click += new System.EventHandler(this.M_g_m7_button_Click);
+            this.M_g_m7_button.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // M_g_m8_button
             // 
@@ -273,7 +273,7 @@
             this.M_g_m8_button.TabIndex = 29;
             this.M_g_m8_button.Text = "Выбрать";
             this.M_g_m8_button.UseVisualStyleBackColor = true;
-            this.M_g_m8_button.Click += new System.EventHandler(this.M_g_m8_button_Click);
+            this.M_g_m8_button.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // M_g_m9_button
             // 
@@ -283,7 +283,7 @@
             this.M_g_m9_button.TabIndex = 28;
             this.M_g_m9_button.Text = "Выбрать";
             this.M_g_m9_button.UseVisualStyleBackColor = true;
-            this.M_g_m9_button.Click += new System.EventHandler(this.M_g_m9_button_Click);
+            this.M_g_m9_button.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // M_g_m10_button
             // 
@@ -293,7 +293,7 @@
             this.M_g_m10_button.TabIndex = 27;
             this.M_g_m10_button.Text = "Выбрать";
             this.M_g_m10_button.UseVisualStyleBackColor = true;
-            this.M_g_m10_button.Click += new System.EventHandler(this.M_g_m10_button_Click);
+            this.M_g_m10_button.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // M_g_m11_button
             // 
@@ -303,7 +303,7 @@
             this.M_g_m11_button.TabIndex = 26;
             this.M_g_m11_button.Text = "Выбрать";
             this.M_g_m11_button.UseVisualStyleBackColor = true;
-            this.M_g_m11_button.Click += new System.EventHandler(this.M_g_m11_button_Click);
+            this.M_g_m11_button.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // M_g_m12_button
             // 
@@ -313,7 +313,7 @@
             this.M_g_m12_button.TabIndex = 25;
             this.M_g_m12_button.Text = "Выбрать";
             this.M_g_m12_button.UseVisualStyleBackColor = true;
-            this.M_g_m12_button.Click += new System.EventHandler(this.M_g_m12_button_Click);
+            this.M_g_m12_button.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // M_g_m1_label
             // 
@@ -487,7 +487,7 @@
             this.Z_g_p1_button.TabIndex = 15;
             this.Z_g_p1_button.Text = "Выбрать";
             this.Z_g_p1_button.UseVisualStyleBackColor = true;
-            this.Z_g_p1_button.Click += new System.EventHandler(this.Z_g_p1_button_Click);
+            this.Z_g_p1_button.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // Z_g_p2_button
             // 
@@ -497,7 +497,7 @@
             this.Z_g_p2_button.TabIndex = 14;
             this.Z_g_p2_button.Text = "Выбрать";
             this.Z_g_p2_button.UseVisualStyleBackColor = true;
-            this.Z_g_p2_button.Click += new System.EventHandler(this.Z_g_p2_button_Click);
+            this.Z_g_p2_button.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // Z_g_p3_button
             // 
@@ -507,7 +507,7 @@
             this.Z_g_p3_button.TabIndex = 13;
             this.Z_g_p3_button.Text = "Выбрать";
             this.Z_g_p3_button.UseVisualStyleBackColor = true;
-            this.Z_g_p3_button.Click += new System.EventHandler(this.Z_g_p3_button_Click);
+            this.Z_g_p3_button.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // Z_g_p1_label
             // 
@@ -588,7 +588,7 @@
             this.button_demandModifyTime.TabIndex = 45;
             this.button_demandModifyTime.Text = "Выбрать";
             this.button_demandModifyTime.UseVisualStyleBackColor = true;
-            this.button_demandModifyTime.Click += new System.EventHandler(this.button9_Click);
+            this.button_demandModifyTime.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // button8
             // 
@@ -598,7 +598,7 @@
             this.button8.TabIndex = 44;
             this.button8.Text = "Выбрать";
             this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
+            this.button8.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // button7
             // 
@@ -608,7 +608,7 @@
             this.button7.TabIndex = 43;
             this.button7.Text = "Выбрать";
             this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.button7.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // button6
             // 
@@ -618,7 +618,7 @@
             this.button6.TabIndex = 42;
             this.button6.Text = "Выбрать";
             this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.button6.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // button5
             // 
@@ -628,7 +628,7 @@
             this.button5.TabIndex = 41;
             this.button5.Text = "Выбрать";
             this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.button5.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // button4
             // 
@@ -638,7 +638,7 @@
             this.button4.TabIndex = 40;
             this.button4.Text = "Выбрать";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.button4.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // button3
             // 
@@ -648,7 +648,7 @@
             this.button3.TabIndex = 39;
             this.button3.Text = "Выбрать";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button3.Click += new System.EventHandler(this.GenericSetGeneratorParametersClick);
             // 
             // label9
             // 
@@ -704,7 +704,6 @@
             this.label4.TabIndex = 10;
             this.label4.Text = "Выбор распределения вероятности изменения срочности \r\n(с срочного на стандартный)" +
                 "";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // label3
             // 
@@ -932,7 +931,6 @@
             this.Controls.Add(this.button_start);
             this.Name = "ImitationGUI";
             this.Text = "Модуль имитационного моделирования";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.tabPage1.ResumeLayout(false);

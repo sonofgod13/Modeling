@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modeling", "Modeling\Modeli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReflectionPerformanceTests", "ReflectionPerformanceTests\ReflectionPerformanceTests.csproj", "{5955A9D2-86F0-4DCF-8690-DBF15FC9CBF9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers", "Helpers\Helpers.csproj", "{05E9D921-94E9-42B4-9DBF-9C77B0796896}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{5955A9D2-86F0-4DCF-8690-DBF15FC9CBF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5955A9D2-86F0-4DCF-8690-DBF15FC9CBF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5955A9D2-86F0-4DCF-8690-DBF15FC9CBF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05E9D921-94E9-42B4-9DBF-9C77B0796896}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05E9D921-94E9-42B4-9DBF-9C77B0796896}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05E9D921-94E9-42B4-9DBF-9C77B0796896}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05E9D921-94E9-42B4-9DBF-9C77B0796896}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

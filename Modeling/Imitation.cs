@@ -14,7 +14,7 @@ namespace Modeling
     {
         private BackOfficeInterface backOffice;
         private Storage.Storage storage;       //временное хранилище результатов моделирования
-        private Generator generator;    
+        private Generator generator;
         private DateTime modelTime;
         private DateTime startTime;
         private int modelingDays;
@@ -59,19 +59,20 @@ namespace Modeling
                 }
             );
             this.modelingDays = Params.ModelingDayToWork;
-            this.modelTime = new DateTime(DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day,0,0,0);
+            this.modelTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
             this.startTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
 
 
         }
 
-        private delegate void lDelegate(Label label, string text);
         private void setLabelText(Label label, string text)
         {
             if (label.InvokeRequired)
             {
-                lDelegate deleg = new lDelegate(setLabelText);
-                label.Invoke(deleg, new object[] { label, text });
+                label.Invoke(
+                    new Action<Label, String>(setLabelText),
+                    new object[] { label, text }
+                );
             }
             else
             {
@@ -80,17 +81,21 @@ namespace Modeling
 
         }
 
-        public DateTime getModelingTime()   // Тукущее модельное время
+        /// <summary>
+        /// Текущее модельное время
+        /// </summary>
+        /// <returns></returns>
+        public DateTime GetModelingTime()
         {
             return this.modelTime;
         }
 
-        public bool saveNewFrontDemands(Modeling.FrontOffice.Order[] newFrontOrders)
+        public bool SaveNewFrontDemands(Modeling.FrontOffice.Order[] newFrontOrders)
         {
-            foreach(Modeling.FrontOffice.Order order in newFrontOrders)
+            foreach (var order in newFrontOrders)
             {
-                int urg=0;
-                if (order.isExpress==true) urg=1;
+                int urg = 0;
+                if (order.isExpress == true) urg = 1;
                 /*
                 CDemand demand = new CDemand(order.OrderID, this.modelTime, urg, new Dictionary<int, int> { { 1, order.ProductCount[0] }, { 2, order.ProductCount[1] }, { 3, order.ProductCount[2] } });
                 */
@@ -99,106 +104,165 @@ namespace Modeling
                 ProductCluster productCluster = new ProductCluster();
                 for (int iProductNumber = 1; iProductNumber <= Params.PRODUCTS_NUMBER; iProductNumber++)
                 {
-                    productCluster.AddProduct(iProductNumber, order.ProductCount[iProductNumber - 1 ]);
+                    productCluster.AddProduct(iProductNumber, order.ProductCount[iProductNumber - 1]);
                 }
 
                 Demand demand = new Demand(order.OrderID, this.modelTime, urg, productCluster);
                 //<---
 
                 demand.ShouldBeDoneDate = order.doneDate;
-                bool addResult = this.storage.AddAcceptedDemand(demand);
-                if (addResult==false) return false;
+
+                if (!this.storage.AddAcceptedDemand(demand))
+                    return false;
             }
+
             return true;
         }
 
-        public bool saveChangedFrontDemands(Modeling.FrontOffice.Order[] changedFrontOrders)
+        public bool SaveChangedFrontDemands(Modeling.FrontOffice.Order[] changedFrontOrders)
         {
-            foreach (Modeling.FrontOffice.Order order in changedFrontOrders)
+            foreach (var order in changedFrontOrders)
             {
                 int urg = 0;
-                if (order.isExpress == true) urg = 1;                
+                if (order.isExpress == true) urg = 1;
+
                 ProductCluster productCluster = new ProductCluster();
+
                 for (int iProductNumber = 1; iProductNumber <= Params.PRODUCTS_NUMBER; iProductNumber++)
                 {
                     productCluster.AddProduct(iProductNumber, order.ProductCount[iProductNumber - 1]);
                 }
-                Demand demand = new Demand(order.OrderID, new DateTime(), urg, productCluster);               
+
+                Demand demand = new Demand(order.OrderID, new DateTime(), urg, productCluster);
                 demand.ShouldBeDoneDate = order.doneDate;
-                bool changeResult = this.storage.ModifyDemand(demand);
-                if (changeResult == false) return false;
+
+                if (!this.storage.ModifyDemand(demand))
+                    return false;
             }
             return true;
         }
 
-        public double getDemandAverageDelay()   // Среднее время задержки заказов в днях
+        /// <summary>
+        /// Среднее время задержки заказов в днях
+        /// </summary>
+        /// <returns></returns>
+        public double GetDemandAverageDelay()
         {
             return this.storage.DemandAverageDelay();
         }
 
-        public double getFinishedDemandsNum()   // Количество выполненных заказов
+        /// <summary>
+        /// Количество выполненных заказов
+        /// </summary>
+        /// <returns></returns>
+        public double GetFinishedDemandsNum()
         {
             return this.storage.FinishedDemandsNum;
         }
 
-        public double getCanceledDemandsNum()   // Количество отменённых заказов
+        /// <summary>
+        /// Количество отменённых заказов
+        /// </summary>
+        /// <returns></returns>
+        public double GetCanceledDemandsNum()
         {
             return this.storage.CanceledDemandsNum;
         }
 
-        public double getAcceptedDemandsNum()   // Количество полученных заказов
+        /// <summary>
+        /// Количество полученных заказов
+        /// </summary>
+        /// <returns></returns>
+        public double GetAcceptedDemandsNum()
         {
             return this.storage.GetAcceptedDemandsNumber();
         }
 
-        public double getActivityFactor()    // Коэффициент использования системы
+        /// <summary>
+        /// Коэффициент использования системы
+        /// </summary>
+        /// <returns></returns>
+        public double GetActivityFactor()
         {
-            return this.storage.SumWorkTime()/(Params.WORKDAY_MINUTES_NUMBER*this.modelingDays);
+            return this.storage.SumWorkTime() / (Params.WORKDAY_MINUTES_NUMBER * this.modelingDays);
         }
 
-        public double getRetargetTimePercent()   // Доля времени перенастройки от общего времени производства
+        /// <summary>
+        /// Доля времени перенастройки от общего времени производства
+        /// </summary>
+        /// <returns></returns>
+        public double GetRetargetTimePercent()
         {
             return this.storage.SumRetargetTime() / this.storage.SumWorkTime();
         }
 
-        public int getRefusesNum()    // Количество заявок от которых отказались
+        /// <summary>
+        /// Количество заявок от которых отказались
+        /// </summary>
+        /// <returns></returns>
+        public int GetRefusesNum()
         {
             return this.storage.RefuseNum;
         }
 
-        public int[][] getMaterialsPerDayStatistic()      // Получить статистику изменения количества материалов на складе по дням
+        /// <summary>
+        /// Получить статистику изменения количества материалов на складе по дням
+        /// </summary>
+        /// <returns></returns>
+        public int[][] GetMaterialsPerDayStatistic()
         {
             return this.storage.GetMaterialsPerDayStatistic();
         }
 
-        public double[] getIdlePerDayStatistic()      // Получить статистику изменения доли времени простоя производства от рабочего времени по дням
+        /// <summary>
+        /// Получить статистику изменения доли времени простоя производства от рабочего времени по дням
+        /// </summary>
+        /// <returns></returns>
+        public double[] GetIdlePerDayStatistic()
         {
             return this.storage.GetIdlePerDayStatistic();
         }
 
-        public double[] getDemandAverageDelayPerDayStatistic()   // Получить среднее время задержки заказов в днях по дням
+        /// <summary>
+        /// Получить среднее время задержки заказов в днях по дням
+        /// </summary>
+        /// <returns></returns>
+        public double[] GetDemandAverageDelayPerDayStatistic()
         {
             return this.storage.GetDemandAverageDelayPerDayStatistic();
         }
 
-         public double[] getFinishedDemandsPerDayStatistic()      // Получить статистику изменения доли выполненных заказов
+        /// <summary>
+        /// Получить статистику изменения доли выполненных заказов
+        /// </summary>
+        /// <returns></returns>
+        public double[] GetFinishedDemandsPerDayStatistic()
         {
             return this.storage.GetFinishedDemandsPerDayStatistic();
         }
 
-         public double[] getCanceledDemandsPerDayStatistic()       // Получить статистику изменения доли отменённых заказов
-         {
-             return this.storage.GetCanceledDemandsPerDayStatistic();
-         }
-       
-
-        public bool Start(Label label)       // Начальные заявки и материалы, запуск итератора
+        /// <summary>
+        /// Получить статистику изменения доли отменённых заказов
+        /// </summary>
+        /// <returns></returns>
+        public double[] GetCanceledDemandsPerDayStatistic()
         {
-           // CDemand.idNext = 0; // сброс счетчика уникальности заявок
+            return this.storage.GetCanceledDemandsPerDayStatistic();
+        }
+
+
+        /// <summary>
+        /// Начальные заявки и материалы, запуск итератора
+        /// </summary>
+        /// <param name="label"></param>
+        /// <returns></returns>
+        public bool Start(Label label)
+        {
+            // CDemand.idNext = 0; // сброс счетчика уникальности заявок
             this.currentModellingDay = 0;
             this.stopFlag = false;
             this.backOffice.StartModeling(this.modelTime);
-            
+
             ////////////////////////////  Тут определены начальные заявки и материалы - это как оказалось не нужно((((
 
             //List<CDemand> demands = new List<CDemand>();
@@ -217,7 +281,7 @@ namespace Modeling
             //        storage.AddAcceptedDemand(newDemands[i]);
             //    }
             //} while (demands.Count < 10);
-                      
+
             ////Dictionary<int,int> materials = new Dictionary<int,int>{
             ////    {1,0},{2,0},{3,0},{4,0},{5,0},{6,0},{7,0},{8,0},{9,0},{10,0},{11,0},{12,0}
             ////};
@@ -262,30 +326,39 @@ namespace Modeling
             //backOffice.reportDeliveryDemand(deliv);
 
             ////////////////////////////////
-            
+
             this.Iteration(label);            //запуск основного цикла
             return !stopFlag;
         }
 
-        public bool Stop()  // остановка и пауза моделирования
+        /// <summary>
+        /// Остановка и пауза моделирования
+        /// </summary>
+        /// <returns></returns>
+        public bool Stop()
         {
-            if (stopFlag == true) return true;
-            else
-            {
-                if (currentModellingDay == (Params.ModelingDayToWork - 1)) return false;
-                else
-                {
-                    this.stopFlag = true;
-                    pauseDone.WaitOne();
-                    return true;
-                }
-            }
+            if (stopFlag == true) 
+                return true;
+
+            if (currentModellingDay == (Params.ModelingDayToWork - 1)) 
+                return false;
+
+            this.stopFlag = true;
+            pauseDone.WaitOne();
+
+            return true;
         }
 
-        public bool Continue(Label label) // продолжить моделирование
+        /// <summary>
+        /// Продолжить моделирование
+        /// </summary>
+        /// <param name="label"></param>
+        /// <returns></returns>
+        public bool Continue(Label label)
         {
             this.stopFlag = false;
             this.Iteration(label);
+
             return !stopFlag;
         }
 
@@ -299,46 +372,46 @@ namespace Modeling
                     pauseDone.Set();
                     break;
                 }
-    
+
                 DateTime workdayStartTime = startTime.AddDays(i);
                 modelTime = workdayStartTime;
 
-                int[] materialsNumToday = new int[12];
-                for (int j=0;j<12;j++)
+                var materialsNumToday = new int[12];
+                for (int j = 0; j < 12; j++)
                 {
                     //***materialsNumToday[j]=this.storage.GetMaterialNumberFromID(j+1);
                     //возвращает со склада в materialsNumToday[j] количество материала с номером (j + 1)
                     this.storage.Materials.GetMaterial(j + 1, out materialsNumToday[j]);
                 }
                 this.storage.AddMaterialsStatisticDay(materialsNumToday);
-                Demand[] newDemands = this.generator.GenerateDemands(workdayStartTime);
+                var newDemands = this.generator.GenerateDemands(workdayStartTime);
                 int[] modifyDemandsTime = this.generator.GenerateModifyTime();
-                
+
                 ////////////////////////////////////////////////// Обращение к back-office
                 this.storage.ClearAllPlan();
-                this.storage.AddDailyPlan(this.backOffice.GetDailyPlan(modelTime,ref this.storage));
+                this.storage.AddDailyPlan(this.backOffice.GetDailyPlan(modelTime, ref this.storage));
 
                 int rem = -1;
-                int span = (int)(modelTime-startTime).TotalDays;
-                Math.DivRem(span,Params.DELIVERY_PERIOD,out rem);
-                if ((rem == 0)&&(span!=0))
+                int span = (int)(modelTime - startTime).TotalDays;
+                Math.DivRem(span, Params.DELIVERY_PERIOD, out rem);
+                if ((rem == 0) && (span != 0))
                 {
-                    DeliveryDemand delivery = this.backOffice.GetDeliveryDemands(modelTime);
+                    var delivery = this.backOffice.GetDeliveryDemands(modelTime);
                     if (delivery != null)
                     {
-                        DeliveryDemand[] dlvr = new DeliveryDemand[1] { delivery }; // это мне было лень generator.modifyDeliveries() переписывать
+                        var dlvr = new DeliveryDemand[1] { delivery }; // это мне было лень generator.modifyDeliveries() переписывать
                         this.storage.AddDeliveryDemand(this.generator.ModifyDeliveries(dlvr).ElementAt(0));
                     }
                 }
                 //////////////////////////////////////////////////
 
-                
+
                 int runtimeModifyDemandsSumTime = 0;
                 int newDemandInd = 0;
                 int modifyDemandInd = 0;
                 int nextPlanElemEndTime = 0;
                 int todayWorkTime = 0;
-                PlanReportElement curPlanElem = new PlanReportElement();
+                var curPlanElem = new PlanReportElement();
                 try
                 {
                     if (this.storage.GetFirstPlanElement().DemandID != 0)
@@ -346,7 +419,9 @@ namespace Modeling
                         int prodId = this.storage.GetFirstPlanElement().ProductID;
                         nextPlanElemEndTime = Params.Products[prodId].Time;
                         bool canDo = this.storage.Materials.TakeAwayMaterialCluster(Params.Products[prodId].Materials);
-                        if (canDo == false) throw new Exception("Не достаточно материалов для производства товара");
+
+                        if (!canDo)
+                            throw new Exception("Не достаточно материалов для производства товара");
                         /*                        
                         for (int j = 1; j <= CParams.MATERIALS_NUMBER; j++)
                         {
@@ -366,11 +441,11 @@ namespace Modeling
                     }
                     else
                     {
-                        nextPlanElemEndTime = Params.RetargetTimes[this.storage.GetFirstPlanElement().ProductID-1];
+                        nextPlanElemEndTime = Params.RetargetTimes[this.storage.GetFirstPlanElement().ProductID - 1];
                     }
-                    curPlanElem.StartExecuteDate=modelTime;
+                    curPlanElem.StartExecuteDate = modelTime;
                 }
-                catch 
+                catch
                 {
                     nextPlanElemEndTime = -1;
                 }
@@ -394,43 +469,55 @@ namespace Modeling
                     if (modifyDemandInd < modifyDemandsTime.Length)
                     {
                         runtimeModifyDemandsSumTime = modifyDemandsTime.Take(modifyDemandInd).Sum() + modifyDemandsTime[modifyDemandInd];
-                        modifyDemandNextTime = runtimeModifyDemandsSumTime -(int)(modelTime - workdayStartTime).TotalMinutes;
+                        modifyDemandNextTime = runtimeModifyDemandsSumTime - (int)(modelTime - workdayStartTime).TotalMinutes;
                     }
 
                     if ((nextPlanElemEndTime == -1) && (newDemandNextTime == -1) &&
                         (modifyDemandNextTime == -1) && (nextDeliveryDemandTime == -1))
+                    {
                         endOfDayFlag = true;
-                 
+                    }
                     else
                     {
-                        List<int> nextTimes = new List<int>();
+                        var nextTimes = new List<int>();
                         if (nextPlanElemEndTime != -1) nextTimes.Add(nextPlanElemEndTime);
                         if (newDemandNextTime != -1) nextTimes.Add(newDemandNextTime);
                         if (modifyDemandNextTime != -1) nextTimes.Add(modifyDemandNextTime);
                         if (nextDeliveryDemandTime != -1) nextTimes.Add(nextDeliveryDemandTime);
 
                         modelTime = modelTime.AddMinutes(nextTimes.Min());
-                        if (modelTime.Day != workdayStartTime.Day) break;
+
+                        if (modelTime.Day != workdayStartTime.Day)
+                            break;
+
                         setLabelText(label, "Модельное время: " + modelTime.ToString());
 
                         if (nextTimes.Min() == newDemandNextTime)
                         {
                             bool approved = backOffice.ApproveDemand(ref newDemands[newDemandInd]);
-                            if (approved == true) storage.AddAcceptedDemand(newDemands[newDemandInd]);
-                            else storage.AddDeclinedDemand(newDemands[newDemandInd]);
+
+                            if (approved)
+                                storage.AddAcceptedDemand(newDemands[newDemandInd]);
+                            else
+                                storage.AddDeclinedDemand(newDemands[newDemandInd]);
+
                             newDemandInd++;
                         }
 
                         if (nextTimes.Min() == modifyDemandNextTime)
                         {
                             var notFinishedDemands = this.storage.GetNotFinishedDemands();
+
                             if (notFinishedDemands.Count() > 0)
                             {
                                 Demand modifiedDemand = this.generator.ModifyDemand(notFinishedDemands.ToArray(), modelTime);
                                 Demand demand;
                                 this.storage.GetAcceptedDemand(modifiedDemand.ID, out demand);
                                 bool approved = backOffice.ApproveModifyDemand(modelTime, ref modifiedDemand, demand);
-                                if (approved == true) this.storage.ModifyDemand(modifiedDemand);
+
+                                if (approved)
+                                    this.storage.ModifyDemand(modifiedDemand);
+
                                 this.storage.AddModifyStatistic(approved);
                             }
                             modifyDemandInd++;
@@ -445,8 +532,8 @@ namespace Modeling
                             curPlanElem.PlanElement = planElem;
                             curPlanElem.EndExecuteDate = modelTime;
                             this.storage.AddPlanReportElement(curPlanElem);
-                           // backOffice.reportPlanElem(curPlanElem);   отчёт в бекофис не надо
-                            if ((planElem.DemandID!=0)&&(this.storage.IsDemandDone(planElem.DemandID) == true))
+                            // backOffice.reportPlanElem(curPlanElem);   отчёт в бекофис не надо
+                            if ((planElem.DemandID != 0) && (this.storage.IsDemandDone(planElem.DemandID) == true))
                                 this.storage.FinishDemand(planElem.DemandID, modelTime);
 
                             curPlanElem = new PlanReportElement();
@@ -455,9 +542,13 @@ namespace Modeling
                                 if (this.storage.GetFirstPlanElement().DemandID != 0)
                                 {
                                     int prodId = this.storage.GetFirstPlanElement().ProductID;
+
                                     nextPlanElemEndTime = Params.Products[prodId].Time;
+
                                     bool canDo = this.storage.Materials.TakeAwayMaterialCluster(Params.Products[prodId].Materials);
-                                    if (canDo == false) throw new Exception("Не достаточно материалов для производства товара");
+
+                                    if (!canDo)
+                                        throw new Exception("Не достаточно материалов для производства товара");
                                     /*
                                     for (int j = 1; j <= CParams.MATERIALS_NUMBER; j++)
                                     {   
@@ -477,7 +568,7 @@ namespace Modeling
                                 }
                                 else
                                 {
-                                    nextPlanElemEndTime = Params.RetargetTimes[this.storage.GetFirstPlanElement().ProductID-1];
+                                    nextPlanElemEndTime = Params.RetargetTimes[this.storage.GetFirstPlanElement().ProductID - 1];
                                 }
                                 curPlanElem.StartExecuteDate = modelTime;
 
@@ -486,21 +577,24 @@ namespace Modeling
                             {
                                 nextPlanElemEndTime = -1;
                             }
-                            if (nextPlanElemEndTime != -1) todayWorkTime += nextPlanElemEndTime;
+                            if (nextPlanElemEndTime != -1)
+                                todayWorkTime += nextPlanElemEndTime;
+
                             if (nextPlanElemEndTime != -1)    // костыль для реализации круглосуточной работы
                             {
-                                TimeSpan nextPlanElemEndTimeSpan = new TimeSpan(0,nextPlanElemEndTime,0);
-                                DateTime nextWorkDayStartTime = workdayStartTime + new TimeSpan(1,0,0,0);
+                                TimeSpan nextPlanElemEndTimeSpan = new TimeSpan(0, nextPlanElemEndTime, 0);
+                                DateTime nextWorkDayStartTime = workdayStartTime + new TimeSpan(1, 0, 0, 0);
                                 if (modelTime + nextPlanElemEndTimeSpan > nextWorkDayStartTime)
                                 {
-                                    nextPlanElemEndTime = (int)(nextWorkDayStartTime - modelTime).TotalMinutes - this.storage.GetPlanElementsToGo(); 
+                                    nextPlanElemEndTime = (int)(nextWorkDayStartTime - modelTime).TotalMinutes - this.storage.GetPlanElementsToGo();
                                 }
                             }
                         }
 
                         if (nextTimes.Min() == nextDeliveryDemandTime)
                         {
-                            DeliveryDemand[] deliveryDemands = this.storage.GetDeliveryDemand(modelTime);
+                            var deliveryDemands = this.storage.GetDeliveryDemand(modelTime);
+
                             if (deliveryDemands.Length > 0)
                             {
                                 foreach (DeliveryDemand d in deliveryDemands)
@@ -523,7 +617,7 @@ namespace Modeling
                                     */
                                     backOffice.ReportDeliveryDemand(d);
                                     d.IsDone = true;
-                                }                                
+                                }
                             }
                         }
 
@@ -561,9 +655,9 @@ namespace Modeling
                         //        nextPlanElemEndTime = -1;
                         //    }
                         //}
-                        
 
-                    }                   
+
+                    }
 
                 }
 
@@ -572,9 +666,9 @@ namespace Modeling
                 this.storage.SaveFinishedDemandsPerDayStatistic();
                 this.storage.SaveCanceledDemandsPerDayStatistic();
             }
-            if (stopFlag!=true) setLabelText(label, "Модельное время: " + modelTime.ToString() + "\nМоделирование завершено");
-            return;
-        }
 
+            if (stopFlag != true)
+                setLabelText(label, "Модельное время: " + modelTime.ToString() + "\nМоделирование завершено");
+        }
     }
 }

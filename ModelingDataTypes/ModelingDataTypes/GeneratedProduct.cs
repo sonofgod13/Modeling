@@ -32,9 +32,9 @@ namespace ModelingDataTypes
 
         public GeneratedProduct()
         {
-            GeneratorType = GeneratorType.Normal;   //CGeneratedElement
-            fA = 2.0;             //CGeneratedElement
-            fB = 1.0;             //CGeneratedElement
+            GeneratorType = GeneratorType.Normal;
+            fA = 2.0;             
+            fB = 1.0;             
 
             Index = 0;
             Time = 0;

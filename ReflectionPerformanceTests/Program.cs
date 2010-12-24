@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
+using System.ComponentModel;
+using Helpers;
 
 namespace ReflectionPerformanceTests
 {
@@ -14,72 +16,91 @@ namespace ReflectionPerformanceTests
 
             var integers = RandomSequence.GetSequenceOfInts().Take(iterations)
                                                              .Select(i => i.ToString());
+            var tests = new[] { 
+                new TestEntry(() => RawForeachTest(integers), "Raw foreach"),
+                new TestEntry(() => SimpleInvokeTest(integers), "Simple method invoke"),
+                new TestEntry(() => ReflectionInvokeTest(integers), "Reflection method invoke"),
+                new TestEntry(() => ReflectionWithCacheInvokeTest(integers), "Reflection with cached method invoke"),
+                new TestEntry(() => LambdaInvokeTest(integers), "Method invoke by cached compiled lambda"),
+                new TestEntry(() => TypeConverterTest(integers), "TypeConverter"),
+                new TestEntry(() => TypeConverterCachedTest(integers), "Cached TypeConverter")
+            };
 
-            var rawForeach = MeasureTime(() =>
+            foreach (var entry in tests)
             {
-                foreach (var element in integers) { }
-            });
+                var time = MeasureTime(entry.TestMethod);
+                Console.WriteLine("{0}: {1}", entry.Message, time);
+            }
 
-            Console.WriteLine("Raw foreach: {0}", rawForeach);
+            Console.ReadLine();
+        }
 
-
-            var simpleInvoke = MeasureTime(() =>
+        private static void TypeConverterCachedTest(IEnumerable<string> integers)
+        {
+            var converter = TypeDescriptor.GetConverter(typeof(int));
+            foreach (var element in integers)
             {
-                foreach (var element in integers)
-                {
-                    var result = int.Parse(element);
-                }
-            });
+                var result = converter.ConvertFromString(element);
+            }
+        }
 
-            Console.WriteLine("Simple method invoke: {0}", simpleInvoke);
+        private static void TypeConverterTest(IEnumerable<string> integers)
+        {
+            foreach (var element in integers)
+            {
+                var converter = TypeDescriptor.GetConverter(typeof(int));
+                var result = converter.ConvertFromString(element);
+            }
+        }
 
+        private static void LambdaInvokeTest(IEnumerable<string> integers)
+        {
+            foreach (var element in integers)
+            {
+                var lambda = CompiledLambdaParse.GetParseLambda<int>();
+                var result = lambda(element);
+            }
+        }
 
-            var reflectionInvoke = MeasureTime(() =>
-                {
-                    foreach (var element in integers)
-                    {
-                        var type = typeof(int);
-                        var method = type.GetMethod("Parse", new[] { typeof(String) });
+        private static void ReflectionWithCacheInvokeTest(IEnumerable<string> integers)
+        {
+            var type = typeof(int);
+            var method = type.GetMethod("Parse", new[] { typeof(String) });
 
-                        var result = (int)method.Invoke(
-                            null, 
-                            new object[] { element }
-                        );
-                    }
-                });
+            foreach (var element in integers)
+            {
+                var result = (int)method.Invoke(
+                    null,
+                    new object[] { element }
+                );
+            }
+        }
 
-            Console.WriteLine("Reflection method invoke: {0}", reflectionInvoke);
-
-
-            var reflectionWithCacheInvoke = MeasureTime(() =>
+        private static void ReflectionInvokeTest(IEnumerable<string> integers)
+        {
+            foreach (var element in integers)
             {
                 var type = typeof(int);
                 var method = type.GetMethod("Parse", new[] { typeof(String) });
 
-                foreach (var element in integers)
-                {
-                    var result = (int)method.Invoke(
-                        null, 
-                        new object[] { element }
-                    );
-                }
-            });
+                var result = (int)method.Invoke(
+                    null,
+                    new object[] { element }
+                );
+            }
+        }
 
-            Console.WriteLine("Reflection with cached method invoke: {0}", reflectionWithCacheInvoke);
-
-
-            var lambdaInvoke = MeasureTime(() =>
+        private static void SimpleInvokeTest(IEnumerable<string> integers)
+        {
+            foreach (var element in integers)
             {
-                foreach (var element in integers)
-                {
-                    var lambda = GetParseLambda<int>();
-                    var result = lambda(element);
-                }
-            });
+                var result = int.Parse(element);
+            }
+        }
 
-            Console.WriteLine("Method invoke by cached compiled lambda: {0}", lambdaInvoke);
-
-            Console.ReadLine();
+        private static void RawForeachTest(IEnumerable<string> integers)
+        {
+            foreach (var element in integers) { }
         }
 
         static double MeasureTime(Action action)
@@ -91,43 +112,6 @@ namespace ReflectionPerformanceTests
             DateTime end = DateTime.Now;
 
             return (end - start).TotalMilliseconds;
-        }
-
-        static Dictionary<Type, Delegate> CompiledLambdaCache = new Dictionary<Type, Delegate>();
-
-        static Func<String, TTarget> GetParseLambda<TTarget>()
-        {
-            var targetType = typeof(TTarget);
-
-            if (CompiledLambdaCache.ContainsKey(targetType))
-            {
-                return (Func<String, TTarget>)CompiledLambdaCache[targetType];
-            }
-
-            var parseMethod = targetType.GetMethod(
-                "Parse",
-                new[] { typeof(String) }
-            );
-
-            if (parseMethod == null)
-                throw new NotSupportedException();
-
-            var parameter = Expression.Parameter(typeof(String), "value");
-
-            var expression = Expression.Convert(
-                Expression.Call(
-                    Expression.Constant(null),
-                    parseMethod,
-                    parameter
-                ),
-                targetType
-            );
-
-            var lambda = Expression.Lambda(expression, parameter).Compile();
-
-            CompiledLambdaCache.Add(targetType, lambda);
-
-            return (Func<String, TTarget>)lambda;
         }
     }
 }

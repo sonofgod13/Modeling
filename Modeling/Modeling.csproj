@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{885F5CE5-B941-4B3D-8B22-34B02FC18224}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -78,6 +78,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="GraphForm.resx">
       <DependentUpon>GraphForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GeneratorParamsForm.resx">
       <DependentUpon>GeneratorParamsForm.cs</DependentUpon>
@@ -85,6 +86,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ImitationGUIForm.resx">
       <DependentUpon>ImitationGUIForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -233,6 +235,7 @@
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Web References\FrontOffice\FrontOfficeImitationHelper.disco" />
     <None Include="Web References\MamlayBackOfficeSim\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>

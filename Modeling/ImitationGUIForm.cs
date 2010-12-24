@@ -23,15 +23,16 @@ namespace Modeling
         private bool pauseModelFlag;
         private bool frontOfficeFlag;
         private Imitation imitator;
+
         private FrontOffice.FrontOfficeImitationHelper frontOffice;
+
         private string frontOfficeUrl;
 
-        private delegate void B1Delegate(Button button, string text);
         private void setStringButton(Button button, string text)
         {
             if (button.InvokeRequired)
             {
-                B1Delegate deleg = new B1Delegate(setStringButton);
+                Action<Button, string> deleg = new Action<Button, string>(setStringButton);
                 button.Invoke(deleg, new object[] { button, text });
             }
             else
@@ -41,12 +42,11 @@ namespace Modeling
 
         }
 
-        private delegate void B2Delegate(Button button, bool enabled);
         private void setEnableButton(Button button, bool enabled)
         {
             if (button.InvokeRequired)
             {
-                B2Delegate deleg = new B2Delegate(setEnableButton);
+                Action<Button, bool> deleg = new Action<Button, bool>(setEnableButton);
                 button.Invoke(deleg, new object[] { button, enabled });
             }
             else
@@ -56,19 +56,17 @@ namespace Modeling
 
         }
 
-        private delegate void lDelegate(Label label, string text);
         private void setLabelText(Label label, string text)
         {
             if (label.InvokeRequired)
             {
-                lDelegate deleg = new lDelegate(setLabelText);
+                Action<Label, string> deleg = new Action<Label, string>(setLabelText);
                 label.Invoke(deleg, new object[] { label, text });
             }
             else
             {
                 label.Text = text;
             }
-
         }
 
 
@@ -76,6 +74,7 @@ namespace Modeling
         {
             Params.Initialization();   //инициализация начальных параметров
             InitializeComponent();
+            this.BindButtons();
 
             /////////  Это чтоб нельзя было задать параметры изменений срочности заявок
             label4.Visible = false;
@@ -83,7 +82,7 @@ namespace Modeling
             button4.Visible = false;
             button3.Visible = false;
             ///////////////////////////////////////
-            
+
             modelFlag = false;
             pauseModelFlag = false;
             frontOfficeFlag = true;
@@ -100,9 +99,9 @@ namespace Modeling
 
             dUrg_BASE = Params.fUrgencyPropabilityDemand;    //вероятность срочности заявки
             dRef_BASE = Params.fRefusePropabilityDemand;     //вероятность отказа от заявки
-            this.textBox_UrgencyPropabilityDemand.Text = dUrg_BASE.ToString();          
+            this.textBox_UrgencyPropabilityDemand.Text = dUrg_BASE.ToString();
             //вероятность срочности заявки (поле ввода)
-            this.textBox_RefusePropabilityDemand.Text = dRef_BASE.ToString();          
+            this.textBox_RefusePropabilityDemand.Text = dRef_BASE.ToString();
             //вероятность отказа от заявки (поле ввода)
 
             ModelingDayToWork_BASE = Params.ModelingDayToWork;  //время моделирования в днях
@@ -110,14 +109,143 @@ namespace Modeling
             //время моделирования в днях (поле ввода)
         }
 
+        private void StartClickThreadWorkerStart()
+        {
+            bool end = imitator.Start(this.modellingTimeLabel);
+            if (end)
+            {
+                setStringButton(this.button_start, "Старт");
+                modelFlag = false;
+                setEnableButton(this.button_stop, false);
+
+
+                double demandAverageDelay = this.imitator.GetDemandAverageDelay();
+
+                var demandAverageDelayLabelText = (demandAverageDelay == -1)
+                    ? "нет выполненных заказов"
+                    : String.Format("{0} дней", Math.Round(demandAverageDelay, 3));
+
+                setLabelText(this.demandAverageDelayLabel, demandAverageDelayLabelText);
+
+                setLabelText(this.activityFactorLabel, Math.Round(imitator.GetActivityFactor(), 5).ToString());
+                setLabelText(this.retargetTimePercentLabel, Math.Round(imitator.GetRetargetTimePercent(), 5).ToString());
+                setLabelText(this.refuseNumLabel, imitator.GetRefusesNum().ToString());
+                setLabelText(this.acceptedNumLabel, imitator.GetAcceptedDemandsNum().ToString());
+                setLabelText(this.finishedNumLabel, imitator.GetFinishedDemandsNum().ToString());
+                
+                setEnableButton(this.materials_button, true);
+                setEnableButton(this.idle_button, true);
+                setEnableButton(this.averageDelay_button, true);
+                setEnableButton(this.finish_button, true);
+                
+                setEnableButton(this.front_office_button, true);
+            }
+        }
+
+        private void StartClickThreadWorkerStop()
+        {
+            bool pauseDone = imitator.Stop();
+
+            setEnableButton(this.button_start, true);
+            setEnableButton(this.button_stop, true);
+
+            if (pauseDone)
+            {
+                double demandAverageDelay = this.imitator.GetDemandAverageDelay();
+
+                var demandAverageDelayLabelText = (demandAverageDelay == -1)
+                    ? "нет выполненных заказов"
+                    : String.Format("{0} дней", Math.Round(demandAverageDelay, 3));
+
+                setLabelText(this.demandAverageDelayLabel, demandAverageDelayLabelText);
+
+                setLabelText(this.activityFactorLabel, Math.Round(imitator.GetActivityFactor(), 5).ToString());
+                setLabelText(this.retargetTimePercentLabel, Math.Round(imitator.GetRetargetTimePercent(), 5).ToString());
+                setLabelText(this.refuseNumLabel, imitator.GetRefusesNum().ToString());
+                setLabelText(this.acceptedNumLabel, imitator.GetAcceptedDemandsNum().ToString());
+                setLabelText(this.finishedNumLabel, imitator.GetFinishedDemandsNum().ToString());
+                
+                setEnableButton(this.materials_button, true);
+                setEnableButton(this.idle_button, true);
+                setEnableButton(this.averageDelay_button, true);
+                setEnableButton(this.finish_button, true);
+                
+                setEnableButton(this.front_office_button, true);
+            }
+        }
+
+        private void StartClickThreadWorkerContinue()
+        {
+            bool end = false;
+            end = imitator.Continue(this.modellingTimeLabel);
+            if (end == true)
+            {
+                setStringButton(this.button_start, "Старт");
+                modelFlag = false;
+                setEnableButton(this.button_stop, false);
+                double demandAverageDelay = this.imitator.GetDemandAverageDelay();
+
+                var demandAverageDelayLabelText = (demandAverageDelay == -1)
+                    ? "нет выполненных заказов"
+                    : String.Format("{0} дней", Math.Round(demandAverageDelay, 3));
+
+                setLabelText(this.demandAverageDelayLabel, demandAverageDelayLabelText);
+
+                setLabelText(this.activityFactorLabel, Math.Round(imitator.GetActivityFactor(), 5).ToString());
+                setLabelText(this.retargetTimePercentLabel, Math.Round(imitator.GetRetargetTimePercent(), 5).ToString());
+                setLabelText(this.refuseNumLabel, imitator.GetRefusesNum().ToString());
+                setLabelText(this.acceptedNumLabel, imitator.GetAcceptedDemandsNum().ToString());
+                setLabelText(this.finishedNumLabel, imitator.GetFinishedDemandsNum().ToString());
+                
+                setEnableButton(this.materials_button, true);
+                setEnableButton(this.idle_button, true);
+                setEnableButton(this.averageDelay_button, true);
+                setEnableButton(this.finish_button, true);
+                
+                setEnableButton(this.front_office_button, true);
+            }
+        }
+
+        private void StopClickThreadWorkerStop()
+        {
+            bool stopDone = imitator.Stop();
+            setEnableButton(this.button_start, true);
+            if (stopDone)
+            {
+                double demandAverageDelay = this.imitator.GetDemandAverageDelay();
+
+                var demandAverageDelayLabelText = (demandAverageDelay == -1)
+                    ? "нет выполненных заказов"
+                    : String.Format("{0} дней", Math.Round(demandAverageDelay, 3));
+
+                setLabelText(this.demandAverageDelayLabel, demandAverageDelayLabelText);
+
+                setLabelText(this.activityFactorLabel, Math.Round(imitator.GetActivityFactor(), 5).ToString());
+                setLabelText(this.retargetTimePercentLabel, Math.Round(imitator.GetRetargetTimePercent(), 5).ToString());
+                setLabelText(this.refuseNumLabel, imitator.GetRefusesNum().ToString());
+                setLabelText(this.acceptedNumLabel, imitator.GetAcceptedDemandsNum().ToString());
+                setLabelText(this.finishedNumLabel, imitator.GetFinishedDemandsNum().ToString());
+                
+                setEnableButton(materials_button, true);
+                setEnableButton(idle_button, true);
+                setEnableButton(averageDelay_button, true);
+                setEnableButton(finish_button, true);
+                
+                setEnableButton(front_office_button, true);
+            }
+        }
+
         private void button_start_Click(object sender, EventArgs e)
         {
-            if (modelFlag == false)
+            if (!modelFlag)
             {
-                if (!(CheckUrgPropabilities())) return;
+                if (!CheckUrgPropabilities())
+                    return;
+
                 button_start.Text = "Пауза";
-                modelFlag = true;
-                frontOfficeFlag = true;
+                this.modelFlag = true;
+                this.frontOfficeFlag = true;
+
                 setLabelText(this.activityFactorLabel, "NaN");
                 setLabelText(this.modellingTimeLabel, "NaN");
                 setLabelText(this.demandAverageDelayLabel, "NaN");
@@ -125,78 +253,37 @@ namespace Modeling
                 setLabelText(this.refuseNumLabel, "NaN");
                 setLabelText(this.acceptedNumLabel, "NaN");
                 setLabelText(this.finishedNumLabel, "NaN");
-                //setLabelText(this.canceledNumLabel, "NaN");
-                imitator = new Imitation();
+                
+                this.imitator = new Imitation();
                 button_stop.Enabled = true;
                 front_office_button.Enabled = false;
-                Thread t = new Thread(delegate() 
-                    {
-                        bool end = false;
-                        end = imitator.Start(this.modellingTimeLabel);
-                        if (end == true)
-                        {
-                            setStringButton(this.button_start, "Старт");
-                            modelFlag = false;
-                            setEnableButton(this.button_stop, false);
-                            double demandAverageDelay = this.imitator.getDemandAverageDelay();
-                            if (demandAverageDelay == -1) setLabelText(this.demandAverageDelayLabel, "нет выполненных заказов");
-                            else setLabelText(this.demandAverageDelayLabel, Math.Round(demandAverageDelay, 3).ToString() + " дней");
-                            setLabelText(this.activityFactorLabel, Math.Round(imitator.getActivityFactor(), 5).ToString());
-                            setLabelText(this.retargetTimePercentLabel, Math.Round(imitator.getRetargetTimePercent(), 5).ToString());
-                            setLabelText(this.refuseNumLabel, imitator.getRefusesNum().ToString());
-                            setLabelText(this.acceptedNumLabel, imitator.getAcceptedDemandsNum().ToString());
-                            setLabelText(this.finishedNumLabel, imitator.getFinishedDemandsNum().ToString());
-                            //setLabelText(this.canceledNumLabel, imitator.getCanceledDemandsNum().ToString());
-                            setEnableButton(this.materials_button, true);
-                            setEnableButton(this.idle_button, true);
-                            setEnableButton(this.averageDelay_button, true);
-                            setEnableButton(this.finish_button, true);
-                            //setEnableButton(this.cancel_button, true);
-                            setEnableButton(this.front_office_button, true);
-                        }
-                    });
-                t.IsBackground = true;
-                t.Priority = ThreadPriority.Highest;
-                t.Start();
-                
-                
+
+                var workThread = new Thread(StartClickThreadWorkerStart)
+                {
+                    IsBackground = true,
+                    Priority = ThreadPriority.Highest
+                };
+
+                workThread.Start();
+
+
             }
             else
             {
-                if (pauseModelFlag == false)
+                if (!pauseModelFlag)
                 {
                     setEnableButton(this.button_start, false);
                     setEnableButton(this.button_stop, false);
                     button_start.Text = "Продолжить";
                     pauseModelFlag = true;
-                    Thread t = new Thread(delegate() 
+
+                    var workThread = new Thread(StartClickThreadWorkerStop)
                     {
-                        bool pauseDone = false;
-                        pauseDone = imitator.Stop();
-                        setEnableButton(this.button_start, true);
-                        setEnableButton(this.button_stop, true);
-                        if (pauseDone == true)
-                        {                            
-                            double demandAverageDelay = this.imitator.getDemandAverageDelay();
-                            if (demandAverageDelay == -1) setLabelText(this.demandAverageDelayLabel, "нет выполненных заказов");
-                            else setLabelText(this.demandAverageDelayLabel, Math.Round(demandAverageDelay, 3).ToString() + " дней");
-                            setLabelText(this.activityFactorLabel, Math.Round(imitator.getActivityFactor(), 5).ToString());
-                            setLabelText(this.retargetTimePercentLabel, Math.Round(imitator.getRetargetTimePercent(), 5).ToString());
-                            setLabelText(this.refuseNumLabel, imitator.getRefusesNum().ToString());
-                            setLabelText(this.acceptedNumLabel, imitator.getAcceptedDemandsNum().ToString());
-                            setLabelText(this.finishedNumLabel, imitator.getFinishedDemandsNum().ToString());
-                            //setLabelText(this.canceledNumLabel, imitator.getCanceledDemandsNum().ToString());
-                            setEnableButton(this.materials_button, true);
-                            setEnableButton(this.idle_button, true);
-                            setEnableButton(this.averageDelay_button, true);
-                            setEnableButton(this.finish_button, true);
-                            //setEnableButton(this.cancel_button, true);
-                            setEnableButton(this.front_office_button, true);
-                        }
-                    });
-                    t.IsBackground = true;
-                    t.Priority = ThreadPriority.Normal;
-                    t.Start();
+                        IsBackground = true,
+                        Priority = ThreadPriority.Normal
+                    };
+
+                    workThread.Start();
                 }
                 else
                 {
@@ -205,42 +292,19 @@ namespace Modeling
                     idle_button.Enabled = false;
                     averageDelay_button.Enabled = false;
                     finish_button.Enabled = false;
-                    //cancel_button.Enabled = false;
+                    
                     pauseModelFlag = false;
                     front_office_button.Enabled = false;
-                    this.imitator.saveNewFrontDemands(frontOffice.GetNewAtDate(this.imitator.getModelingTime()));                    
-                    this.imitator.saveChangedFrontDemands(frontOffice.GetChangedAtDate(this.imitator.getModelingTime()));
-                    
-                    Thread t = new Thread(delegate()
+                    this.imitator.SaveNewFrontDemands(frontOffice.GetNewAtDate(this.imitator.GetModelingTime()));
+                    this.imitator.SaveChangedFrontDemands(frontOffice.GetChangedAtDate(this.imitator.GetModelingTime()));
+
+                    var workThread = new Thread(StartClickThreadWorkerContinue)
                     {
-                        bool end = false;
-                        end = imitator.Continue(this.modellingTimeLabel);
-                        if (end == true)
-                        {
-                            setStringButton(this.button_start, "Старт");
-                            modelFlag = false;
-                            setEnableButton(this.button_stop,false);
-                            double demandAverageDelay = this.imitator.getDemandAverageDelay();
-                            if (demandAverageDelay == -1) setLabelText(this.demandAverageDelayLabel, "нет выполненных заказов");
-                            else setLabelText(this.demandAverageDelayLabel, Math.Round(demandAverageDelay, 3).ToString() + " дней");
-                            setLabelText(this.activityFactorLabel, Math.Round(imitator.getActivityFactor(), 5).ToString());
-                            setLabelText(this.retargetTimePercentLabel, Math.Round(imitator.getRetargetTimePercent(), 5).ToString());
-                            setLabelText(this.refuseNumLabel, imitator.getRefusesNum().ToString());
-                            setLabelText(this.acceptedNumLabel, imitator.getAcceptedDemandsNum().ToString());
-                            setLabelText(this.finishedNumLabel, imitator.getFinishedDemandsNum().ToString());
-                            //setLabelText(this.canceledNumLabel, imitator.getCanceledDemandsNum().ToString());
-                            setEnableButton(this.materials_button, true);
-                            setEnableButton(this.idle_button, true);
-                            setEnableButton(this.averageDelay_button, true);
-                            setEnableButton(this.finish_button, true);
-                            //setEnableButton(this.cancel_button, true);
-                            setEnableButton(this.front_office_button, true);
-                        }
-                    });
-                    t.IsBackground = true;
-                    t.Priority = ThreadPriority.Highest;                    
-                    t.Start(); 
-                    
+                        IsBackground = true,
+                        Priority = ThreadPriority.Highest
+                    };
+                    workThread.Start();
+
                 }
             }
         }
@@ -251,53 +315,32 @@ namespace Modeling
             pauseModelFlag = false;
             setEnableButton(this.button_start, false);
             setEnableButton(this.button_stop, false);
-            Thread t = new Thread(delegate() 
-                    {
-                        bool stopDone = false;
-                        stopDone = imitator.Stop();
-                        setEnableButton(this.button_start, true);
-                        if (stopDone == true)
-                        {
-                            double demandAverageDelay = this.imitator.getDemandAverageDelay();
-                            if (demandAverageDelay == -1) setLabelText(this.demandAverageDelayLabel, "нет выполненных заказов");
-                            else setLabelText(this.demandAverageDelayLabel, Math.Round(demandAverageDelay, 3).ToString() + " дней");
-                            setLabelText(this.activityFactorLabel, Math.Round(imitator.getActivityFactor(), 5).ToString());
-                            setLabelText(this.retargetTimePercentLabel, Math.Round(imitator.getRetargetTimePercent(), 5).ToString());
-                            setLabelText(this.refuseNumLabel, imitator.getRefusesNum().ToString());
-                            setLabelText(this.acceptedNumLabel, imitator.getAcceptedDemandsNum().ToString());
-                            setLabelText(this.finishedNumLabel, imitator.getFinishedDemandsNum().ToString());
-                            //setLabelText(this.canceledNumLabel, imitator.getCanceledDemandsNum().ToString());
-                            setEnableButton(materials_button,true);
-                            setEnableButton(idle_button, true);
-                            setEnableButton(averageDelay_button, true);
-                            setEnableButton(finish_button,true);
-                            //cancel_button.Enabled = true;
-                            setEnableButton(front_office_button, true);
-                        }
-                    });
-                    t.IsBackground = true;
-                    t.Priority = ThreadPriority.Normal;
-                    t.Start();
-                    button_start.Text = "Старт";
+
+            var workThread = new Thread(StopClickThreadWorkerStop)
+            {
+                IsBackground = true,
+                Priority = ThreadPriority.Normal
+            };
+            workThread.Start();
+
+            button_start.Text = "Старт";
         }
 
-
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private bool SetGeneratorParameters(ref GeneratorType iGeneratorType, ref double fGeneratorParamFirst, ref double fGeneratorParamSecond) 
-            //функция установки параметров генератора
+        /// <summary>
+        /// Функция установки параметров генератора
+        /// </summary>
+        /// <param name="iGeneratorType"></param>
+        /// <param name="fGeneratorParamFirst"></param>
+        /// <param name="fGeneratorParamSecond"></param>
+        /// <returns></returns>
+        private bool SetGeneratorParameters(ref GeneratorType iGeneratorType, ref double fGeneratorParamFirst, ref double fGeneratorParamSecond)
         {
             bool bSetResult = false;
             //iGeneratorType = 0;
             //fGeneratorParamFirst = 0.0;
             //fGeneratorParamSecond = 0.0;
 
-            using (GeneratorParamsForm generatorForm = new GeneratorParamsForm(iGeneratorType, fGeneratorParamFirst, fGeneratorParamSecond))
+            using (var generatorForm = new GeneratorParamsForm(iGeneratorType, fGeneratorParamFirst, fGeneratorParamSecond))
             {
                 if (DialogResult.OK == generatorForm.ShowDialog())
                 {
@@ -311,293 +354,85 @@ namespace Modeling
             return bSetResult;
         }
 
+        private Dictionary<Button, Func<GeneratedElement>> BindedButtons = new Dictionary<Button, Func<GeneratedElement>>();
 
-        private void Z_g_time_button_Click(object sender, EventArgs e)
+        private void GenericSetGeneratorParametersClick(object sender, EventArgs e)
         {
-            bool bSetOK = false;
+            var button = sender as Button;
 
-            bSetOK = SetGeneratorParameters(
-                ref Params.GeneratorDemandsTime.GeneratorType,
-                ref Params.GeneratorDemandsTime.fA,
-                ref Params.GeneratorDemandsTime.fB
-                );
+            if (button == null || !this.BindedButtons.ContainsKey(button))
+                return;
+
+            var generatorParameters = this.BindedButtons[button]();
+
+            SetGeneratorParameters(
+                ref generatorParameters.GeneratorType,
+                ref generatorParameters.fA,
+                ref generatorParameters.fB
+            );
         }
 
-        private void Z_g_p1_button_Click(object sender, EventArgs e)
+        private void BindButtons()
         {
-            bool bSetOK = false;
+            BindedButtons.Add(this.Z_g_time_button, () => Params.GeneratorDemandsTime);
 
-            bSetOK = SetGeneratorParameters(
-                ref Params.Products[1].GeneratorType,
-                ref Params.Products[1].fA,
-                ref Params.Products[1].fB
-                );
-        }
+            BindedButtons.Add(this.Z_g_p1_button, () => Params.Products[1]);
+            BindedButtons.Add(this.Z_g_p2_button, () => Params.Products[2]);
+            BindedButtons.Add(this.Z_g_p3_button, () => Params.Products[3]);
 
-        private void Z_g_p2_button_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
+            BindedButtons.Add(this.M_g_m1_button, () => Params.Materials[1]);
+            BindedButtons.Add(this.M_g_m2_button, () => Params.Materials[2]);
+            BindedButtons.Add(this.M_g_m3_button, () => Params.Materials[3]);
+            BindedButtons.Add(this.M_g_m4_button, () => Params.Materials[4]);
+            BindedButtons.Add(this.M_g_m5_button, () => Params.Materials[5]);
+            BindedButtons.Add(this.M_g_m6_button, () => Params.Materials[6]);
+            BindedButtons.Add(this.M_g_m7_button, () => Params.Materials[7]);
+            BindedButtons.Add(this.M_g_m8_button, () => Params.Materials[8]);
+            BindedButtons.Add(this.M_g_m9_button, () => Params.Materials[9]);
+            BindedButtons.Add(this.M_g_m10_button, () => Params.Materials[10]);
+            BindedButtons.Add(this.M_g_m11_button, () => Params.Materials[11]);
+            BindedButtons.Add(this.M_g_m12_button, () => Params.Materials[12]);
 
-            bSetOK = SetGeneratorParameters(
-                ref Params.Products[2].GeneratorType,
-                ref Params.Products[2].fA,
-                ref Params.Products[2].fB
-                );
-        }
+            BindedButtons.Add(this.button_deliveryDelayGenerator, () => Params.DeliveryDelayGenerator);
+            BindedButtons.Add(this.button_demandModifyTime, () => Params.DemandModifyTime);
+            BindedButtons.Add(this.button8, () => Params.ArticlesModify);
 
-        private void Z_g_p3_button_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
+            BindedButtons.Add(this.button7, () => Params.Products[1]);
+            BindedButtons.Add(this.button6, () => Params.Products[2]);
+            BindedButtons.Add(this.button5, () => Params.Products[3]);
 
-            bSetOK = SetGeneratorParameters(
-                ref Params.Products[3].GeneratorType,
-                ref Params.Products[3].fA,
-                ref Params.Products[3].fB
-                );
-        }
-
-        private void M_g_m1_button_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.Materials[1].GeneratorType,
-                ref Params.Materials[1].fA,
-                ref Params.Materials[1].fB
-                );
-        }
-
-        private void M_g_m2_button_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.Materials[2].GeneratorType,
-                ref Params.Materials[2].fA,
-                ref Params.Materials[2].fB
-                );
-        }
-
-        private void M_g_m3_button_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.Materials[3].GeneratorType,
-                ref Params.Materials[3].fA,
-                ref Params.Materials[3].fB
-                );
-        }
-
-        private void M_g_m4_button_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.Materials[4].GeneratorType,
-                ref Params.Materials[4].fA,
-                ref Params.Materials[4].fB
-                );
-        }
-
-        private void M_g_m5_button_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.Materials[5].GeneratorType,
-                ref Params.Materials[5].fA,
-                ref Params.Materials[5].fB
-                );
-        }
-
-        private void M_g_m6_button_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.Materials[6].GeneratorType,
-                ref Params.Materials[6].fA,
-                ref Params.Materials[6].fB
-                );
-        }
-
-        private void M_g_m7_button_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.Materials[7].GeneratorType,
-                ref Params.Materials[7].fA,
-                ref Params.Materials[7].fB
-                );
-        }
-
-        private void M_g_m8_button_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.Materials[8].GeneratorType,
-                ref Params.Materials[8].fA,
-                ref Params.Materials[8].fB
-                );
-        }
-
-        private void M_g_m9_button_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.Materials[9].GeneratorType,
-                ref Params.Materials[9].fA,
-                ref Params.Materials[9].fB
-                );
-        }
-
-        private void M_g_m10_button_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.Materials[10].GeneratorType,
-                ref Params.Materials[10].fA,
-                ref Params.Materials[10].fB
-                );
-        }
-
-        private void M_g_m11_button_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.Materials[11].GeneratorType,
-                ref Params.Materials[11].fA,
-                ref Params.Materials[11].fB
-                );
-        }
-
-        private void M_g_m12_button_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.Materials[12].GeneratorType,
-                ref Params.Materials[12].fA,
-                ref Params.Materials[12].fB
-                );
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.DeliveryDelayGenerator.GeneratorType,
-                ref Params.DeliveryDelayGenerator.fA,
-                ref Params.DeliveryDelayGenerator.fB
-                );
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.DemandModifyTime.GeneratorType,
-                ref Params.DemandModifyTime.fA,
-                ref Params.DemandModifyTime.fB
-                );
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.ArticlesModify.GeneratorType,
-                ref Params.ArticlesModify.fA,
-                ref Params.ArticlesModify.fB
-                );
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.Products[1].Modify.GeneratorType,
-                ref Params.Products[1].Modify.fA,
-                ref Params.Products[1].Modify.fB
-                );
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.Products[2].Modify.GeneratorType,
-                ref Params.Products[2].Modify.fA,
-                ref Params.Products[2].Modify.fB
-                );
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.Products[3].Modify.GeneratorType,
-                ref Params.Products[3].Modify.fA,
-                ref Params.Products[3].Modify.fB
-                );
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.UgrToStandModify.GeneratorType,
-                ref Params.UgrToStandModify.fA,
-                ref Params.UgrToStandModify.fB
-                );
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            bool bSetOK = false;
-
-            bSetOK = SetGeneratorParameters(
-                ref Params.StandToUrgModify.GeneratorType,
-                ref Params.StandToUrgModify.fA,
-                ref Params.StandToUrgModify.fB
-                );
+            BindedButtons.Add(this.button4, () => Params.UgrToStandModify);
+            BindedButtons.Add(this.button3, () => Params.StandToUrgModify);
         }
 
         private void materials_button_Click(object sender, EventArgs e)
         {
-            int[][] x = new int[Params.MATERIALS_NUMBER][];
-            List<int> days = new List<int>();
-            for (int i = 0; i < imitator.getMaterialsPerDayStatistic()[0].Length; i++)
+            var x = new int[Params.MATERIALS_NUMBER][];
+            var days = new List<int>();
+
+            for (int i = 0; i < imitator.GetMaterialsPerDayStatistic()[0].Length; i++)
             {
-                days.Add(i+1);
+                days.Add(i + 1);
             }
-            for (int i=0;i<Params.MATERIALS_NUMBER;i++)
-            {                       
+
+            for (int i = 0; i < Params.MATERIALS_NUMBER; i++)
+            {
                 x[i] = days.ToArray();
             }
-            string[] lines = new string[12] {
-                "Материал 1","Материал 2","Материал 3","Материал 4",
-                "Материал 5","Материал 6","Материал 7","Материал 8",
-                "Материал 9","Материал 10","Материал 11","Материал 12" };
-            GraphForm gr = new GraphForm(imitator.getMaterialsPerDayStatistic(),x,lines,"Дни","Количество","Изменение количества материалов на складе");
+
+            var lines = new string[12];
+            for (var i = 0; i < 12; i++)
+                lines[i] = String.Format("Материал {0}", i + 1);
+
+            var gr = new GraphForm(
+                imitator.GetMaterialsPerDayStatistic(),
+                x,
+                lines,
+                "Дни",
+                "Количество",
+                "Изменение количества материалов на складе"
+            );
+
             gr.ShowDialog();
         }
 
@@ -628,10 +463,10 @@ namespace Modeling
                 return false;
             }
 
-            if ((dUrg<0) || (dRef<0))
+            if ((dUrg < 0) || (dRef < 0))
             {
                 string str = "Параметр должен быть больше или равен нулю:";
-                if (dUrg<0)
+                if (dUrg < 0)
                 {
                     str = str + "\nВероятность срочности заявки";
                     textBox_UrgencyPropabilityDemand.Text = dUrg_BASE.ToString();
@@ -657,8 +492,13 @@ namespace Modeling
             return true;
         }
 
+        /// <summary>
+        /// Преобразует строку в double иначе возвращает false
+        /// </summary>
+        /// <param name="sIn"></param>
+        /// <param name="dOut"></param>
+        /// <returns></returns>
         public static bool ConvertStrToDouble(string sIn, out double dOut)
-            //преобразует строку в double иначе возвращает false
         {
             dOut = 0.0;
 
@@ -692,7 +532,7 @@ namespace Modeling
                         Params.ModelingDayToWork = iModelDays;
                         return;
                     }
-                    else bResultModelDays = false; 
+                    else bResultModelDays = false;
                 }
                 else
                 {
@@ -710,102 +550,119 @@ namespace Modeling
             iModelDays = 5;
 
 
-/*
-            if (!bResultUrg || !bResultRef)
-            {
-                string str = "Не удается преобразовать значения параметра к float:";
-                if (!(bResultUrg))
-                {
-                    str = str + "\nВероятность срочности заявки";
-                    textBox2.Text = dUrg_BASE.ToString();
-                }
-                if (!(bResultRef))
-                {
-                    str = str + "\nВероятность отаза от заявки";
-                    textBox3.Text = dRef_BASE.ToString();
-                }
-                MessageBox.Show(str);
-                return false;
-            }
- * */
+            /*
+                        if (!bResultUrg || !bResultRef)
+                        {
+                            string str = "Не удается преобразовать значения параметра к float:";
+                            if (!(bResultUrg))
+                            {
+                                str = str + "\nВероятность срочности заявки";
+                                textBox2.Text = dUrg_BASE.ToString();
+                            }
+                            if (!(bResultRef))
+                            {
+                                str = str + "\nВероятность отаза от заявки";
+                                textBox3.Text = dRef_BASE.ToString();
+                            }
+                            MessageBox.Show(str);
+                            return false;
+                        }
+             * */
         }
 
         private void idle_button_Click(object sender, EventArgs e)
         {
-            int[][] x = new int[1][];
-            Dictionary<int, double[]> y = new Dictionary<int, double[]>();
-            List<int> days = new List<int>();
-            for (int i = 0; i < imitator.getIdlePerDayStatistic().Length; i++)
+            var x = new int[1][];
+            var y = new Dictionary<int, double[]>();
+            var days = new List<int>();
+
+            for (int i = 0; i < imitator.GetIdlePerDayStatistic().Length; i++)
             {
                 days.Add(i + 1);
             }
             x[0] = days.ToArray();
-            y[0] = imitator.getIdlePerDayStatistic();
-            string[] lines = new string[1] {"Доля времени простоя"};
+            y[0] = imitator.GetIdlePerDayStatistic();
+
+            var lines = new[] { "Доля времени простоя" };
+
             GraphForm gr = new GraphForm(y, x, lines, "Дни", "Доля", "Изменение доли времени простоя от времени производства");
+
             gr.ShowDialog();
         }
 
         private void averageDelay_button_Click(object sender, EventArgs e)
         {
-            int[][] x = new int[1][];
-            Dictionary<int, double[]> y = new Dictionary<int, double[]>();
-            List<int> days = new List<int>();
-            for (int i = 0; i < imitator.getDemandAverageDelayPerDayStatistic().Length; i++)
+            var x = new int[1][];
+            var y = new Dictionary<int, double[]>();
+            var days = new List<int>();
+
+            for (int i = 0; i < imitator.GetDemandAverageDelayPerDayStatistic().Length; i++)
             {
                 days.Add(i + 1);
             }
+
             x[0] = days.ToArray();
-            y[0] = imitator.getDemandAverageDelayPerDayStatistic();
-            string[] lines = new string[1] { "Среднее время задержки заказов ('-1' - нет выполненных заказов)" };
+            y[0] = imitator.GetDemandAverageDelayPerDayStatistic();
+
+            var lines = new[] { "Среднее время задержки заказов ('-1' - нет выполненных заказов)" };
+
             GraphForm gr = new GraphForm(y, x, lines, "Дни", "Среднее время (дни)", "Изменение среднего времени задержки заказов");
+
             gr.ShowDialog();
         }
 
         private void finish_button_Click(object sender, EventArgs e)
         {
-            int[][] x = new int[1][];
-            Dictionary<int, double[]> y = new Dictionary<int, double[]>();
-            List<int> days = new List<int>();
-            double[] finishedDemandsPerDayStatistic = imitator.getFinishedDemandsPerDayStatistic();
+            var x = new int[1][];
+            var y = new Dictionary<int, double[]>();
+            var days = new List<int>();
+            var finishedDemandsPerDayStatistic = imitator.GetFinishedDemandsPerDayStatistic();
+
             for (int i = 0; i < finishedDemandsPerDayStatistic.Length; i++)
             {
                 days.Add(i + 1);
             }
+
             x[0] = days.ToArray();
             y[0] = finishedDemandsPerDayStatistic;
-            string[] lines = new string[1] { "Доля выполненных заказов" };
+
+            var lines = new[] { "Доля выполненных заказов" };
+
             GraphForm gr = new GraphForm(y, x, lines, "Дни", "Доля", "Изменение доли выполненных заказов");
+
             gr.ShowDialog();
         }
 
         private void front_office_button_Click(object sender, EventArgs e)
         {
-            if (frontOfficeFlag == true)  
+            if (frontOfficeFlag == true)
             {
                 this.frontOfficeFlag = false;
-                frontOffice.ClearOrders();                              
+                frontOffice.ClearOrders();
             }
-            frontOffice.SetDate(this.imitator.getModelingTime());                                
-            Process.Start("IExplore.exe", frontOfficeUrl);                        
+            frontOffice.SetDate(this.imitator.GetModelingTime());
+            Process.Start("IExplore.exe", frontOfficeUrl);
         }
 
         private void cancel_button_Click(object sender, EventArgs e)
         {
-            int[][] x = new int[1][];
-            Dictionary<int, double[]> y = new Dictionary<int, double[]>();
-            List<int> days = new List<int>();
-            double[] canceledDemandsPerDayStatistic = imitator.getCanceledDemandsPerDayStatistic();
+            var x = new int[1][];
+            var y = new Dictionary<int, double[]>();
+            var days = new List<int>();
+            var canceledDemandsPerDayStatistic = imitator.GetCanceledDemandsPerDayStatistic();
+
             for (int i = 0; i < canceledDemandsPerDayStatistic.Length; i++)
             {
                 days.Add(i + 1);
             }
+
             x[0] = days.ToArray();
             y[0] = canceledDemandsPerDayStatistic;
+
             string[] lines = new string[1] { "Доля отменённых заказов" };
+
             GraphForm gr = new GraphForm(y, x, lines, "Дни", "Доля", "Изменение доли отменённых заказов");
             gr.ShowDialog();
         }
-
     }
 }
