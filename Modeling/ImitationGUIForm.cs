@@ -34,8 +34,10 @@ namespace Modeling
         {
             if (button.InvokeRequired)
             {
-                Action<Button, string> deleg = new Action<Button, string>(setStringButton);
-                button.Invoke(deleg, new object[] { button, text });
+                button.Invoke(
+                    new Action<Button, string>(setStringButton), 
+                    new object[] { button, text }
+                );
             }
             else
             {
@@ -48,8 +50,10 @@ namespace Modeling
         {
             if (button.InvokeRequired)
             {
-                Action<Button, bool> deleg = new Action<Button, bool>(setEnableButton);
-                button.Invoke(deleg, new object[] { button, enabled });
+                button.Invoke(
+                    new Action<Button, bool>(setEnableButton), 
+                    new object[] { button, enabled }
+                );
             }
             else
             {
@@ -62,8 +66,10 @@ namespace Modeling
         {
             if (label.InvokeRequired)
             {
-                Action<Label, string> deleg = new Action<Label, string>(setLabelText);
-                label.Invoke(deleg, new object[] { label, text });
+                label.Invoke(
+                    new Action<Label, string>(setLabelText), 
+                    new object[] { label, text }
+                );
             }
             else
             {
