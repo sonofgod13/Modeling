@@ -22,7 +22,7 @@ namespace Modeling
         private bool modelFlag;
         private bool pauseModelFlag;
         private bool frontOfficeFlag;
-        private CImitation imitator;
+        private Imitation imitator;
         private FrontOffice.FrontOfficeImitationHelper frontOffice;
         private string frontOfficeUrl;
 
@@ -126,7 +126,7 @@ namespace Modeling
                 setLabelText(this.acceptedNumLabel, "NaN");
                 setLabelText(this.finishedNumLabel, "NaN");
                 //setLabelText(this.canceledNumLabel, "NaN");
-                imitator = new CImitation();
+                imitator = new Imitation();
                 button_stop.Enabled = true;
                 front_office_button.Enabled = false;
                 Thread t = new Thread(delegate() 

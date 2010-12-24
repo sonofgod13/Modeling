@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace Modeling
 {
-    public class CImitation
+    public class Imitation
     {
         private BackOfficeInterface backOffice;
         private Storage.Storage storage;       //временное хранилище результатов моделирования
@@ -22,7 +22,7 @@ namespace Modeling
         private static AutoResetEvent pauseDone;
         private int currentModellingDay;
 
-        public CImitation()
+        public Imitation()
         {
             this.backOffice = new BackOfficeInterface();
             storage = new Storage.Storage();   //содается временное хранилище результатов моделирования
