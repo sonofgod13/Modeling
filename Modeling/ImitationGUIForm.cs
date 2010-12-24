@@ -19,8 +19,8 @@ namespace Modeling
 {
     public partial class ImitationGUIForm : Form
     {
-        private bool modelFlag;
-        private bool pauseModelFlag;
+        private ModelingState modelingState;
+
         private bool frontOfficeFlag;
         private Imitation imitator;
 
@@ -30,53 +30,20 @@ namespace Modeling
 
         private Dictionary<Button, Func<GeneratedElement>> BindedButtons = new Dictionary<Button, Func<GeneratedElement>>();
 
-        private void setStringButton(Button button, string text)
+        private void SetButtonText(Button button, string text)
         {
-            if (button.InvokeRequired)
-            {
-                button.Invoke(
-                    new Action<Button, string>(setStringButton),
-                    new object[] { button, text }
-                );
-            }
-            else
-            {
-                button.Text = text;
-            }
-
+            this.InvokeOnFormThread(() => button.Text = text);
         }
 
-        private void setEnableButton(Button button, bool enabled)
+        private void SetEnableButton(Button button, bool enabled)
         {
-            if (button.InvokeRequired)
-            {
-                button.Invoke(
-                    new Action<Button, bool>(setEnableButton),
-                    new object[] { button, enabled }
-                );
-            }
-            else
-            {
-                button.Enabled = enabled;
-            }
-
+            this.InvokeOnFormThread(() => button.Enabled = enabled);
         }
 
-        private void setLabelText(Label label, string text)
+        private void SetLabelText(Label label, string text)
         {
-            if (label.InvokeRequired)
-            {
-                label.Invoke(
-                    new Action<Label, string>(setLabelText),
-                    new object[] { label, text }
-                );
-            }
-            else
-            {
-                label.Text = text;
-            }
+            this.InvokeOnFormThread(() => label.Text = text);
         }
-
 
         public ImitationGUIForm()  //при загрузке формы основных параметров
         {
@@ -91,8 +58,7 @@ namespace Modeling
             button3.Visible = false;
             ///////////////////////////////////////
 
-            modelFlag = false;
-            pauseModelFlag = false;
+            modelingState = ModelingState.Stopped;
             frontOfficeFlag = true;
             button_start.Text = "Старт";
             button_stop.Enabled = false;
@@ -150,57 +116,69 @@ namespace Modeling
             BindedButtons.Add(this.button3, () => Params.StandToUrgModify);
         }
 
+        private void InvokeOnFormThread(Action action)
+        {
+            if (this.InvokeRequired)
+                this.Invoke(action);
+            else
+                action();
+        }
+
         private void button_start_Click(object sender, EventArgs e)
         {
-            if (!modelFlag)
+            switch (this.modelingState)
             {
-                if (!CheckUrgPropabilities())
-                    return;
+                case ModelingState.Stopped:
+                    if (!CheckUrgPropabilities())
+                        return;
 
-                button_start.Text = "Пауза";
-                this.modelFlag = true;
-                this.frontOfficeFlag = true;
+                    this.imitator = new Imitation();
 
-                setLabelText(this.activityFactorLabel, "NaN");
-                setLabelText(this.modellingTimeLabel, "NaN");
-                setLabelText(this.demandAverageDelayLabel, "NaN");
-                setLabelText(this.retargetTimePercentLabel, "NaN");
-                setLabelText(this.refuseNumLabel, "NaN");
-                setLabelText(this.acceptedNumLabel, "NaN");
-                setLabelText(this.finishedNumLabel, "NaN");
+                    this.modelingState = ModelingState.Running;
 
-                this.imitator = new Imitation();
-                button_stop.Enabled = true;
-                front_office_button.Enabled = false;
+                    this.button_start.Text = "Пауза";
 
-                this.StartImitation();
-            }
-            else
-            {
-                if (!pauseModelFlag)
-                {
-                    setEnableButton(this.button_start, false);
-                    setEnableButton(this.button_stop, false);
-                    button_start.Text = "Продолжить";
-                    pauseModelFlag = true;
+                    this.activityFactorLabel.Text = "NaN";
+                    this.modellingTimeLabel.Text = "NaN";
+                    this.demandAverageDelayLabel.Text = "NaN";
+                    this.retargetTimePercentLabel.Text = "NaN";
+                    this.refuseNumLabel.Text = "NaN";
+                    this.acceptedNumLabel.Text = "NaN";
+                    this.finishedNumLabel.Text = "NaN";
+
+                    this.button_stop.Enabled = true;
+                    this.front_office_button.Enabled = false;
+
+                    this.StartImitation();
+                    break;
+
+                case ModelingState.Running:
+                    this.button_start.Enabled = false;
+                    this.button_stop.Enabled = false;
+                    this.button_start.Text = "Продолжить";
+
+                    this.modelingState = ModelingState.Paused;
 
                     this.PauseImitation();
-                }
-                else
-                {
-                    button_start.Text = "Пауза";
-                    materials_button.Enabled = false;
-                    idle_button.Enabled = false;
-                    averageDelay_button.Enabled = false;
-                    finish_button.Enabled = false;
 
-                    pauseModelFlag = false;
-                    front_office_button.Enabled = false;
+                    break;
+
+                case ModelingState.Paused:
+                    this.button_start.Text = "Пауза";
+                    this.materials_button.Enabled = false;
+                    this.idle_button.Enabled = false;
+                    this.averageDelay_button.Enabled = false;
+                    this.finish_button.Enabled = false;
+
+                    this.modelingState = ModelingState.Running;
+
+                    this.front_office_button.Enabled = false;
                     this.imitator.SaveNewFrontDemands(frontOffice.GetNewAtDate(this.imitator.GetModelingTime()));
                     this.imitator.SaveChangedFrontDemands(frontOffice.GetChangedAtDate(this.imitator.GetModelingTime()));
 
                     this.ContinueImitation();
-                }
+
+                    break;
             }
         }
 
@@ -211,9 +189,13 @@ namespace Modeling
                 if (!imitator.Continue(this.modellingTimeLabel))
                     return;
 
-                setStringButton(this.button_start, "Старт");
-                modelFlag = false;
-                setEnableButton(this.button_stop, false);
+                this.InvokeOnFormThread(() =>
+                {
+                    this.button_start.Text = "Старт";
+                    this.button_stop.Enabled = false;
+                });
+
+                this.modelingState = ModelingState.Stopped;
 
                 this.UpdateUI();
             };
@@ -227,8 +209,11 @@ namespace Modeling
             {
                 bool pauseDone = imitator.Stop();
 
-                setEnableButton(this.button_start, true);
-                setEnableButton(this.button_stop, true);
+                this.InvokeOnFormThread(() =>
+                {
+                    this.button_start.Enabled = true;
+                    this.button_stop.Enabled = true;
+                });
 
                 if (pauseDone)
                 {
@@ -246,9 +231,13 @@ namespace Modeling
                 bool end = imitator.Start(this.modellingTimeLabel);
                 if (end)
                 {
-                    setStringButton(this.button_start, "Старт");
-                    setEnableButton(this.button_stop, false);
-                    modelFlag = false;
+                    this.InvokeOnFormThread(() =>
+                    {
+                        this.button_start.Text = "Старт";
+                        this.button_stop.Enabled = false;
+                    });
+
+                    this.modelingState = ModelingState.Stopped;
 
                     this.UpdateUI();
                 }
@@ -259,10 +248,10 @@ namespace Modeling
 
         private void button_stop_Click(object sender, EventArgs e)
         {
-            modelFlag = false;
-            pauseModelFlag = false;
-            setEnableButton(this.button_start, false);
-            setEnableButton(this.button_stop, false);
+            this.modelingState = ModelingState.Stopped;
+
+            this.button_start.Enabled = false;
+            this.button_stop.Enabled = false;
 
             this.StopImitation();
 
@@ -274,7 +263,9 @@ namespace Modeling
             ThreadStart worker = () =>
             {
                 bool stopDone = imitator.Stop();
-                setEnableButton(this.button_start, true);
+
+                this.InvokeOnFormThread(() => this.button_start.Enabled = true);
+
                 if (stopDone)
                 {
                     this.UpdateUI();
@@ -303,20 +294,24 @@ namespace Modeling
                 ? "нет выполненных заказов"
                 : String.Format("{0} дней", Math.Round(demandAverageDelay, 3));
 
-            setLabelText(this.demandAverageDelayLabel, demandAverageDelayLabelText);
+            this.InvokeOnFormThread(() =>
+            {
+                this.demandAverageDelayLabel.Text = demandAverageDelayLabelText;
 
-            setLabelText(this.activityFactorLabel, Math.Round(imitator.GetActivityFactor(), 5).ToString());
-            setLabelText(this.retargetTimePercentLabel, Math.Round(imitator.GetRetargetTimePercent(), 5).ToString());
-            setLabelText(this.refuseNumLabel, imitator.GetRefusesNum().ToString());
-            setLabelText(this.acceptedNumLabel, imitator.GetAcceptedDemandsNum().ToString());
-            setLabelText(this.finishedNumLabel, imitator.GetFinishedDemandsNum().ToString());
+                this.activityFactorLabel.Text = Math.Round(imitator.GetActivityFactor(), 5).ToString();
+                this.retargetTimePercentLabel.Text = Math.Round(imitator.GetRetargetTimePercent(), 5).ToString();
 
-            setEnableButton(this.materials_button, true);
-            setEnableButton(this.idle_button, true);
-            setEnableButton(this.averageDelay_button, true);
-            setEnableButton(this.finish_button, true);
+                this.refuseNumLabel.Text = imitator.GetRefusesNum().ToString();
+                this.acceptedNumLabel.Text = imitator.GetAcceptedDemandsNum().ToString();
+                this.finishedNumLabel.Text = imitator.GetFinishedDemandsNum().ToString();
 
-            setEnableButton(this.front_office_button, true);
+                this.materials_button.Enabled = true;
+                this.idle_button.Enabled = true;
+                this.averageDelay_button.Enabled = true;
+                this.finish_button.Enabled = true;
+
+                this.front_office_button.Enabled = true;
+            });
         }
 
         /// <summary>
@@ -375,8 +370,8 @@ namespace Modeling
                 x[i] = days.ToArray();
             }
 
-            var lines = new string[12];
-            for (var i = 0; i < 12; i++)
+            var lines = new string[Params.MATERIALS_NUMBER];
+            for (var i = 0; i < lines.Length; i++)
                 lines[i] = String.Format("Материал {0}", i + 1);
 
             var gr = new GraphForm(
@@ -395,11 +390,9 @@ namespace Modeling
         {
             double dUrg = 0.0;
             double dRef = 0.0;
-            bool bResultUrg = false;
-            bool bResultRef = false;
 
-            bResultUrg = ConvertStrToDouble(textBox_UrgencyPropabilityDemand.Text, out dUrg);
-            bResultRef = ConvertStrToDouble(textBox_RefusePropabilityDemand.Text, out dRef);
+            bool bResultUrg = double.TryParse(textBox_UrgencyPropabilityDemand.Text, out dUrg);
+            bool bResultRef = double.TryParse(textBox_RefusePropabilityDemand.Text, out dRef);
 
             if (!bResultUrg || !bResultRef)
             {
@@ -434,48 +427,28 @@ namespace Modeling
                 MessageBox.Show(str);
                 return false;
             }
+
             if (dUrg + dRef > 1)
             {
                 textBox_UrgencyPropabilityDemand.Text = dUrg_BASE.ToString();
                 textBox_RefusePropabilityDemand.Text = dRef_BASE.ToString();
 
-                MessageBox.Show("Сумаа вероятностей срочности заявки и отаза от заявки не должна быть больше единицы!");
+                MessageBox.Show("Сумма вероятностей срочности заявки и отаза от заявки не должна быть больше единицы!");
                 return false;
             }
+
             Params.fRefusePropabilityDemand = dRef;
             Params.fUrgencyPropabilityDemand = dUrg;
-            return true;
-        }
 
-        /// <summary>
-        /// Преобразует строку в double иначе возвращает false
-        /// </summary>
-        /// <param name="sIn"></param>
-        /// <param name="dOut"></param>
-        /// <returns></returns>
-        public static bool ConvertStrToDouble(string sIn, out double dOut)
-        {
-            dOut = 0.0;
-
-            try
-            {
-                dOut = double.Parse(sIn);
-            }
-            catch (System.Exception)
-            {
-                return false;
-            }
             return true;
         }
 
         private void textBox_ModelingDayCount_Leave(object sender, EventArgs e)
         {
             double dModelDays = 0.0;
-            bool bResultModelDays = false;
             int iModelDays = 0;
 
-            bResultModelDays = ConvertStrToDouble(textBox_ModelingDayCount.Text, out dModelDays);
-
+            bool bResultModelDays = double.TryParse(textBox_ModelingDayCount.Text, out dModelDays);
 
             if (bResultModelDays)
             {
@@ -487,7 +460,8 @@ namespace Modeling
                         Params.ModelingDayToWork = iModelDays;
                         return;
                     }
-                    else bResultModelDays = false;
+                    else
+                        bResultModelDays = false;
                 }
                 else
                 {
