@@ -17,116 +17,71 @@ namespace Modeling
             Color.Black, Color.Brown, Color.Khaki, Color.Gray,
             Color.Orange, Color.YellowGreen, Color.Teal, Color.Pink };
 
-        public GraphForm(int[][] Y, int[][] X, string[] lines, string XAxis, string YAxis, string title)
+
+        private GraphForm()
         {
             InitializeComponent();
-            /*
-            this.zedGraphControl1.GraphPane.Chart.Fill = new ZedGraph.Fill(Color.Cornsilk);
-            
-            PointPairList list = new PointPairList();
-            const int count = 105;
-            for (int i = 0; i < count; i++)
+        }
+
+        public GraphForm(double[][] YAxis, int[][] XAxis, string[] linesLegend, string XAxisTitle, string YAxisTitle, string graphTitle)
+            : this()
+        {
+            this.InitGraph(YAxis, XAxis, linesLegend, XAxisTitle, YAxisTitle, graphTitle);
+        }
+
+        public GraphForm(int[][] YAxis, int[][] XAxis, string[] linesLegend, string XAxisTitle, string YAxisTitle, string graphTitle)
+            : this()
+        {
+            // sould be rewritten
+            var YAxisConverted = YAxis.Select(
+                                    values => values.Select(
+                                        value => (double)value
+                                    ).ToArray()
+                                ).ToArray();
+
+            this.InitGraph(YAxisConverted, XAxis, linesLegend, XAxisTitle, YAxisTitle, graphTitle);
+        }
+
+        private void InitGraph(double[][] YAxis, int[][] XAxis, string[] linesLegend, string XAxisTitle, string YAxisTitle, string graphTitle)
+        {
+            var graphPane = this.zedGraphControl1.GraphPane;
+
+            var xMax = int.MinValue;
+
+            PointPairList pairList;
+
+            for (int lineIndex = 0; lineIndex < YAxis.Length; lineIndex++)
             {
-                double x = i + 1;
-
-                double y = 21.1 * (1.0 + Math.Sin((double)i * 0.15));
-
-                list.Add(x, y);
-            }
-            
-            // Hide the legend
-            this.zedGraphControl1.GraphPane.Legend.IsVisible = true;
-
-            // Add a curve
-            LineItem curve = this.zedGraphControl1.GraphPane.AddCurve("line", list, Color.Red, SymbolType.None);
-            curve.Line.Width = 2.0F;
-            curve.Line.IsAntiAlias = true;
-            curve.Symbol.Fill = new Fill(Color.White);
-            curve.Symbol.Size = 7;
-           */
-            
-            // Очистим список кривых на тот случай, если до этого сигналы уже были нарисованы
-            this.zedGraphControl1.GraphPane.CurveList.Clear();
-
-            // Создадим список точек для кривой 
-            List<PointPairList> fList = new List<PointPairList>();
-            int? xMax=null;
-            // !!!
-            // Заполним массив точек для кривой f1(x)
-            for (int i = 0; i < Y.Length; i ++)
-            {
-                PointPairList pL= new PointPairList();
-                for (int j = 0; j < Y[i].Length; j++)
+                pairList = new PointPairList();
+                for (int pointIndex = 0; pointIndex < YAxis[lineIndex].Length; pointIndex++)
                 {
-                    if (xMax.HasValue == false) xMax = X[i][j];
-                    else if (xMax.Value < X[i][j]) xMax = X[i][j];
-                    pL.Add(X[i][j], Y[i][j]);
-                }
-                fList.Add(pL);
-            }
-                        
+                    xMax = Math.Max(xMax, XAxis[lineIndex][pointIndex]);
 
-            // !!!
-            // Создадим кривую с названием "Sinc", 
-            // которая будет рисоваться голубым цветом (Color.Blue),
-            // Опорные точки выделяться не будут (SymbolType.None)
-            for (int i = 0; i < fList.Count; i++)
-            {
-                LineItem curve = this.zedGraphControl1.GraphPane.AddCurve(lines[i], fList[i], colors[i], SymbolType.None);
+                    pairList.Add(
+                        XAxis[lineIndex][pointIndex], 
+                        YAxis[lineIndex][pointIndex]
+                    );
+                }
+
+                var curve = graphPane.AddCurve(linesLegend[lineIndex], pairList, colors[lineIndex], SymbolType.None);
+
                 curve.Line.Width = 2.0F;
                 curve.Line.IsAntiAlias = true;
             }
 
-            this.zedGraphControl1.GraphPane.XAxis.Title.Text = XAxis;
-            this.zedGraphControl1.GraphPane.XAxis.Scale.Min = 1;
-            this.zedGraphControl1.GraphPane.XAxis.Scale.Max = xMax.Value+1;
-            this.zedGraphControl1.GraphPane.YAxis.Title.Text = YAxis;
-            this.zedGraphControl1.GraphPane.Title.Text = title;
+            graphPane.XAxis.Title.Text = XAxisTitle;
+            graphPane.XAxis.Scale.Min = 1;
+            graphPane.XAxis.Scale.Max = xMax + 1;
+            graphPane.YAxis.Title.Text = YAxisTitle;
+            graphPane.Title.Text = graphTitle;
 
             // Вызываем метод AxisChange (), чтобы обновить данные об осях. 
             // В противном случае на рисунке будет показана только часть графика, 
             // которая умещается в интервалы по осям, установленные по умолчанию
-            
-            this.zedGraphControl1.GraphPane.AxisChange();
+
+            graphPane.AxisChange();
 
             // Обновляем график
-            this.zedGraphControl1.Invalidate();
-
-        }
-
-        public GraphForm(Dictionary<int,double[]> Y, int[][] X, string[] lines, string XAxis, string YAxis, string title)
-        {
-            InitializeComponent();
-            
-            this.zedGraphControl1.GraphPane.CurveList.Clear();
-            List<PointPairList> fList = new List<PointPairList>();
-            int? xMax = null;
-            for (int i = 0; i < Y.Count; i++)
-            {
-                PointPairList pL = new PointPairList();
-                for (int j = 0; j < Y[i].Length; j++)
-                {
-                    if (xMax.HasValue == false) xMax = X[i][j];
-                    else if (xMax.Value < X[i][j]) xMax = X[i][j];
-                    pL.Add(X[i][j], Y[i][j]);
-                }
-                fList.Add(pL);
-            }
-
-            for (int i = 0; i < fList.Count; i++)
-            {
-                LineItem curve = this.zedGraphControl1.GraphPane.AddCurve(lines[i], fList[i], colors[i], SymbolType.None);
-                curve.Line.Width = 2.0F;
-                curve.Line.IsAntiAlias = true;
-            }
-            
-            this.zedGraphControl1.GraphPane.XAxis.Title.Text = XAxis;
-            this.zedGraphControl1.GraphPane.XAxis.Scale.Min = 1;
-            if (xMax.HasValue ==true) this.zedGraphControl1.GraphPane.XAxis.Scale.Max = xMax.Value + 1;
-            this.zedGraphControl1.GraphPane.YAxis.Title.Text = YAxis;
-            this.zedGraphControl1.GraphPane.Title.Text = title;
-
-            this.zedGraphControl1.GraphPane.AxisChange();
             this.zedGraphControl1.Invalidate();
         }
     }

@@ -548,7 +548,7 @@ namespace Modeling
                                     bool canDo = this.storage.Materials.TakeAwayMaterialCluster(Params.Products[prodId].Materials);
 
                                     if (!canDo)
-                                        throw new Exception("Не достаточно материалов для производства товара");
+                                        throw new Exception("Недостаточно материалов для производства товара");
                                     /*
                                     for (int j = 1; j <= CParams.MATERIALS_NUMBER; j++)
                                     {   

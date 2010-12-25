@@ -502,7 +502,7 @@ namespace Modeling
         private void idle_button_Click(object sender, EventArgs e)
         {
             var x = new int[1][];
-            var y = new Dictionary<int, double[]>();
+            var y = new double[1][];
             var days = new List<int>();
 
             for (int i = 0; i < imitator.GetIdlePerDayStatistic().Length; i++)
@@ -522,7 +522,7 @@ namespace Modeling
         private void averageDelay_button_Click(object sender, EventArgs e)
         {
             var x = new int[1][];
-            var y = new Dictionary<int, double[]>();
+            var y = new double[1][];
             var days = new List<int>();
 
             for (int i = 0; i < imitator.GetDemandAverageDelayPerDayStatistic().Length; i++)
@@ -543,7 +543,7 @@ namespace Modeling
         private void finish_button_Click(object sender, EventArgs e)
         {
             var x = new int[1][];
-            var y = new Dictionary<int, double[]>();
+            var y = new double[1][];
             var days = new List<int>();
             var finishedDemandsPerDayStatistic = imitator.GetFinishedDemandsPerDayStatistic();
 
@@ -576,7 +576,7 @@ namespace Modeling
         private void cancel_button_Click(object sender, EventArgs e)
         {
             var x = new int[1][];
-            var y = new Dictionary<int, double[]>();
+            var y = new double[1][];
             var days = new List<int>();
             var canceledDemandsPerDayStatistic = imitator.GetCanceledDemandsPerDayStatistic();
 
