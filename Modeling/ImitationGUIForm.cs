@@ -133,6 +133,21 @@ namespace Modeling
                         return;
 
                     this.imitator = new Imitation();
+                    this.imitator.ModelingTimeChanged += delegate
+                    {
+                        this.InvokeOnFormThread(() =>
+                        {
+                            modellingTimeLabel.Text = String.Format("Модельное время: {0}", this.imitator.ModelingTime);
+                        });
+                    };
+
+                    this.imitator.ModelingFinished += delegate
+                    {
+                        this.InvokeOnFormThread(() =>
+                        {
+                            modellingTimeLabel.Text = String.Format("Модельное время: {0}\nМоделирование завершено", this.imitator.ModelingTime);
+                        });
+                    };
 
                     this.modelingState = ModelingState.Running;
 
@@ -228,7 +243,7 @@ namespace Modeling
         {
             ThreadStart worker = () =>
             {
-                bool end = imitator.Start(this.modellingTimeLabel);
+                bool end = imitator.Start();
                 if (end)
                 {
                     this.InvokeOnFormThread(() =>

@@ -26,6 +26,12 @@ namespace Modeling
         private static AutoResetEvent pauseDone;
         private int currentModellingDay;
 
+        public event EventHandler ModelingTimeChanged;
+        public event EventHandler ModelingFinished;
+        public event EventHandler ModelingStopped;
+        public event EventHandler ModelingStarted;
+        public event EventHandler ModelingContinued;
+
         public Imitation()
         {
             this.backOffice = new BackOfficeInterface();
@@ -63,22 +69,6 @@ namespace Modeling
                     select Generator.CreateGenerator(getParam(generatorInfo.Value))).ToArray();
         }
 
-        private void setLabelText(Label label, string text)
-        {
-            if (label.InvokeRequired)
-            {
-                label.Invoke(
-                    new Action<Label, String>(setLabelText),
-                    new object[] { label, text }
-                );
-            }
-            else
-            {
-                label.Text = text;
-            }
-
-        }
-
         /// <summary>
         /// Текущее модельное время
         /// </summary>
@@ -86,6 +76,44 @@ namespace Modeling
         public DateTime ModelingTime
         {
             get { return this.modelTime; }
+            private set
+            {
+                if (this.modelTime != value)
+                {
+                    this.OnModelingTimeChanged();
+                    this.modelTime = value;
+                }                
+            }
+        }
+
+        private void OnModelingTimeChanged()
+        {
+            if (this.ModelingTimeChanged != null)
+                this.ModelingTimeChanged(this, null);
+        }
+
+        private void OnModelingFinished()
+        {
+            if (this.ModelingFinished != null)
+                this.ModelingFinished(this, null);
+        }
+
+        private void OnModelingStopped()
+        {
+            if (this.ModelingStopped != null)
+                this.ModelingStopped(this, null);
+        }
+
+        private void OnModelingStarted()
+        {
+            if (this.ModelingStarted != null)
+                this.ModelingStarted(this, null);
+        }
+
+        private void OnModelingContinued()
+        {
+            if (this.ModelingContinued != null)
+                this.ModelingContinued(this, null);
         }
 
         public bool SaveNewFrontDemands(Modeling.FrontOffice.Order[] newFrontOrders)
@@ -124,14 +152,14 @@ namespace Modeling
                 int urg = 0;
                 if (order.isExpress == true) urg = 1;
 
-                ProductCluster productCluster = new ProductCluster();
+                var productCluster = new ProductCluster();
 
                 for (int iProductNumber = 1; iProductNumber <= Params.PRODUCTS_NUMBER; iProductNumber++)
                 {
                     productCluster.AddProduct(iProductNumber, order.ProductCount[iProductNumber - 1]);
                 }
 
-                Demand demand = new Demand(order.OrderID, new DateTime(), urg, productCluster);
+                var demand = new Demand(order.OrderID, new DateTime(), urg, productCluster);
                 demand.ShouldBeDoneDate = order.doneDate;
 
                 if (!this.storage.ModifyDemand(demand))
@@ -254,14 +282,14 @@ namespace Modeling
         /// </summary>
         /// <param name="label"></param>
         /// <returns></returns>
-        public bool Start(Label label)
+        public bool Start()
         {
             // CDemand.idNext = 0; // сброс счетчика уникальности заявок
             this.currentModellingDay = 0;
             this.stopFlag = false;
             this.backOffice.StartModeling(this.modelTime);
 
-            this.Iteration(label);            //запуск основного цикла
+            this.Iteration();            //запуск основного цикла
             return !stopFlag;
         }
 
@@ -291,12 +319,12 @@ namespace Modeling
         public bool Continue(Label label)
         {
             this.stopFlag = false;
-            this.Iteration(label);
+            this.Iteration();
 
             return !stopFlag;
         }
 
-        private void Iteration(Label label)
+        private void Iteration()
         {
             for (int i = this.currentModellingDay; i < this.modelingDays; i++)
             {
@@ -307,7 +335,7 @@ namespace Modeling
                     break;
                 }
 
-                DateTime workdayStartTime = startTime.AddDays(i);
+                var workdayStartTime = startTime.AddDays(i);
                 modelTime = workdayStartTime;
 
                 var materialsNumToday = new int[12];
@@ -355,7 +383,7 @@ namespace Modeling
                         bool canDo = this.storage.Materials.TakeAwayMaterialCluster(Params.Products[prodId].Materials);
 
                         if (!canDo)
-                            throw new Exception("Не достаточно материалов для производства товара");
+                            throw new Exception("Недостаточно материалов для производства товара");
                     }
                     else
                     {
@@ -403,12 +431,10 @@ namespace Modeling
                         if (modifyDemandNextTime != -1) nextTimes.Add(modifyDemandNextTime);
                         if (nextDeliveryDemandTime != -1) nextTimes.Add(nextDeliveryDemandTime);
 
-                        modelTime = modelTime.AddMinutes(nextTimes.Min());
+                        this.ModelingTime = this.ModelingTime.AddMinutes(nextTimes.Min());
 
                         if (modelTime.Day != workdayStartTime.Day)
                             break;
-
-                        setLabelText(label, "Модельное время: " + modelTime.ToString());
 
                         if (nextTimes.Min() == newDemandNextTime)
                         {
@@ -520,7 +546,9 @@ namespace Modeling
             }
 
             if (stopFlag != true)
-                setLabelText(label, "Модельное время: " + modelTime.ToString() + "\nМоделирование завершено");
+            {
+                this.OnModelingFinished();
+            }
         }
     }
 }
