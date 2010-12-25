@@ -228,7 +228,7 @@ namespace ModelingDataTypes
             DeliveryDelayGenerator = new GeneratedElement()
             //генератор времени задержки поставки материалов
             {
-                GeneratorType = GeneratorType.Normal,
+                GeneratorType = GeneratorType.Exponential,
                 fA = 12.0,
                 fB = 0.0
             };
@@ -237,7 +237,7 @@ namespace ModelingDataTypes
             DemandModifyTime = new GeneratedElement()
             //генератор времени изменения заявки
             {
-                GeneratorType = GeneratorType.Normal,
+                GeneratorType = GeneratorType.Exponential,
                 fA = 1281.0,
                 fB = 0.0
             };
