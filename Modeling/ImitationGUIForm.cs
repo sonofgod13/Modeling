@@ -173,8 +173,8 @@ namespace Modeling
                     this.modelingState = ModelingState.Running;
 
                     this.front_office_button.Enabled = false;
-                    this.imitator.SaveNewFrontDemands(frontOffice.GetNewAtDate(this.imitator.GetModelingTime()));
-                    this.imitator.SaveChangedFrontDemands(frontOffice.GetChangedAtDate(this.imitator.GetModelingTime()));
+                    this.imitator.SaveNewFrontDemands(frontOffice.GetNewAtDate(this.imitator.ModelingTime));
+                    this.imitator.SaveChangedFrontDemands(frontOffice.GetChangedAtDate(this.imitator.ModelingTime));
 
                     this.ContinueImitation();
 
@@ -569,7 +569,7 @@ namespace Modeling
                 this.frontOfficeFlag = false;
                 frontOffice.ClearOrders();
             }
-            frontOffice.SetDate(this.imitator.GetModelingTime());
+            frontOffice.SetDate(this.imitator.ModelingTime);
             Process.Start("IExplore.exe", frontOfficeUrl);
         }
 

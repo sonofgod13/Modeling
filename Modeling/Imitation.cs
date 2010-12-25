@@ -13,7 +13,11 @@ namespace Modeling
     public class Imitation
     {
         private BackOfficeInterface backOffice;
-        private Storage.Storage storage;       //временное хранилище результатов моделирования
+
+        /// <summary>
+        /// Временное хранилище результатов моделирования
+        /// </summary>
+        private Storage.Storage storage;
         private Generator generator;
         private DateTime modelTime;
         private DateTime startTime;
@@ -28,37 +32,35 @@ namespace Modeling
             storage = new Storage.Storage();   //содается временное хранилище результатов моделирования
             pauseDone = new AutoResetEvent(false);
 
-
-
-            var productsGenerator = from param in Params.Products
-                                    orderby param.Key
-                                    select Generator.CreateGenerator(param.Value);
-
-            var productsModifyGenerator = from param in Params.Products
-                                          orderby param.Key
-                                          select Generator.CreateGenerator(param.Value.Modify);
-
-            var materialsDeliveryGenerator = from param in Params.Materials
-                                             orderby param.Key
-                                             select Generator.CreateGenerator(param.Value);
-
             this.generator = new Generator(
                 Generator.CreateGenerator(Params.GeneratorDemandsTime),
-                productsGenerator.ToArray(),
+                this.CreateGenerators(Params.Products),
                 Params.fUrgencyPropabilityDemand, Params.fRefusePropabilityDemand,
                 Generator.CreateGenerator(Params.DemandModifyTime),
                 Generator.CreateGenerator(Params.ArticlesModify),
-                productsModifyGenerator.ToArray(),
+                this.CreateGenerators(Params.Products, p => p.Modify),
                 Generator.CreateGenerator(Params.UgrToStandModify),
                 Generator.CreateGenerator(Params.StandToUrgModify),
                 Generator.CreateGenerator(Params.DeliveryDelayGenerator),
-                materialsDeliveryGenerator.ToArray()
+                this.CreateGenerators(Params.Materials)
             );
+
             this.modelingDays = Params.ModelingDayToWork;
             this.modelTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
             this.startTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+        }
 
+        private IGen[] CreateGenerators<T>(Dictionary<int, T> parameters)
+            where T : GeneratedElement
+        {
+            return this.CreateGenerators(parameters, p => p);
+        }
 
+        private IGen[] CreateGenerators<T>(Dictionary<int, T> parameters, Func<T, GeneratedElement> getParam)
+        {
+            return (from generatorInfo in parameters
+                    orderby generatorInfo.Key
+                    select Generator.CreateGenerator(getParam(generatorInfo.Value))).ToArray();
         }
 
         private void setLabelText(Label label, string text)
@@ -81,9 +83,9 @@ namespace Modeling
         /// Текущее модельное время
         /// </summary>
         /// <returns></returns>
-        public DateTime GetModelingTime()
+        public DateTime ModelingTime
         {
-            return this.modelTime;
+            get { return this.modelTime; }
         }
 
         public bool SaveNewFrontDemands(Modeling.FrontOffice.Order[] newFrontOrders)
