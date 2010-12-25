@@ -36,46 +36,55 @@ namespace GeneratorSubsystem
         /// <param name="fA"></param>
         /// <param name="fB"></param>
         /// <returns></returns>
-        public static IGen CreateGenerator(GeneratorType generatorType, double fA, double fB)
+        public static IGen CreateGenerator(GeneratedElement generatorParams)
         {
-            switch (generatorType)
+            switch (generatorParams.GeneratorType)
             {
                 case GeneratorType.Uniform:
-                    return new UniformGen(fA, fB);
+                    return new UniformGen(generatorParams.fA, generatorParams.fB);
 
                 case GeneratorType.Normal:
-                    return new NormalGen(fA, fB);
+                    return new NormalGen(generatorParams.fA, generatorParams.fB);
 
                 case GeneratorType.Rayleigh:
-                    return new RayleighGen(fA);
+                    return new RayleighGen(generatorParams.fA);
 
                 case GeneratorType.Gamma:
-                    return new GammaGen(fA, fB);
+                    return new GammaGen(generatorParams.fA, generatorParams.fB);
 
                 case GeneratorType.Exponential:
-                    return new ExponentialGen(fA);
+                    return new ExponentialGen(generatorParams.fA);
 
                 default:
                     return new UniformGen(0, 1);
             }
         }
 
-        public Generator(IGen requestTimeGen, IGen firstArticleGen, IGen secondArticleGen, IGen thirdArticleGen, double urgencyProb, double refuseProb,
-            IGen demandModifyTimeGen, IGen articlesModifyGen, IGen firstArticleModifyGen, IGen secondArticleModifyGen, IGen thirdArticleModifyGen,
+        public Generator(IGen requestTimeGen, IGen[] articlesGen, double urgencyProb, double refuseProb,
+            IGen demandModifyTimeGen, IGen articlesModifyGen, IGen[] articleModifyGen,
             IGen urgToStandModifyGen, IGen standToUrgModifyGen, IGen deliveryDelayGen, IGen[] deliveryElementsModifyGens)
         {
+            if (articlesGen.Length != Params.PRODUCTS_NUMBER)
+                throw new ArgumentException();
+
+            if (articleModifyGen.Length != Params.PRODUCTS_NUMBER)
+                throw new ArgumentException();
+
+            if (deliveryElementsModifyGens.Length != Params.MATERIALS_NUMBER)
+                throw new ArgumentException();         
+
             this.uGen = new UniformGen(0, 1);
             this.requestTimeGen = requestTimeGen;
-            this.firstArticleGen = firstArticleGen;
-            this.secondArticleGen = secondArticleGen;
-            this.thirdArticleGen = thirdArticleGen;
+            this.firstArticleGen = articlesGen[0];
+            this.secondArticleGen = articlesGen[1];
+            this.thirdArticleGen = articlesGen[2];
             this.urgencyProb = urgencyProb;
             this.refuseProb = refuseProb;
             this.demandModifyTimeGen = demandModifyTimeGen;
             this.articlesModifyGen = articlesModifyGen;
-            this.firstArticleModifyGen = firstArticleModifyGen;
-            this.secondArticleModifyGen = secondArticleModifyGen;
-            this.thirdArticleModifyGen = thirdArticleModifyGen;
+            this.firstArticleModifyGen = articleModifyGen[0];
+            this.secondArticleModifyGen = articleModifyGen[1];
+            this.thirdArticleModifyGen = articleModifyGen[2];
             this.urgToStandModifyGen = urgToStandModifyGen;
             this.standToUrgModifyGen = standToUrgModifyGen;
             this.deliveryDelayGen = deliveryDelayGen;

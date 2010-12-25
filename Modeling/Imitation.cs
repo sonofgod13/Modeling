@@ -28,35 +28,31 @@ namespace Modeling
             storage = new Storage.Storage();   //содается временное хранилище результатов моделирования
             pauseDone = new AutoResetEvent(false);
 
-            generator = new Generator(
-                Generator.CreateGenerator(Params.GeneratorDemandsTime.GeneratorType, Params.GeneratorDemandsTime.fA, Params.GeneratorDemandsTime.fB),
-                Generator.CreateGenerator(Params.Products[1].GeneratorType, Params.Products[1].fA, Params.Products[1].fB),
-                Generator.CreateGenerator(Params.Products[2].GeneratorType, Params.Products[2].fA, Params.Products[2].fB),
-                Generator.CreateGenerator(Params.Products[3].GeneratorType, Params.Products[3].fA, Params.Products[3].fB),
+
+
+            var productsGenerator = from param in Params.Products
+                                    orderby param.Key
+                                    select Generator.CreateGenerator(param.Value);
+
+            var productsModifyGenerator = from param in Params.Products
+                                          orderby param.Key
+                                          select Generator.CreateGenerator(param.Value.Modify);
+
+            var materialsDeliveryGenerator = from param in Params.Materials
+                                             orderby param.Key
+                                             select Generator.CreateGenerator(param.Value);
+
+            this.generator = new Generator(
+                Generator.CreateGenerator(Params.GeneratorDemandsTime),
+                productsGenerator.ToArray(),
                 Params.fUrgencyPropabilityDemand, Params.fRefusePropabilityDemand,
-                Generator.CreateGenerator(Params.DemandModifyTime.GeneratorType, Params.DemandModifyTime.fA, Params.DemandModifyTime.fB),
-                Generator.CreateGenerator(Params.ArticlesModify.GeneratorType, Params.ArticlesModify.fA, Params.ArticlesModify.fB),
-                Generator.CreateGenerator(Params.Products[1].Modify.GeneratorType, Params.Products[1].Modify.fA, Params.Products[1].Modify.fB),
-                Generator.CreateGenerator(Params.Products[2].Modify.GeneratorType, Params.Products[2].Modify.fA, Params.Products[2].Modify.fB),
-                Generator.CreateGenerator(Params.Products[3].Modify.GeneratorType, Params.Products[3].Modify.fA, Params.Products[3].Modify.fB),
-                Generator.CreateGenerator(Params.UgrToStandModify.GeneratorType, Params.UgrToStandModify.fA, Params.UgrToStandModify.fB),
-                Generator.CreateGenerator(Params.StandToUrgModify.GeneratorType, Params.StandToUrgModify.fA, Params.StandToUrgModify.fB),
-                Generator.CreateGenerator(Params.DeliveryDelayGenerator.GeneratorType, Params.DeliveryDelayGenerator.fA, Params.DeliveryDelayGenerator.fB),
-                new IGen[]
-                {   
-                    Generator.CreateGenerator(Params.Materials[1].GeneratorType, Params.Materials[1].fA, Params.Materials[1].fB),
-                    Generator.CreateGenerator(Params.Materials[2].GeneratorType, Params.Materials[2].fA, Params.Materials[2].fB),
-                    Generator.CreateGenerator(Params.Materials[3].GeneratorType, Params.Materials[3].fA, Params.Materials[3].fB),
-                    Generator.CreateGenerator(Params.Materials[4].GeneratorType, Params.Materials[4].fA, Params.Materials[4].fB),
-                    Generator.CreateGenerator(Params.Materials[5].GeneratorType, Params.Materials[5].fA, Params.Materials[5].fB),
-                    Generator.CreateGenerator(Params.Materials[6].GeneratorType, Params.Materials[6].fA, Params.Materials[6].fB),
-                    Generator.CreateGenerator(Params.Materials[7].GeneratorType, Params.Materials[7].fA, Params.Materials[7].fB),
-                    Generator.CreateGenerator(Params.Materials[8].GeneratorType, Params.Materials[8].fA, Params.Materials[8].fB),
-                    Generator.CreateGenerator(Params.Materials[9].GeneratorType, Params.Materials[9].fA, Params.Materials[9].fB),
-                    Generator.CreateGenerator(Params.Materials[10].GeneratorType, Params.Materials[10].fA, Params.Materials[10].fB),
-                    Generator.CreateGenerator(Params.Materials[11].GeneratorType, Params.Materials[11].fA, Params.Materials[11].fB),
-                    Generator.CreateGenerator(Params.Materials[12].GeneratorType, Params.Materials[12].fA, Params.Materials[12].fB)
-                }
+                Generator.CreateGenerator(Params.DemandModifyTime),
+                Generator.CreateGenerator(Params.ArticlesModify),
+                productsModifyGenerator.ToArray(),
+                Generator.CreateGenerator(Params.UgrToStandModify),
+                Generator.CreateGenerator(Params.StandToUrgModify),
+                Generator.CreateGenerator(Params.DeliveryDelayGenerator),
+                materialsDeliveryGenerator.ToArray()
             );
             this.modelingDays = Params.ModelingDayToWork;
             this.modelTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
@@ -273,10 +269,10 @@ namespace Modeling
         /// <returns></returns>
         public bool Stop()
         {
-            if (stopFlag == true) 
+            if (stopFlag == true)
                 return true;
 
-            if (currentModellingDay == (Params.ModelingDayToWork - 1)) 
+            if (currentModellingDay == (Params.ModelingDayToWork - 1))
                 return false;
 
             this.stopFlag = true;
@@ -469,7 +465,7 @@ namespace Modeling
 
                                     if (!canDo)
                                         throw new Exception("Недостаточно материалов для производства товара");
-                                    
+
                                 }
                                 else
                                 {
@@ -505,7 +501,7 @@ namespace Modeling
                                 foreach (DeliveryDemand d in deliveryDemands)
                                 {
                                     this.storage.Materials.AddMaterialCluster(d.MaterialsDemand);
-                                    
+
                                     backOffice.ReportDeliveryDemand(d);
                                     d.IsDone = true;
                                 }
