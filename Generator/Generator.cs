@@ -97,65 +97,6 @@ namespace GeneratorSubsystem
             return urgency.ToArray();
         }
 
-
-        //public CDemand[] generateDemands(DateTime dt)
-        //{
-        //    int[] requestTimes = this.requestTimeGen.generateForDay();
-        //    double[] firstArticlesSeq = this.firstArticleGen.generateN(requestTimes.Length);
-        //    double[] secondArticlesSeq = this.secondArticleGen.generateN(requestTimes.Length);
-        //    double[] thirdArticlesSeq = this.thirdArticleGen.generateN(requestTimes.Length);
-        //    int[] urgency = generateUrgencyRefuse(requestTimes.Length);
-
-        //    List<int> firstAricles = new List<int>();
-        //    foreach (double i in firstArticlesSeq)
-        //    {
-        //        firstAricles.Add((int)Math.Round(i));
-        //    }
-        //    List<int> secondAricles = new List<int>();
-        //    foreach (double i in secondArticlesSeq)
-        //    {
-        //        secondAricles.Add((int)Math.Round(i));
-        //    }
-        //    List<int> thirdAricles = new List<int>();
-        //    foreach (double i in thirdArticlesSeq)
-        //    {
-        //        thirdAricles.Add((int)Math.Round(i));
-        //    }
-        //    List<CDemand> demands = new List<CDemand>();
-        //    int minutes = 0;
-        //    for (int i = 0; i < requestTimes.Length; i++)
-        //    {
-        //        minutes = minutes + requestTimes[i];
-
-        //        /*
-        //        demands.Add(new CDemand(0,dt.AddMinutes(minutes), urgency[i], new Dictionary<int, int> { 
-        //        { 1, firstAricles.ElementAt(i) }, 
-        //        { 2, secondAricles.ElementAt(i) }, 
-        //        { 3, thirdAricles.ElementAt(i) } 
-        //        }));
-        //         */ 
-
-        //        //--->
-        //        CProductCluster productCluster = new CProductCluster();
-
-        //        //Дима: очень странно, но thirdAricles.ElementAt(i) иногда выдает ОТРИЦАТЕЛЬНОЕ число!!!
-        //        //вставил проверки на неотрицательность.
-        //        if (firstAricles.ElementAt(i)>0)
-        //            productCluster.AddProduct(1, firstAricles.ElementAt(i));
-
-        //        if (secondAricles.ElementAt(i) > 0)
-        //            productCluster.AddProduct(2, secondAricles.ElementAt(i));
-
-        //        if (thirdAricles.ElementAt(i) > 0)
-        //            productCluster.AddProduct(3, thirdAricles.ElementAt(i));
-
-        //        demands.Add(new CDemand(0,dt.AddMinutes(minutes), urgency[i], productCluster));
-        //        //<---
-        //    }
-        //    return demands.ToArray();
-        //}
-
-
         /// <summary>
         /// генерация массива заявок
         /// </summary>
@@ -168,8 +109,8 @@ namespace GeneratorSubsystem
 
             //собственно генерация
             articlesModifyGen[0] = this.firstArticleGen.GenerateN(requestTimes.Length);
-            articlesModifyGen[1] = this.firstArticleGen.GenerateN(requestTimes.Length);
-            articlesModifyGen[2] = this.firstArticleGen.GenerateN(requestTimes.Length);
+            articlesModifyGen[1] = this.secondArticleGen.GenerateN(requestTimes.Length);
+            articlesModifyGen[2] = this.thirdArticleGen.GenerateN(requestTimes.Length);
 
             int[] urgency = GenerateUrgencyRefuse(requestTimes.Length);
 
@@ -328,28 +269,9 @@ namespace GeneratorSubsystem
                                 modifiedDelivery.MaterialsDemand.AddMaterial(j + 1, iTemp);
                             }
                         }
-                        /***
-                        if (modifiedDelivery.m_materialsDemand[j + 1] < 0)
-                        {
-                            modifiedDelivery.m_materialsDemand[j + 1] = 0;
-                        }
-                        */
-                    }
-
-                }
-                /*
-                List<DeliveryElement> delivElems = new List<DeliveryElement>(modifiedDelivery.deliveryElements);
-                bool nullFlag = false;
-                foreach (DeliveryElement dElem in delivElems)
-                {
-                    if (dElem.num <= 0)
-                    {
-                        delivElems.Remove(dElem);
-                        nullFlag = true;
                     }
                 }
-                if (nullFlag == true) modifiedDelivery.deliveryElements = delivElems.ToArray();
-                */
+               
                 modifiedDeliveries.Add(modifiedDelivery);
             }
             return modifiedDeliveries.ToArray();

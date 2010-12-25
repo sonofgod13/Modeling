@@ -263,70 +263,6 @@ namespace Modeling
             this.stopFlag = false;
             this.backOffice.StartModeling(this.modelTime);
 
-            ////////////////////////////  Тут определены начальные заявки и материалы - это как оказалось не нужно((((
-
-            //List<CDemand> demands = new List<CDemand>();
-            //do
-            //{
-            //    CDemand[] newDemands = this.generator.generateDemands(startTime);
-            //    int count = 0;
-            //    if (newDemands.Length < 10) count = newDemands.Length;
-            //    else count = 10;
-            //    for (int i = 0; i < count; i++)
-            //    {
-            //        newDemands[i].m_dtGeting = startTime;
-            //        if (newDemands[i].m_iUrgency == 2) newDemands[i].m_iUrgency = 0;
-            //        demands.Add(newDemands[i]);
-            //        bool approved = backOffice.approveDemand(ref newDemands[i]);
-            //        storage.AddAcceptedDemand(newDemands[i]);
-            //    }
-            //} while (demands.Count < 10);
-
-            ////Dictionary<int,int> materials = new Dictionary<int,int>{
-            ////    {1,0},{2,0},{3,0},{4,0},{5,0},{6,0},{7,0},{8,0},{9,0},{10,0},{11,0},{12,0}
-            ////};
-
-            //CMaterialCluster materials = new CMaterialCluster();
-
-            //foreach (CDemand d in demands)
-            //{
-            //    for(int iProductNumber = 1; iProductNumber < CParams.PRODUCTS_NUMBER + 1; iProductNumber++ ) 
-            //    {
-            //        for( int iMaterialNumber = 1; iMaterialNumber < CParams.MATERIALS_NUMBER+1; iMaterialNumber++ )
-            //        {
-            //            /***
-            //            int iTempMaterialCount =
-            //                        //            CParams.m_products[iProductNumber].m_iMaterials[iMaterialNumber - 1] * //количетсво материалов для продукта в заявке 
-            //            d.m_products[ iProductNumber ]; //количество продуктов в заявке
-            //             */
-
-            //            //количетсво материалов для продукта в заявке
-            //            int iTempMaterialCount = 0;
-            //            CParams.m_products[iProductNumber].m_materials.GetMaterial(iMaterialNumber, out iTempMaterialCount); 
-
-            //            //количество продуктов в заявке
-            //            int iTempProductsCount = 0;
-            //            d.m_products.GetProduct(iProductNumber, out iTempProductsCount);
-
-            //            //***materials[ iMaterialNumber ] += iTempMaterialCount;
-            //            //Добавляет в кластер materials iTempMaterialCount материалов с номером iMaterialNumber
-            //            materials.AddMaterial(iMaterialNumber, iTempMaterialCount * iTempProductsCount);
-
-            //            //***this.storage.AddMaterialNumber(iMaterialNumber, iTempMaterialCount);
-            //            //Добавляем на склад к материалу iMaterialNumber количество iTempMaterialCount
-            //            this.storage.m_materials.AddMaterial(iMaterialNumber, iTempMaterialCount * iTempProductsCount);
-            //        }
-            //    }
-            //}
-            ////***CDeliveryDemand deliv = new CDeliveryDemand(-1,startTime,materials);
-            ////Создание заявки на поставку материалов
-            //CDeliveryDemand deliv = new CDeliveryDemand(-1, startTime, materials);
-            //deliv.m_dtRealDelivery = startTime;
-            //this.storage.AddDeliveryDemand(deliv);
-            //backOffice.reportDeliveryDemand(deliv);
-
-            ////////////////////////////////
-
             this.Iteration(label);            //запуск основного цикла
             return !stopFlag;
         }
@@ -422,22 +358,6 @@ namespace Modeling
 
                         if (!canDo)
                             throw new Exception("Не достаточно материалов для производства товара");
-                        /*                        
-                        for (int j = 1; j <= CParams.MATERIALS_NUMBER; j++)
-                        {
-                            //***int materialNum = CParams.m_products[this.storage.GetFirstPlanElement().m_iProductID].m_iMaterials[j - 1];
-                            int materialNum = 0;
-                            //получает в materialNum количество материала № j нужное для производства продукта
-                            CParams.m_products[this.storage.GetFirstPlanElement().m_iProductID].m_materials.GetMaterial(j, out materialNum);
-       
-                            if (materialNum > 0)
-                            {
-                                //***this.storage.DeleteMaterialNumber(j, materialNum);
-                                //удаление со склада от материала с номером j количества materialNum
-                                this.storage.m_materials.TakeAwayMaterial(j, materialNum); 
-                            }
-                        }
-                        */
                     }
                     else
                     {
@@ -549,22 +469,7 @@ namespace Modeling
 
                                     if (!canDo)
                                         throw new Exception("Недостаточно материалов для производства товара");
-                                    /*
-                                    for (int j = 1; j <= CParams.MATERIALS_NUMBER; j++)
-                                    {   
-                                        //***int materialNum = CParams.m_products[this.storage.GetFirstPlanElement().m_iProductID + 1].m_iMaterials[j - 1];
-                                        int materialNum = 0;
-                                        //получает в materialNum количество материала № j нужное для производства продукта
-                                        CParams.m_products[this.storage.GetFirstPlanElement().m_iProductID].m_materials.GetMaterial(j, out materialNum);
-
-                                        if (materialNum > 0)
-                                        {
-                                            //***this.storage.DeleteMaterialNumber(j, materialNum);
-                                            //удаление со склада от материала с номером j количества materialNum
-                                            this.storage.m_materials.TakeAwayMaterial(j, materialNum); 
-                                        }
-                                    }
-                                    */
+                                    
                                 }
                                 else
                                 {
@@ -600,63 +505,12 @@ namespace Modeling
                                 foreach (DeliveryDemand d in deliveryDemands)
                                 {
                                     this.storage.Materials.AddMaterialCluster(d.MaterialsDemand);
-                                    /*
-                                    for (int j = 1; j <= CParams.MATERIALS_NUMBER; j++)
-                                    {
-                                        //***int materialNum = d.m_materialsDemand[j];
-                                        int materialNum = 0;
-                                        d.m_materialsDemand.GetMaterial(j, out materialNum);
-
-                                        //if (materialNum > 0)
-                                        //{
-                                            //***this.storage.AddMaterialNumber(j, materialNum);
-                                            //добавление на склад количества materialNum материала номером j
-                                            this.storage.m_materials.AddMaterial(j, materialNum);
-                                        //}
-                                    }
-                                    */
+                                    
                                     backOffice.ReportDeliveryDemand(d);
                                     d.IsDone = true;
                                 }
                             }
                         }
-
-
-                        //// Не нужно если план не меняется в течение дня
-
-                        //if (nextPlanElemEndTime == -1)
-                        //{
-                        //    curPlanElem = new CPlanReportElement();
-                        //    try
-                        //    {
-                        //        int prodId = this.storage.GetFirstPlanElement().m_iProductID;
-                        //        nextPlanElemEndTime = CParams.m_products[prodId].m_iTime;
-                        //        this.storage.m_materials.TakeAwayMaterialCluster(CParams.m_products[prodId].m_materials);
-                        //        /*
-                        //        for (int j = 1; j <= CParams.MATERIALS_NUMBER; j++)
-                        //        {
-                        //            //***int materialNum = CParams.m_products[this.storage.GetFirstPlanElement().m_iProductID + 1].m_iMaterials[j - 1];
-                        //            int materialNum = 0;
-                        //            //получает в materialNum количество материала № j нужное для производства продукта
-                        //            CParams.m_products[this.storage.GetFirstPlanElement().m_iProductID].m_materials.GetMaterial(j, out materialNum);
-
-                        //            if (materialNum > 0)
-                        //            {
-                        //                //***this.storage.DeleteMaterialNumber(j, materialNum);
-                        //                //удаление со склада от материала с номером j количества materialNum
-                        //                this.storage.m_materials.TakeAwayMaterial(j, materialNum); 
-                        //            }
-                        //        }
-                        //        */
-                        //        curPlanElem.m_dtStartExecute = modelTime;
-                        //    }
-                        //    catch
-                        //    {
-                        //        nextPlanElemEndTime = -1;
-                        //    }
-                        //}
-
-
                     }
 
                 }
