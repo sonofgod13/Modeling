@@ -77,5 +77,10 @@ namespace ModelingDataTypes
         {
             return m_cluster.CompareNomenclatureIsMore(productCluster.m_cluster);
         }
+
+        public string Dump()
+        {
+            return ("ПРОДУКТЫ.\n" + m_cluster.Dump());
+        }
     }
 }

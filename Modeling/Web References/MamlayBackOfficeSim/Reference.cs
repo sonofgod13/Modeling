@@ -35,11 +35,7 @@ namespace Modeling.MamlayBackOfficeSim {
         
         private System.Threading.SendOrPostCallback receivingMaterialsOperationCompleted;
         
-        private System.Threading.SendOrPostCallback getPlanOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback getOrderStatusOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback test1OperationCompleted;
+        private System.Threading.SendOrPostCallback getDayPlanOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -89,13 +85,7 @@ namespace Modeling.MamlayBackOfficeSim {
         public event receivingMaterialsCompletedEventHandler receivingMaterialsCompleted;
         
         /// <remarks/>
-        public event getPlanCompletedEventHandler getPlanCompleted;
-        
-        /// <remarks/>
-        public event getOrderStatusCompletedEventHandler getOrderStatusCompleted;
-        
-        /// <remarks/>
-        public event test1CompletedEventHandler test1Completed;
+        public event getDayPlanCompletedEventHandler getDayPlanCompleted;
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapRpcMethodAttribute("http://backoffice.mamlay.ru/simulation#niceStart", RequestNamespace="http://backoffice.mamlay.ru/simulation", ResponseNamespace="http://backoffice.mamlay.ru/simulation")]
@@ -192,94 +182,32 @@ namespace Modeling.MamlayBackOfficeSim {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapRpcMethodAttribute("http://backoffice.mamlay.ru/simulation#getPlan", RequestNamespace="http://backoffice.mamlay.ru/simulation", ResponseNamespace="http://backoffice.mamlay.ru/simulation")]
+        [System.Web.Services.Protocols.SoapRpcMethodAttribute("http://backoffice.mamlay.ru/simulation#getDayPlan", RequestNamespace="http://backoffice.mamlay.ru/simulation", ResponseNamespace="http://backoffice.mamlay.ru/simulation")]
         [return: System.Xml.Serialization.SoapElementAttribute("return")]
-        public object getPlan(string date) {
-            object[] results = this.Invoke("getPlan", new object[] {
+        public object getDayPlan(string date) {
+            object[] results = this.Invoke("getDayPlan", new object[] {
                         date});
             return ((object)(results[0]));
         }
         
         /// <remarks/>
-        public void getPlanAsync(string date) {
-            this.getPlanAsync(date, null);
+        public void getDayPlanAsync(string date) {
+            this.getDayPlanAsync(date, null);
         }
         
         /// <remarks/>
-        public void getPlanAsync(string date, object userState) {
-            if ((this.getPlanOperationCompleted == null)) {
-                this.getPlanOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetPlanOperationCompleted);
+        public void getDayPlanAsync(string date, object userState) {
+            if ((this.getDayPlanOperationCompleted == null)) {
+                this.getDayPlanOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetDayPlanOperationCompleted);
             }
-            this.InvokeAsync("getPlan", new object[] {
-                        date}, this.getPlanOperationCompleted, userState);
+            this.InvokeAsync("getDayPlan", new object[] {
+                        date}, this.getDayPlanOperationCompleted, userState);
         }
         
-        private void OngetPlanOperationCompleted(object arg) {
-            if ((this.getPlanCompleted != null)) {
+        private void OngetDayPlanOperationCompleted(object arg) {
+            if ((this.getDayPlanCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.getPlanCompleted(this, new getPlanCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapRpcMethodAttribute("http://backoffice.mamlay.ru/simulation#getOrderStatus", RequestNamespace="http://backoffice.mamlay.ru/simulation", ResponseNamespace="http://backoffice.mamlay.ru/simulation")]
-        [return: System.Xml.Serialization.SoapElementAttribute("return")]
-        public object getOrderStatus(string date, int orderId) {
-            object[] results = this.Invoke("getOrderStatus", new object[] {
-                        date,
-                        orderId});
-            return ((object)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void getOrderStatusAsync(string date, int orderId) {
-            this.getOrderStatusAsync(date, orderId, null);
-        }
-        
-        /// <remarks/>
-        public void getOrderStatusAsync(string date, int orderId, object userState) {
-            if ((this.getOrderStatusOperationCompleted == null)) {
-                this.getOrderStatusOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetOrderStatusOperationCompleted);
-            }
-            this.InvokeAsync("getOrderStatus", new object[] {
-                        date,
-                        orderId}, this.getOrderStatusOperationCompleted, userState);
-        }
-        
-        private void OngetOrderStatusOperationCompleted(object arg) {
-            if ((this.getOrderStatusCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.getOrderStatusCompleted(this, new getOrderStatusCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapRpcMethodAttribute("http://backoffice.mamlay.ru/simulation#test1", RequestNamespace="http://backoffice.mamlay.ru/simulation", ResponseNamespace="http://backoffice.mamlay.ru/simulation")]
-        [return: System.Xml.Serialization.SoapElementAttribute("return")]
-        public int test1(string id) {
-            object[] results = this.Invoke("test1", new object[] {
-                        id});
-            return ((int)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void test1Async(string id) {
-            this.test1Async(id, null);
-        }
-        
-        /// <remarks/>
-        public void test1Async(string id, object userState) {
-            if ((this.test1OperationCompleted == null)) {
-                this.test1OperationCompleted = new System.Threading.SendOrPostCallback(this.Ontest1OperationCompleted);
-            }
-            this.InvokeAsync("test1", new object[] {
-                        id}, this.test1OperationCompleted, userState);
-        }
-        
-        private void Ontest1OperationCompleted(object arg) {
-            if ((this.test1Completed != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.test1Completed(this, new test1CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.getDayPlanCompleted(this, new getDayPlanCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -382,17 +310,17 @@ namespace Modeling.MamlayBackOfficeSim {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "2.0.50727.3053")]
-    public delegate void getPlanCompletedEventHandler(object sender, getPlanCompletedEventArgs e);
+    public delegate void getDayPlanCompletedEventHandler(object sender, getDayPlanCompletedEventArgs e);
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "2.0.50727.3053")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class getPlanCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class getDayPlanCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal getPlanCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal getDayPlanCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -402,58 +330,6 @@ namespace Modeling.MamlayBackOfficeSim {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((object)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "2.0.50727.3053")]
-    public delegate void getOrderStatusCompletedEventHandler(object sender, getOrderStatusCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "2.0.50727.3053")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class getOrderStatusCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal getOrderStatusCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public object Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((object)(this.results[0]));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "2.0.50727.3053")]
-    public delegate void test1CompletedEventHandler(object sender, test1CompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "2.0.50727.3053")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class test1CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        internal test1CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        /// <remarks/>
-        public int Result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((int)(this.results[0]));
             }
         }
     }

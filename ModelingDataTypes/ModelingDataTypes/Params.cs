@@ -57,6 +57,8 @@ namespace ModelingDataTypes
 
         public static bool m_bUseFakeServices; // использовать фиктивные внешние сервисы
 
+        public static bool useDump; // использовать дамп
+
 
 
 
@@ -66,6 +68,8 @@ namespace ModelingDataTypes
                 return false;
 
             m_bUseFakeServices = false; // НЕ использовать фиктивные внешние сервисы
+
+            useDump = false;  // НЕ использовать дамп
 
             WORKDAY_MINUTES_NUMBER = 1440;  //рабочее время в минутах
 
@@ -79,7 +83,7 @@ namespace ModelingDataTypes
             PRODUCTS_NUMBER = 3;            //количество типов продуктов
 
 
-            DELIVERY_PERIOD = 1;            //период в днях между получением заказов на поставки материалов
+            DELIVERY_PERIOD = 7;            //период в днях между получением заказов на поставки материалов
 
 
             m_products = new Dictionary<int, CGeneratedProduct>();
@@ -96,15 +100,15 @@ namespace ModelingDataTypes
             product1.m_materials.AddMaterial(1, 6);
             product1.m_materials.AddMaterial(2, 2);
             product1.m_materials.AddMaterial(3, 3);
-            product1.m_materials.AddMaterial(4, 0);
-            product1.m_materials.AddMaterial(5, 2);
-            product1.m_materials.AddMaterial(6, 4);
-            product1.m_materials.AddMaterial(7, 5);
-            product1.m_materials.AddMaterial(8, 0);
-            product1.m_materials.AddMaterial(9, 3);
-            product1.m_materials.AddMaterial(10, 8);
-            product1.m_materials.AddMaterial(11, 2);
-            product1.m_materials.AddMaterial(12, 1);
+            product1.m_materials.AddMaterial(4, /*4);*/0);
+            product1.m_materials.AddMaterial(5, /*0);*/2);
+            product1.m_materials.AddMaterial(6, /*0);*/4);
+            product1.m_materials.AddMaterial(7, /*0);*/5);
+            product1.m_materials.AddMaterial(8, /*0);*/0);
+            product1.m_materials.AddMaterial(9, /*0);*/3);
+            product1.m_materials.AddMaterial(10, /*0);*/8);
+            product1.m_materials.AddMaterial(11, /*0);*/2);
+            product1.m_materials.AddMaterial(12, /*0);*/1);
 
             m_products.Add(1, product1 );
 
@@ -120,16 +124,16 @@ namespace ModelingDataTypes
             product1.m_modify.m_fB = 3.0;
             product2.m_materials.AddMaterial(1, 0);
             product2.m_materials.AddMaterial(2, 0);
-            product2.m_materials.AddMaterial(3, 1);
-            product2.m_materials.AddMaterial(4, 4);
+            product2.m_materials.AddMaterial(3, /*0);*/1);
+            product2.m_materials.AddMaterial(4, /*0);*/4);
             product2.m_materials.AddMaterial(5, 5);
             product2.m_materials.AddMaterial(6, 1);
             product2.m_materials.AddMaterial(7, 2);
             product2.m_materials.AddMaterial(8, 4);
-            product2.m_materials.AddMaterial(9, 7);
-            product2.m_materials.AddMaterial(10, 8);
-            product2.m_materials.AddMaterial(11, 8);
-            product2.m_materials.AddMaterial(12, 3);
+            product2.m_materials.AddMaterial(9, /*0);*/7);
+            product2.m_materials.AddMaterial(10, /*0);*/8);
+            product2.m_materials.AddMaterial(11, /*0);*/8);
+            product2.m_materials.AddMaterial(12, /*0);*/3);
 
             m_products.Add(2, product2 );
 
@@ -143,17 +147,17 @@ namespace ModelingDataTypes
             product1.m_modify.m_iGeneratorType = 1;
             product1.m_modify.m_fA = 0.0;
             product1.m_modify.m_fB = 3.0;
-            product3.m_materials.AddMaterial(1, 2);
-            product3.m_materials.AddMaterial(2, 6);
-            product3.m_materials.AddMaterial(3, 5);
-            product3.m_materials.AddMaterial(4, 3);
-            product3.m_materials.AddMaterial(5, 1);
-            product3.m_materials.AddMaterial(6, 6);
-            product3.m_materials.AddMaterial(7, 9);
-            product3.m_materials.AddMaterial(8, 2);
+            product3.m_materials.AddMaterial(1, /*0);*/2);
+            product3.m_materials.AddMaterial(2, /*0);*/6);
+            product3.m_materials.AddMaterial(3, /*0);*/5);
+            product3.m_materials.AddMaterial(4, /*0);*/3);
+            product3.m_materials.AddMaterial(5, /*0);*/1);
+            product3.m_materials.AddMaterial(6, /*0);*/6);
+            product3.m_materials.AddMaterial(7, /*0);*/9);
+            product3.m_materials.AddMaterial(8, /*0);*/2);
             product3.m_materials.AddMaterial(9, 1);
             product3.m_materials.AddMaterial(10, 3);
-            product3.m_materials.AddMaterial(11, 0);
+            product3.m_materials.AddMaterial(11, /*6);*/0);
             product3.m_materials.AddMaterial(12, 4);
 
             m_products.Add(3, product3 );

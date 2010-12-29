@@ -12,13 +12,6 @@ C:\Users\user\Desktop\Modeling_17окт\Modeling\Generator\bin\Release\ModelingD
 C:\Users\user\Desktop\Modeling_17окт\Modeling\Generator\obj\Release\ResolveAssemblyReference.cache
 C:\Users\user\Desktop\Modeling_17окт\Modeling\Generator\obj\Release\Generator.dll
 C:\Users\user\Desktop\Modeling_17окт\Modeling\Generator\obj\Release\Generator.pdb
-C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\Generator\obj\Release\ResolveAssemblyReference.cache
-C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\Generator\bin\Release\Generator.dll
-C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\Generator\bin\Release\Generator.pdb
-C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\Generator\bin\Release\ModelingDataTypes.dll
-C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\Generator\bin\Release\ModelingDataTypes.pdb
-C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\Generator\obj\Release\Generator.dll
-C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\Generator\obj\Release\Generator.pdb
 C:\Users\user\Desktop\Modeling\Generator\bin\Release\Generator.dll
 C:\Users\user\Desktop\Modeling\Generator\bin\Release\Generator.pdb
 C:\Users\user\Desktop\Modeling\Generator\bin\Release\ModelingDataTypes.dll
@@ -47,3 +40,10 @@ C:\Users\user\Desktop\Modeling1\Modeling\Generator\bin\Release\ModelingDataTypes
 C:\Users\user\Desktop\Modeling1\Modeling\Generator\obj\Release\ResolveAssemblyReference.cache
 C:\Users\user\Desktop\Modeling1\Modeling\Generator\obj\Release\Generator.dll
 C:\Users\user\Desktop\Modeling1\Modeling\Generator\obj\Release\Generator.pdb
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\Generator\bin\Release\Generator.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\Generator\bin\Release\Generator.pdb
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\Generator\bin\Release\ModelingDataTypes.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\Generator\bin\Release\ModelingDataTypes.pdb
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\Generator\obj\Release\ResolveAssemblyReference.cache
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\Generator\obj\Release\Generator.dll
+C:\Users\user\Documents\Visual Studio 2008\Projects\Modeling\Generator\obj\Release\Generator.pdb

@@ -15,8 +15,9 @@ namespace ModelingDataTypes
 
         public static bool Error(string str)
         {
-            throw new Exception(str);
-            //return false; //не удалять этот комментарий
+            CDumper.Dump(str);
+            //throw new Exception(str);
+            return false; //не удалять этот комментарий
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Modeling.MamlayBackOfficeFront {
         
         private System.Threading.SendOrPostCallback cancelOrderOperationCompleted;
         
-        private System.Threading.SendOrPostCallback testOperationCompleted;
+        private System.Threading.SendOrPostCallback getOrderStatusOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -95,7 +95,7 @@ namespace Modeling.MamlayBackOfficeFront {
         public event cancelOrderCompletedEventHandler cancelOrderCompleted;
         
         /// <remarks/>
-        public event testCompletedEventHandler testCompleted;
+        public event getOrderStatusCompletedEventHandler getOrderStatusCompleted;
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapRpcMethodAttribute("http://backoffice.mamlay.ru/frontoffice#newOrder", RequestNamespace="http://backoffice.mamlay.ru/frontoffice", ResponseNamespace="http://backoffice.mamlay.ru/frontoffice")]
@@ -270,32 +270,34 @@ namespace Modeling.MamlayBackOfficeFront {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapRpcMethodAttribute("http://backoffice.mamlay.ru/frontoffice#test", RequestNamespace="http://backoffice.mamlay.ru/frontoffice", ResponseNamespace="http://backoffice.mamlay.ru/frontoffice")]
+        [System.Web.Services.Protocols.SoapRpcMethodAttribute("http://backoffice.mamlay.ru/frontoffice#getOrderStatus", RequestNamespace="http://backoffice.mamlay.ru/frontoffice", ResponseNamespace="http://backoffice.mamlay.ru/frontoffice")]
         [return: System.Xml.Serialization.SoapElementAttribute("return")]
-        public bool test(int id) {
-            object[] results = this.Invoke("test", new object[] {
-                        id});
-            return ((bool)(results[0]));
+        public object getOrderStatus(string date, int orderId) {
+            object[] results = this.Invoke("getOrderStatus", new object[] {
+                        date,
+                        orderId});
+            return ((object)(results[0]));
         }
         
         /// <remarks/>
-        public void testAsync(int id) {
-            this.testAsync(id, null);
+        public void getOrderStatusAsync(string date, int orderId) {
+            this.getOrderStatusAsync(date, orderId, null);
         }
         
         /// <remarks/>
-        public void testAsync(int id, object userState) {
-            if ((this.testOperationCompleted == null)) {
-                this.testOperationCompleted = new System.Threading.SendOrPostCallback(this.OntestOperationCompleted);
+        public void getOrderStatusAsync(string date, int orderId, object userState) {
+            if ((this.getOrderStatusOperationCompleted == null)) {
+                this.getOrderStatusOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetOrderStatusOperationCompleted);
             }
-            this.InvokeAsync("test", new object[] {
-                        id}, this.testOperationCompleted, userState);
+            this.InvokeAsync("getOrderStatus", new object[] {
+                        date,
+                        orderId}, this.getOrderStatusOperationCompleted, userState);
         }
         
-        private void OntestOperationCompleted(object arg) {
-            if ((this.testCompleted != null)) {
+        private void OngetOrderStatusOperationCompleted(object arg) {
+            if ((this.getOrderStatusCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.testCompleted(this, new testCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.getOrderStatusCompleted(this, new getOrderStatusCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -450,26 +452,26 @@ namespace Modeling.MamlayBackOfficeFront {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "2.0.50727.3053")]
-    public delegate void testCompletedEventHandler(object sender, testCompletedEventArgs e);
+    public delegate void getOrderStatusCompletedEventHandler(object sender, getOrderStatusCompletedEventArgs e);
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "2.0.50727.3053")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class testCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class getOrderStatusCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal testCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal getOrderStatusCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
         /// <remarks/>
-        public bool Result {
+        public object Result {
             get {
                 this.RaiseExceptionIfNecessary();
-                return ((bool)(this.results[0]));
+                return ((object)(this.results[0]));
             }
         }
     }

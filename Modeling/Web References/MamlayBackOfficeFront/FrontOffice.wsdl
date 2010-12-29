@@ -44,11 +44,12 @@
   <wsdl:message name="cancelOrderOut">
     <wsdl:part name="return" type="xsd:boolean" />
   </wsdl:message>
-  <wsdl:message name="testIn">
-    <wsdl:part name="id" type="xsd:int" />
+  <wsdl:message name="getOrderStatusIn">
+    <wsdl:part name="date" type="xsd:string" />
+    <wsdl:part name="orderId" type="xsd:int" />
   </wsdl:message>
-  <wsdl:message name="testOut">
-    <wsdl:part name="return" type="xsd:boolean" />
+  <wsdl:message name="getOrderStatusOut">
+    <wsdl:part name="return" type="xsd:anyType" />
   </wsdl:message>
   <wsdl:portType name="FrontOfficePort">
     <wsdl:operation name="newOrder">
@@ -79,10 +80,10 @@
       <wsdl:input message="tns:cancelOrderIn" />
       <wsdl:output message="tns:cancelOrderOut" />
     </wsdl:operation>
-    <wsdl:operation name="test">
-      <documentation>Session test</documentation>
-      <wsdl:input message="tns:testIn" />
-      <wsdl:output message="tns:testOut" />
+    <wsdl:operation name="getOrderStatus">
+      <documentation>Ϯ볷孨報迠砪ৠ</documentation>
+      <wsdl:input message="tns:getOrderStatusIn" />
+      <wsdl:output message="tns:getOrderStatusOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="FrontOfficeBinding" type="tns:FrontOfficePort">
@@ -132,8 +133,8 @@
         <soap:body use="encoded" namespace="http://backoffice.mamlay.ru/frontoffice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="test">
-      <soap:operation soapAction="http://backoffice.mamlay.ru/frontoffice#test" />
+    <wsdl:operation name="getOrderStatus">
+      <soap:operation soapAction="http://backoffice.mamlay.ru/frontoffice#getOrderStatus" />
       <wsdl:input>
         <soap:body use="encoded" namespace="http://backoffice.mamlay.ru/frontoffice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </wsdl:input>

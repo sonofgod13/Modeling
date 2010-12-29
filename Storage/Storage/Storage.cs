@@ -39,7 +39,7 @@ namespace Storage
         private List<double> idleTimePerDay;
         // статистика - доля времени простоя производства от рабочего времени на каждый день моделирования
 
-        private List<double> demandAverageDelayPerDay;
+        private List<double?> demandAverageDelayPerDay;
         // статистика - среденее время задержки заказов на каждый день моделирования
 
         private List<double> finishedDemandsPerDay;
@@ -48,7 +48,8 @@ namespace Storage
         private List<double> canceledDemandsPerDay;
         // статистика - доля отменённых заказов на каждый день моделирования
 
-
+        private List<int> overdueDemandsPerDay;
+        // статистика - количество просроченных заказов на каждый день моделирования
 
         public CStorage()   // конструктор - инициализация значений
         {
@@ -88,7 +89,7 @@ namespace Storage
             idleTimePerDay = new List<double>();
             // доля времени простоя производства от рабочего времени на каждый день моделирования
 
-            demandAverageDelayPerDay = new List<double>();
+            demandAverageDelayPerDay = new List<double?>();
             // среденее время задержки заказов на каждый день моделирования
 
             finishedDemandsPerDay = new List<double>();
@@ -96,6 +97,9 @@ namespace Storage
 
             canceledDemandsPerDay = new List<double>();
             // доля отменённых заказов на каждый день моделирования
+
+            overdueDemandsPerDay = new List<int>();
+            // количество просроченных заказов на каждый день моделирования
 
         }
 
@@ -289,6 +293,19 @@ namespace Storage
                 return true;
         }
 
+        public bool IsAcceptedDemand(int ind)
+        //есть ли заявка с таким номером в acceptedDemands
+        {
+            if (m_acceptedDemands.ContainsKey(ind))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public bool AddModifyStatistic(bool modified)
         {
             if (modified == true) this.modifyStatistic[0]++;
@@ -402,7 +419,7 @@ namespace Storage
             return true;
         }
 
-        public double DemandAverageDelay()  // Среденее время задержки заказов в днях
+        public double? DemandAverageDelay()  // Среденее время задержки заказов в днях
         {
             int demandsNum=0;
             double demandsDelaySum = 0;
@@ -424,7 +441,7 @@ namespace Storage
                 }
             }
             if (demandsNum > 0) return Math.Round(demandsDelaySum / demandsNum);
-            else return -1;
+            else return null;
         }
 
         public double FinishedDemandsShare()  // Доля выполненных заказов
@@ -525,7 +542,7 @@ namespace Storage
             return true;
         }
 
-        public double[] GetDemandAverageDelayPerDayStatistic()
+        public double?[] GetDemandAverageDelayPerDayStatistic()
         // Получить статистику изменения среденего времени задержки заказов в днях по дням
         {
             return this.demandAverageDelayPerDay.ToArray();
@@ -552,6 +569,21 @@ namespace Storage
             return true;
         }
 
+        public bool SaveOverdueDemandsPerDayStatistic(DateTime date)
+        // Сохранить количество просроченных заказов на текущий день в статистику 
+        {
+            int demandsNum = 0;
+            foreach (CDemand d in this.m_acceptedDemands.Values)
+            {
+                if ((d.m_dtFinishing.HasValue == false)&&(d.m_dtShouldBeDone.HasValue == true))
+                {
+                    if (date > d.m_dtShouldBeDone.Value) demandsNum++;
+                }
+            }
+            this.overdueDemandsPerDay.Add(demandsNum);
+            return true;
+        }
+
 
         public double[] GetFinishedDemandsPerDayStatistic()
         // Получить статистику изменения доли выполненных заказов по дням
@@ -564,7 +596,33 @@ namespace Storage
         {
             return this.canceledDemandsPerDay.ToArray();
         }
-      
+
+        public int[] GetOverdueDemandsPerDayStatistic()
+        // Получить статистику изменения количества просроченных заказов по дням
+        {
+            return this.overdueDemandsPerDay.ToArray();
+        }
+
+
+
+        public string DumpPlan()
+        {
+            string res = "ПЛАН\n";
+            CPlanElement[] plan = m_plan.ToArray();
+
+            return (res + DumpPlan(plan));
+        }
+
+        public string DumpPlan(CPlanElement[] plan)
+        {
+            string res = "ПЛАН\n";
+            for (int iPlanNumber = 0; iPlanNumber < plan.Length; iPlanNumber++)
+            {
+                res = res + plan[iPlanNumber].Dump() + "\n";
+            }
+            return res;
+        }
+
         /*
         public CPlanReportElement GetFirstPlanReportElement()
         //Вернуть первый элемент выполнения плана

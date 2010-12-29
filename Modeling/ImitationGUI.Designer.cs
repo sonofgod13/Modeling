@@ -106,6 +106,7 @@
             this.label18 = new System.Windows.Forms.Label();
             this.finishedNumLabel = new System.Windows.Forms.Label();
             this.front_office_button = new System.Windows.Forms.Button();
+            this.overdue_button = new System.Windows.Forms.Button();
             this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -171,7 +172,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(446, 650);
+            this.tabPage2.Size = new System.Drawing.Size(446, 602);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Генерация изменений поставок";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -442,7 +443,7 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(30);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(30);
-            this.tabPage1.Size = new System.Drawing.Size(446, 602);
+            this.tabPage1.Size = new System.Drawing.Size(446, 627);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Генерация заявок";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -554,7 +555,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(454, 628);
+            this.tabControl1.Size = new System.Drawing.Size(454, 653);
             this.tabControl1.TabIndex = 8;
             // 
             // tabPage3
@@ -575,7 +576,7 @@
             this.tabPage3.Controls.Add(this.label3);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(446, 650);
+            this.tabPage3.Size = new System.Drawing.Size(446, 602);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Генерация изменений заявок";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -742,7 +743,7 @@
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(138, 26);
             this.label10.TabIndex = 11;
-            this.label10.Text = "Среднее время задержки\r\nвыполнения заказов:";
+            this.label10.Text = "Среднее время задержки\r\nвыполненных заказов:";
             // 
             // demandAverageDelayLabel
             // 
@@ -842,7 +843,7 @@
             this.averageDelay_button.Name = "averageDelay_button";
             this.averageDelay_button.Size = new System.Drawing.Size(300, 40);
             this.averageDelay_button.TabIndex = 14;
-            this.averageDelay_button.Text = "График изменения среднего времени задержки выполнения заказов";
+            this.averageDelay_button.Text = "График изменения среднего времени задержки выполненных заказов";
             this.averageDelay_button.UseVisualStyleBackColor = true;
             this.averageDelay_button.Click += new System.EventHandler(this.averageDelay_button_Click);
             // 
@@ -902,12 +903,23 @@
             this.front_office_button.UseVisualStyleBackColor = true;
             this.front_office_button.Click += new System.EventHandler(this.front_office_button_Click);
             // 
+            // overdue_button
+            // 
+            this.overdue_button.Location = new System.Drawing.Point(496, 606);
+            this.overdue_button.Name = "overdue_button";
+            this.overdue_button.Size = new System.Drawing.Size(300, 29);
+            this.overdue_button.TabIndex = 15;
+            this.overdue_button.Text = "График изменения количества просроченных заказов";
+            this.overdue_button.UseVisualStyleBackColor = true;
+            this.overdue_button.Click += new System.EventHandler(this.overdue_button_Click);
+            // 
             // ImitationGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(834, 628);
+            this.ClientSize = new System.Drawing.Size(834, 653);
             this.Controls.Add(this.front_office_button);
+            this.Controls.Add(this.overdue_button);
             this.Controls.Add(this.finish_button);
             this.Controls.Add(this.averageDelay_button);
             this.Controls.Add(this.idle_button);
@@ -1029,6 +1041,7 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label finishedNumLabel;
         private System.Windows.Forms.Button front_office_button;
+        private System.Windows.Forms.Button overdue_button;
     }
 }
 

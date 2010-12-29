@@ -207,7 +207,7 @@ namespace GeneratorSubsystem
             {
                 int i = rand.Next(demands.Length);
                 CDemand modifiedDemand = new CDemand(demands[i]);
-                if (modifiedDemand.m_iUrgency == 2) throw new Exception("Заявка от которой отказались не может быть изменена!");
+                if (modifiedDemand.m_iUrgency == 2) ModelError.Error("Заявка от которой отказались не может быть изменена!");
                 TimeSpan dt = currentDate.Subtract(demands[i].m_dtGeting);
                 
                 if (this.articlesModifyGen.getProbability(dt.TotalMinutes) >= arctProbs[arctProbsInd])

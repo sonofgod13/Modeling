@@ -46,5 +46,14 @@ namespace ModelingDataTypes
             //****this.m_products = new Dictionary<int, int>(copy.m_products);
             this.m_products = new CProductCluster(copy.m_products);
         }
+
+        public string Dump()
+        {
+            return ("ЗАЯВКА.\nидентификатор: " + m_iID.ToString()
+                + "\nвремя подачи заявки: " + m_dtGeting.ToString()
+                + "\nзаявленное время окончания делания заявки: " + m_dtShouldBeDone.ToString()
+                + "\nРЕАЛЬНОЕ время окончания делания заявки: " + m_dtFinishing.ToString()
+                + "\nсрочность: " + m_iUrgency.ToString() + m_products.Dump());
+        }
     }
 }

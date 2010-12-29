@@ -40,5 +40,13 @@ namespace ModelingDataTypes
             //this.m_materialsDemand = new Dictionary<int, int>(copy.m_materialsDemand);
             this.m_materialsDemand = new CMaterialCluster(copy.m_materialsDemand); 
         }
+
+        public string Dump()
+        {
+            return ("ЗАЯВКА НА ПОСТАВКУ.\nидентификатор: " + m_iID.ToString()
+                + "\nРеальное время поступления поставки: " + m_dtRealDelivery.ToString()
+                + "\nОжидаемое время поступления поставки" + m_dtFillDelivery.ToString()
+                + m_materialsDemand.Dump());
+        }
     }
 }

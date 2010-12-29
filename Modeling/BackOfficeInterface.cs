@@ -50,6 +50,9 @@ namespace Modeling
 
         private static T GetNodeValueByKey<T>(XmlNode[] nodes, string key)
         {
+            //CDumper.Dump("+Получение ключа " + key + "  из XML:\n" + nodes.ToString()); 
+            //не думаю что это нужно - это не событие в системе, и если оно упадёт, то это и так будет видно
+
             foreach (XElement node in nodes.Where(n => n.NodeType == XmlNodeType.Element).Select(n => GetXElement(n)))
             {
                 if (node.Elements().Where(n => n.Name == "key" & n.Value == key).Count() != 0)
@@ -79,6 +82,9 @@ namespace Modeling
 
         private static BackOfficePlanElem[] planElemParse(XmlNode[] nodes)
         {
+            //CDumper.Dump("+Парсинг плана XML:\n" + nodes.ToString());
+            //не думаю что это нужно - это не событие в системе, и если оно упадёт, то это и так будет видно
+
             int count = nodes.Count() - 1;
             List<XElement> xElems = new List<XElement>();
             foreach (XmlNode xN in nodes)
@@ -152,18 +158,24 @@ namespace Modeling
 
         public bool startModeling(DateTime date)                       // передача в back office время начала нового моделирования
         {
+            CDumper.Dump("+Попытка передачи в back office время начала нового моделирования - " + date.ToString());
+
             if (!CParams.m_bUseFakeServices)
             {
                 //         Реальный код    
                 string dateStr = date.ToString("yyyy-MM-dd HH:mm:ss");
                 bool startResult = simulation.niceStart(dateStr);
                 if (startResult == false) return ModelError.Error("Не удалось начать новое моделирование");
-            }            
+                else CDumper.Dump("+передача в back office время начала нового моделирования. УСПЕШНО.");
+            }
+            else CDumper.Dump("+Фиктивный сервис. передача в back office время начала нового моделирования. УСПЕШНО.");
             return true;
         }
 
         public bool approveDemand(ref CDemand demand)                    // утверждение в back office новой заявки
         {
+            CDumper.Dump("+Попытка утверждения в back office новой заявки: " + demand.Dump());
+
             if (!CParams.m_bUseFakeServices)
             {
                 //         Реальный код            
@@ -197,14 +209,14 @@ namespace Modeling
                 if (demand.m_iUrgency == 2)
                 {
                     //bool cancelResult = frontOffice.cancelOrder(date, demand.m_iID);
-                    //if (cancelResult==false) throw new Exception("Не удалось отменить заявку");
+                    //if (cancelResult==false) ModelError.Error("Не удалось отменить заявку");
                     return false;
                 }
                 else
                 {
                     demand.m_dtShouldBeDone = executionDate.AddDays(7 * (demand.m_iUrgency + 1));
                     bool confirmResult = frontOffice.confirmOrder(date, demand.m_iID, demand.m_iUrgency + 2);
-                    if (confirmResult == false) throw new Exception("Не удалось подтвердить заявку");
+                    if (confirmResult == false) ModelError.Error("Не удалось подтвердить заявку");
                     return true;
                 }
             }
@@ -226,6 +238,11 @@ namespace Modeling
 
         public bool approveModifyDemand(DateTime date, ref CDemand modifiedDemand, CDemand demand)               // утверждение в back office изменения заявки
         {
+            CDumper.Dump("+Попытка утверждения в back office изменения заявки:\nдата: " +
+                date.ToString() +
+                "\nзаявка: " + demand.Dump()
+                + "\nизмененная: " + modifiedDemand.Dump());
+
             if (!CParams.m_bUseFakeServices)
             {
                 //         Реальный код
@@ -297,6 +314,8 @@ namespace Modeling
 
         public bool reportDeliveryDemand(CDeliveryDemand del)
         {
+            CDumper.Dump("+reportDeliveryDemand: " + del.Dump());
+
             if (!CParams.m_bUseFakeServices)
             {
                 //         Реальный код
@@ -310,7 +329,7 @@ namespace Modeling
                 }
 
                 bool receivingResult = simulation.receivingMaterials(date, del.m_iID, materials);
-                if (receivingResult == false) throw new Exception("Не удалось отослать пришедшие материалы");
+                if (receivingResult == false) ModelError.Error("Не удалось отослать пришедшие материалы");
                 return true;
             }
             else
@@ -323,6 +342,8 @@ namespace Modeling
 
         public CDeliveryDemand getDeliveryDemands(DateTime date)          //Получение от back office заявок на поставки материалов
         {
+            CDumper.Dump("+Попытка получения от back office заявок на поставки материалов\nдата: " + date.ToString());
+
             if (!CParams.m_bUseFakeServices)
             {
                 //         Реальный код
@@ -378,6 +399,8 @@ namespace Modeling
 
         public CPlanElement[] getDailyPlan(DateTime date, ref CStorage storage)          //Получение от back office плана на день
         {
+            CDumper.Dump("+Попытка получения от back office плана на день\nдата: " + date.ToString());
+
             if (!CParams.m_bUseFakeServices)
             {
                 //      Реальный код
@@ -416,35 +439,30 @@ namespace Modeling
                     }                
                     */
                     int idleTime = 0;
-                    if (plan.Where(z => z.demandId == 1 && z.count == 0).Count() == 2)
+                    
+                    for (int i = 0; i < plan.Length; i++)
                     {
-                        storage.SaveIdleStatistic(1);
-                    }
-                    else
-                    {
-                        for (int i = 0; i < plan.Length; i++)
+                        if (plan[i].productId != 4)
                         {
-                            if (plan[i].productId != 4)
+                            if ((prevProductId != 0) && (plan[i].productId != prevProductId))
                             {
-                                if ((prevProductId != 0) && (plan[i].productId != prevProductId))
-                                {
-                                    dailyPlan.Add(new CPlanElement { m_iDemandID = 0, m_iProductID = plan[i].productId });
-                                }
-                                for (int j = 0; j < plan[i].count; j++)
-                                {
-                                    dailyPlan.Add(new CPlanElement { m_iDemandID = plan[i].demandId, m_iProductID = plan[i].productId });
-                                    prevProductId = plan[i].productId;
-                                }
+                                dailyPlan.Add(new CPlanElement { m_iDemandID = 0, m_iProductID = plan[i].productId });
                             }
-                            else
+                            for (int j = 0; j < plan[i].count; j++)
                             {
-                                int ticks = plan[i].count;
-                                if (ticks!=-99.0)
-                                idleTime = idleTime + ticks / 60;    // Простой = (n/100)*24*60 - минуты
+                                dailyPlan.Add(new CPlanElement { m_iDemandID = plan[i].demandId, m_iProductID = plan[i].productId });
+                                prevProductId = plan[i].productId;
                             }
                         }
-                        storage.SaveIdleStatistic((double)idleTime / CParams.WORKDAY_MINUTES_NUMBER);
+                        else
+                        {
+                            int ticks = plan[i].count;
+                            if (ticks!=-99.0)
+                            idleTime = idleTime + ticks / 60;    // Простой = (n/100)*24*60 - минуты
+                        }
                     }
+                    storage.SaveIdleStatistic((double)idleTime / CParams.WORKDAY_MINUTES_NUMBER);
+                    
                 }
                 else
                 {

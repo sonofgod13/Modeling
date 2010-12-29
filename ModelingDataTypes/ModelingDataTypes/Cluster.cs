@@ -194,5 +194,16 @@ namespace ModelingDataTypes
             if (isMoreFlag == true) return true;
             else return false;
         }
+
+        public string Dump()
+        {
+            string str = "";
+            for (int iEntityNumber = 1; iEntityNumber < GLOBAL_LIMITATION + 1; iEntityNumber++)
+            {
+                str = str + "сущность №: " + iEntityNumber.ToString() + " = " + m_entities[iEntityNumber].ToString() + "\n";
+            }
+
+            return str;
+        }
     }
 }

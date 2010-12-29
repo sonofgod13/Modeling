@@ -24,6 +24,8 @@ namespace Modeling
 
         public CImitation()
         {
+            CDumper.Dump("+Создание экземпляра класса CImitation");
+
             this.backOffice = new BackOfficeInterface();
             storage = new Storage.CStorage();   //содается временное хранилище результатов моделирования
             pauseDone = new AutoResetEvent(false);
@@ -131,7 +133,7 @@ namespace Modeling
             return true;
         }
 
-        public double getDemandAverageDelay()   // Среднее время задержки заказов в днях
+        public double? getDemandAverageDelay()   // Среднее время задержки заказов в днях
         {
             return this.storage.DemandAverageDelay();
         }
@@ -153,7 +155,7 @@ namespace Modeling
 
         public double getActivityFactor()    // Коэффициент использования системы
         {
-            return this.storage.SumWorkTime()/(CParams.WORKDAY_MINUTES_NUMBER*this.modelingDays);
+            return this.storage.SumWorkTime()/(CParams.WORKDAY_MINUTES_NUMBER * (this.currentModellingDay + 1));
         }
 
         public double getRetargetTimePercent()   // Доля времени перенастройки от общего времени производства
@@ -176,7 +178,7 @@ namespace Modeling
             return this.storage.GetIdlePerDayStatistic();
         }
 
-        public double[] getDemandAverageDelayPerDayStatistic()   // Получить среднее время задержки заказов в днях по дням
+        public double?[] getDemandAverageDelayPerDayStatistic()   // Получить среднее время задержки заказов в днях по дням
         {
             return this.storage.GetDemandAverageDelayPerDayStatistic();
         }
@@ -190,10 +192,17 @@ namespace Modeling
          {
              return this.storage.GetCanceledDemandsPerDayStatistic();
          }
+
+         public int[] getOverdueDemandsPerDayStatistic()      // Получить статистику изменения количества просроченных заказов
+         {
+             return this.storage.GetOverdueDemandsPerDayStatistic();
+         }
        
 
         public bool Start(Label label)       // Начальные заявки и материалы, запуск итератора
         {
+            CDumper.Dump("+Запуск итератора");
+
            // CDemand.idNext = 0; // сброс счетчика уникальности заявок
             this.currentModellingDay = 0;
             this.stopFlag = false;
@@ -291,11 +300,18 @@ namespace Modeling
 
         private void Iteration(Label label)
         {
+            //CDumper.Dump("+Запуск основного цикла Iteration");
+            //Дублирует следущий дамп
+
             for (int i = this.currentModellingDay; i < this.modelingDays; i++)
             {
+                CDumper.Dump("+Основной цикл Iteration\ncurrentModellingDay=" + 
+                    this.currentModellingDay.ToString() + " modelingDays=" + this.modelingDays.ToString());
+
                 this.currentModellingDay = i;
                 if (this.stopFlag == true)
                 {
+                    CDumper.Dump("+Приостановка основного цикла.");
                     pauseDone.Set();
                     break;
                 }
@@ -315,8 +331,11 @@ namespace Modeling
                 int[] modifyDemandsTime = this.generator.generateModifyTime();
                 
                 ////////////////////////////////////////////////// Обращение к back-office
+                CDumper.Dump("+Очистка плана на день");
                 this.storage.ClearAllPlan();
-                this.storage.AddDailyPlan(this.backOffice.getDailyPlan(modelTime,ref this.storage));
+                CPlanElement[] plan = this.backOffice.getDailyPlan(modelTime, ref this.storage);
+                CDumper.Dump("+План из backOffice получен:\n" + this.storage.DumpPlan(plan));
+                this.storage.AddDailyPlan(plan);
 
                 int rem = -1;
                 int span = (int)(modelTime-startTime).TotalDays;
@@ -446,7 +465,7 @@ namespace Modeling
                             curPlanElem.m_dtEndExecute = modelTime;
                             this.storage.AddPlanReportElement(curPlanElem);
                            // backOffice.reportPlanElem(curPlanElem);   отчёт в бекофис не надо
-                            if ((planElem.m_iDemandID!=0)&&(this.storage.IsDemandDone(planElem.m_iDemandID) == true))
+                            if ((planElem.m_iDemandID != 0)/*&& this.storage.IsAcceptedDemand(planElem.m_iDemandID)*/&&(this.storage.IsDemandDone(planElem.m_iDemandID) == true))
                                 this.storage.FinishDemand(planElem.m_iDemandID, modelTime);
 
                             curPlanElem = new CPlanReportElement();
@@ -571,6 +590,7 @@ namespace Modeling
                 this.storage.SaveDemandAverageDelayStatistic();
                 this.storage.SaveFinishedDemandsPerDayStatistic();
                 this.storage.SaveCanceledDemandsPerDayStatistic();
+                this.storage.SaveOverdueDemandsPerDayStatistic(modelTime);
             }
             if (stopFlag!=true) setLabelText(label, "Модельное время: " + modelTime.ToString() + "\nМоделирование завершено");
             return;

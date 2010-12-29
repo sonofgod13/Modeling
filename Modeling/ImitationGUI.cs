@@ -94,6 +94,7 @@ namespace Modeling
             idle_button.Enabled = false;
             averageDelay_button.Enabled = false;
             finish_button.Enabled = false;
+            overdue_button.Enabled = false;
             //cancel_button.Enabled = false;
             frontOffice = new Modeling.FrontOffice.FrontOfficeImitationHelper();
             frontOfficeUrl = ConfigurationSettings.AppSettings["FrontOfficeUrl"].ToString();
@@ -112,6 +113,8 @@ namespace Modeling
 
         private void button_start_Click(object sender, EventArgs e)
         {
+            CDumper.Dump("+Нажата кнопка старта моделирования");
+
             if (modelFlag == false)
             {
                 if (!(CheckUrgPropabilities())) return;
@@ -126,6 +129,15 @@ namespace Modeling
                 setLabelText(this.acceptedNumLabel, "NaN");
                 setLabelText(this.finishedNumLabel, "NaN");
                 //setLabelText(this.canceledNumLabel, "NaN");
+
+                
+                materials_button.Enabled = false;
+                idle_button.Enabled = false;
+                averageDelay_button.Enabled = false;
+                finish_button.Enabled = false;
+                overdue_button.Enabled = false;
+                //cancel_button.Enabled = false;
+                
                 imitator = new CImitation();
                 button_stop.Enabled = true;
                 front_office_button.Enabled = false;
@@ -138,9 +150,9 @@ namespace Modeling
                             setStringButton(this.button_start, "Старт");
                             modelFlag = false;
                             setEnableButton(this.button_stop, false);
-                            double demandAverageDelay = this.imitator.getDemandAverageDelay();
-                            if (demandAverageDelay == -1) setLabelText(this.demandAverageDelayLabel, "нет выполненных заказов");
-                            else setLabelText(this.demandAverageDelayLabel, Math.Round(demandAverageDelay, 3).ToString() + " дней");
+                            double? demandAverageDelay = this.imitator.getDemandAverageDelay();
+                            if (demandAverageDelay.HasValue == false) setLabelText(this.demandAverageDelayLabel, "нет выполненных заказов");
+                            else setLabelText(this.demandAverageDelayLabel, Math.Round(demandAverageDelay.Value, 3).ToString() + " дней");
                             setLabelText(this.activityFactorLabel, Math.Round(imitator.getActivityFactor(), 5).ToString());
                             setLabelText(this.retargetTimePercentLabel, Math.Round(imitator.getRetargetTimePercent(), 5).ToString());
                             setLabelText(this.refuseNumLabel, imitator.getRefusesNum().ToString());
@@ -151,6 +163,7 @@ namespace Modeling
                             setEnableButton(this.idle_button, true);
                             setEnableButton(this.averageDelay_button, true);
                             setEnableButton(this.finish_button, true);
+                            setEnableButton(this.overdue_button, true);
                             //setEnableButton(this.cancel_button, true);
                             setEnableButton(this.front_office_button, true);
                         }
@@ -177,9 +190,9 @@ namespace Modeling
                         setEnableButton(this.button_stop, true);
                         if (pauseDone == true)
                         {                            
-                            double demandAverageDelay = this.imitator.getDemandAverageDelay();
-                            if (demandAverageDelay == -1) setLabelText(this.demandAverageDelayLabel, "нет выполненных заказов");
-                            else setLabelText(this.demandAverageDelayLabel, Math.Round(demandAverageDelay, 3).ToString() + " дней");
+                            double? demandAverageDelay = this.imitator.getDemandAverageDelay();
+                            if (demandAverageDelay.HasValue == false) setLabelText(this.demandAverageDelayLabel, "нет выполненных заказов");
+                            else setLabelText(this.demandAverageDelayLabel, Math.Round(demandAverageDelay.Value, 3).ToString() + " дней");
                             setLabelText(this.activityFactorLabel, Math.Round(imitator.getActivityFactor(), 5).ToString());
                             setLabelText(this.retargetTimePercentLabel, Math.Round(imitator.getRetargetTimePercent(), 5).ToString());
                             setLabelText(this.refuseNumLabel, imitator.getRefusesNum().ToString());
@@ -190,6 +203,7 @@ namespace Modeling
                             setEnableButton(this.idle_button, true);
                             setEnableButton(this.averageDelay_button, true);
                             setEnableButton(this.finish_button, true);
+                            setEnableButton(this.overdue_button, true);
                             //setEnableButton(this.cancel_button, true);
                             setEnableButton(this.front_office_button, true);
                         }
@@ -205,11 +219,14 @@ namespace Modeling
                     idle_button.Enabled = false;
                     averageDelay_button.Enabled = false;
                     finish_button.Enabled = false;
+                    overdue_button.Enabled = false;
                     //cancel_button.Enabled = false;
                     pauseModelFlag = false;
                     front_office_button.Enabled = false;
-                    this.imitator.saveNewFrontDemands(frontOffice.GetNewAtDate(this.imitator.getModelingTime()));                    
-                    this.imitator.saveChangedFrontDemands(frontOffice.GetChangedAtDate(this.imitator.getModelingTime()));
+                    
+                    /////  Взаимодействие с front-office раскоментить при реальной работе
+                    //this.imitator.saveNewFrontDemands(frontOffice.GetNewAtDate(this.imitator.getModelingTime()));                    
+                    //this.imitator.saveChangedFrontDemands(frontOffice.GetChangedAtDate(this.imitator.getModelingTime()));
                     
                     Thread t = new Thread(delegate()
                     {
@@ -220,9 +237,9 @@ namespace Modeling
                             setStringButton(this.button_start, "Старт");
                             modelFlag = false;
                             setEnableButton(this.button_stop,false);
-                            double demandAverageDelay = this.imitator.getDemandAverageDelay();
-                            if (demandAverageDelay == -1) setLabelText(this.demandAverageDelayLabel, "нет выполненных заказов");
-                            else setLabelText(this.demandAverageDelayLabel, Math.Round(demandAverageDelay, 3).ToString() + " дней");
+                            double? demandAverageDelay = this.imitator.getDemandAverageDelay();
+                            if (demandAverageDelay.HasValue == false) setLabelText(this.demandAverageDelayLabel, "нет выполненных заказов");
+                            else setLabelText(this.demandAverageDelayLabel, Math.Round(demandAverageDelay.Value, 3).ToString() + " дней");
                             setLabelText(this.activityFactorLabel, Math.Round(imitator.getActivityFactor(), 5).ToString());
                             setLabelText(this.retargetTimePercentLabel, Math.Round(imitator.getRetargetTimePercent(), 5).ToString());
                             setLabelText(this.refuseNumLabel, imitator.getRefusesNum().ToString());
@@ -233,6 +250,7 @@ namespace Modeling
                             setEnableButton(this.idle_button, true);
                             setEnableButton(this.averageDelay_button, true);
                             setEnableButton(this.finish_button, true);
+                            setEnableButton(this.overdue_button, true);
                             //setEnableButton(this.cancel_button, true);
                             setEnableButton(this.front_office_button, true);
                         }
@@ -258,9 +276,9 @@ namespace Modeling
                         setEnableButton(this.button_start, true);
                         if (stopDone == true)
                         {
-                            double demandAverageDelay = this.imitator.getDemandAverageDelay();
-                            if (demandAverageDelay == -1) setLabelText(this.demandAverageDelayLabel, "нет выполненных заказов");
-                            else setLabelText(this.demandAverageDelayLabel, Math.Round(demandAverageDelay, 3).ToString() + " дней");
+                            double? demandAverageDelay = this.imitator.getDemandAverageDelay();
+                            if (demandAverageDelay.HasValue == false) setLabelText(this.demandAverageDelayLabel, "нет выполненных заказов");
+                            else setLabelText(this.demandAverageDelayLabel, Math.Round(demandAverageDelay.Value, 3).ToString() + " дней");
                             setLabelText(this.activityFactorLabel, Math.Round(imitator.getActivityFactor(), 5).ToString());
                             setLabelText(this.retargetTimePercentLabel, Math.Round(imitator.getRetargetTimePercent(), 5).ToString());
                             setLabelText(this.refuseNumLabel, imitator.getRefusesNum().ToString());
@@ -271,6 +289,7 @@ namespace Modeling
                             setEnableButton(idle_button, true);
                             setEnableButton(averageDelay_button, true);
                             setEnableButton(finish_button,true);
+                            setEnableButton(this.overdue_button, true);
                             //cancel_button.Enabled = true;
                             setEnableButton(front_office_button, true);
                         }
@@ -649,7 +668,7 @@ namespace Modeling
                 textBox_UrgencyPropabilityDemand.Text = dUrg_BASE.ToString();
                 textBox_RefusePropabilityDemand.Text = dRef_BASE.ToString();
 
-                MessageBox.Show("Сумаа вероятностей срочности заявки и отаза от заявки не должна быть больше единицы!");
+                MessageBox.Show("Сумма вероятностей срочности заявки и отаза от заявки не должна быть больше единицы!");
                 return false;
             }
             CParams.m_fRefusePropabilityDemand = dRef;
@@ -749,7 +768,7 @@ namespace Modeling
         private void averageDelay_button_Click(object sender, EventArgs e)
         {
             int[][] x = new int[1][];
-            Dictionary<int, double[]> y = new Dictionary<int, double[]>();
+            Dictionary<int, double?[]> y = new Dictionary<int, double?[]>();
             List<int> days = new List<int>();
             for (int i = 0; i < imitator.getDemandAverageDelayPerDayStatistic().Length; i++)
             {
@@ -757,8 +776,8 @@ namespace Modeling
             }
             x[0] = days.ToArray();
             y[0] = imitator.getDemandAverageDelayPerDayStatistic();
-            string[] lines = new string[1] { "Среднее время задержки заказов ('-1' - нет выполненных заказов)" };
-            Graph gr = new Graph(y, x, lines, "Дни", "Среднее время (дни)", "Изменение среднего времени задержки заказов");
+            string[] lines = new string[1] { "Среднее время задержки заказов (отсутствие линии - нет выполненных заказов)" };
+            Graph gr = new Graph(y, x, lines, "Дни", "Среднее время (дни)", "Изменение среднего времени задержки выполненных заказов");
             gr.ShowDialog();
         }
 
@@ -787,7 +806,7 @@ namespace Modeling
                 frontOffice.ClearOrders();                              
             }
             frontOffice.SetDate(this.imitator.getModelingTime());                                
-            Process.Start("IExplore.exe", frontOfficeUrl);                        
+            Process.Start("firefox.exe", frontOfficeUrl);                        
         }
 
         private void cancel_button_Click(object sender, EventArgs e)
@@ -805,6 +824,24 @@ namespace Modeling
             string[] lines = new string[1] { "Доля отменённых заказов" };
             Graph gr = new Graph(y, x, lines, "Дни", "Доля", "Изменение доли отменённых заказов");
             gr.ShowDialog();
+        }
+
+        private void overdue_button_Click(object sender, EventArgs e)
+        {
+            int[][] x = new int[1][];
+            int[][] y = new int[1][];
+            List<int> days = new List<int>();
+            int[] overdueDemandsPerDayStatistic = imitator.getOverdueDemandsPerDayStatistic();
+            for (int i = 0; i < overdueDemandsPerDayStatistic.Length; i++)
+            {
+                days.Add(i + 1);
+            }
+            x[0] = days.ToArray();
+            y[0] = overdueDemandsPerDayStatistic;
+            string[] lines = new string[1] { "Количество просроченных заказов" };
+            Graph gr = new Graph(y, x, lines, "Дни", "Количество", "Изменение количества просроченных заказов");
+            gr.ShowDialog();
+
         }
 
     }

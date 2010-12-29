@@ -73,6 +73,9 @@ namespace ModelingDataTypes
             return m_cluster.CompareEntity(iMaterialNumber, iAmount);
         }
 
-        
+        public string Dump()
+        {
+            return ("МАТЕРИАЛЫ.\n" + m_cluster.Dump());
+        }
     }
 }

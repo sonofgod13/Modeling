@@ -129,5 +129,41 @@ namespace Modeling
             this.zedGraphControl1.GraphPane.AxisChange();
             this.zedGraphControl1.Invalidate();
         }
+
+        public Graph(Dictionary<int, double?[]> Y, int[][] X, string[] lines, string XAxis, string YAxis, string title)
+        {
+            InitializeComponent();
+
+            this.zedGraphControl1.GraphPane.CurveList.Clear();
+            List<PointPairList> fList = new List<PointPairList>();
+            int? xMax = null;
+            for (int i = 0; i < Y.Count; i++)
+            {
+                PointPairList pL = new PointPairList();
+                for (int j = 0; j < Y[i].Length; j++)
+                {
+                    if (xMax.HasValue == false) xMax = X[i][j];
+                    else if (xMax.Value < X[i][j]) xMax = X[i][j];
+                    if (Y[i][j].HasValue == true) pL.Add(X[i][j], Y[i][j].Value);
+                }
+                fList.Add(pL);
+            }
+
+            for (int i = 0; i < fList.Count; i++)
+            {
+                LineItem curve = this.zedGraphControl1.GraphPane.AddCurve(lines[i], fList[i], colors[i], SymbolType.None);
+                curve.Line.Width = 2.0F;
+                curve.Line.IsAntiAlias = true;
+            }
+
+            this.zedGraphControl1.GraphPane.XAxis.Title.Text = XAxis;
+            this.zedGraphControl1.GraphPane.XAxis.Scale.Min = 1;
+            if (xMax.HasValue == true) this.zedGraphControl1.GraphPane.XAxis.Scale.Max = xMax.Value + 1;
+            this.zedGraphControl1.GraphPane.YAxis.Title.Text = YAxis;
+            this.zedGraphControl1.GraphPane.Title.Text = title;
+
+            this.zedGraphControl1.GraphPane.AxisChange();
+            this.zedGraphControl1.Invalidate();
+        }
     }
 }
